@@ -1,5 +1,5 @@
 # Name of your application. Used to uniquely configure containers.
-service: langturbo-nextjs
+service: langturbo-nextjs-new
 
 # Name of the container image.
 image: sebnun/langturbo-nextjs
@@ -21,7 +21,9 @@ proxy:
   ssl: true
   host: prev.langturbo.com
   # Proxy connects to your container on port 80 by default.
-  # app_port: 3000
+  app_port: 3000
+  healthcheck:
+      path: /
 
 # Credentials for your image host.
 registry:
