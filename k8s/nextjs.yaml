@@ -36,16 +36,14 @@ kind: Ingress
 metadata:
   name: nextjs-ingress
   namespace: langturbo
-  # annotations:
-  #   nginx.ingress.kubernetes.io/use-regex: "true"
-  #   cert-manager.io/cluster-issuer: letsencrypt-prod
-  #   nginx.ingress.kubernetes.io/ssl-passthrough: 'true'
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: nginx
-  # tls:
-  #   - hosts:
-  #       - www.langturbo.com
-  #     secretName: prod-nextjs-tls-secret
+  tls:
+    - hosts:
+        - www.langturbo.com
+      secretName: letsencrypt-prod
   rules:
     - host: www.langturbo.com
       http:
