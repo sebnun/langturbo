@@ -44,10 +44,10 @@ spec:
   ingressClassName: nginx
   # tls:
   #   - hosts:
-  #       - nextjs.domain.cloud
+  #       - www.langturbo.com
   #     secretName: prod-nextjs-tls-secret
   rules:
-    - host: prev.langturbo.com
+    - host: www.langturbo.com
       http:
         paths:
           - path: /
