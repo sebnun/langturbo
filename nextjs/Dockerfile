@@ -58,6 +58,10 @@ USER nextjs
 
 EXPOSE 3000
 
+# https://dlhck.com/thoughts/the-complete-guide-to-self-hosting-nextjs-at-scale
+HEALTHCHECK --interval=12s --timeout=12s --start-period=5s \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
+
 ENV PORT=3000
 
 # server.js is created by next build from the standalone output
