@@ -4,7 +4,7 @@ metadata:
   name: nextjs-deployment
   namespace: langturbo
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: nextjs
