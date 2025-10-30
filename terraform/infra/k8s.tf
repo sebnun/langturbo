@@ -66,14 +66,14 @@ resource "oci_containerengine_node_pool" "k8s_node_pool" {
   node_shape = "VM.Standard.A1.Flex"
 
   node_shape_config {
-    memory_in_gbs = 12
-    ocpus         = 2
+    memory_in_gbs = 24
+    ocpus         = 4
   }
   node_source_details {
     image_id    = jsondecode(data.jq_query.latest_image.result)
     source_type = "image"
 
-    boot_volume_size_in_gbs = 100
+    boot_volume_size_in_gbs = 50
   }
   initial_node_labels {
     key   = "name"

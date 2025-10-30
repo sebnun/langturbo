@@ -24,7 +24,7 @@ variable "kubernetes_version" {
 variable "kubernetes_worker_nodes" {
   description = "Worker node count. If > 2, you will have to pay for the additional nodes"
   type        = number
-  default     = 2
+  default     = 1
 }
 
 

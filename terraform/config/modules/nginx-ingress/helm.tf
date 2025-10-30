@@ -18,7 +18,7 @@ controller:
     limit-rate: "1048576"
     limit-rate-after: "5242880"
     proxy-buffering: "on"
-  replicaCount: 2
+  replicaCount: 1
   service:
     annotations:
       oci.oraclecloud.com/load-balancer-type: "nlb"
