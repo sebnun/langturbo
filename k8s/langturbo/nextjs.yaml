@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextjs-deployment
+  namespace: langturbo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nextjs
+  template:
+    metadata:
+      labels:
+        app: nextjs
+    spec:
+      containers:
+      - name: nextjs-container
+        image: docker.io/sebnun/langturbo-nextjs:6
+        envFrom:
+        - secretRef:
+            name: nextjs-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextjs-svc
+  namespace: langturbo
+spec:
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  selector:
+    app: nextjs
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nextjs-ingress
+  namespace: langturbo
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - www.langturbo.com
+      secretName: letsencrypt-prod
+  rules:
+    - host: www.langturbo.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nextjs-svc
+                port:
+                  number: 80
