@@ -1,0 +1,10 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: langturbo-db
+  namespace: langturbo
+spec:
+  name: langturbo
+  owner: app
+  cluster:
+    name: postgres-cluster
