@@ -11,8 +11,8 @@ spec:
       reconcileStrategy: ChartVersion
       sourceRef:
         kind: HelmRepository
-        namespace: flux-system
-        name: meilisearch
+        namespace: langturbo
+        name: meilisearch-repo
   interval: 1h
   # driftDetection:
   #   mode: enabled
