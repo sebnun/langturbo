@@ -26,9 +26,9 @@ spec:
       MEILI_ENV: "production"
     # auth:
     #   existingMasterKeySecret: meilisearch-secret
-    # persistence:
-    #   enabled: true
-    #   existingClaim: *app
+    persistence:
+      enabled: true
+      #existingClaim: *app
     # resources:
     #   requests:
     #     cpu: 10m
