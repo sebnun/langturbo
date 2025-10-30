@@ -12,5 +12,5 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: meilisearch-repo
-      version: 1.18.0
+      version: 0.17.1
   interval: 1m0s
