@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: meilisearch
+  labels:
+    name: meilisearch
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: meilisearch
+  namespace: meilisearch
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: meilisearch
+      version: "0.17.1"
+      sourceRef:
+        kind: HelmRepository
+        name: meilisearch-repo
+        namespace: flux-system
+  install:
+    createNamespace: false # namespace already created by manifest 00-namespace.yaml
+  # upgrade:
+  #   remediation:
+  #     retries: 3
+  targetNamespace: meilisearch
+
+
+  # Use values from a Kubernetes Secret stored in the target namespace
+  # valuesFrom:
+  #   - kind: Secret
+  #     name: meilisearch-values
+  #     valuesKey: values.yaml
