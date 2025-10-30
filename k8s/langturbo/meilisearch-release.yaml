@@ -10,7 +10,7 @@ spec:
       chart: meilisearch
       reconcileStrategy: ChartVersion
       sourceRef:
-        kind: HelmRepository
+        kind: GitRepository
         name: meilisearch-repo
       version: 1.18.0
   interval: 1m0s
