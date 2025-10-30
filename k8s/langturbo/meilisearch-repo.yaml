@@ -1,9 +1,16 @@
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: GitRepository
 metadata:
   name: meilisearch-repo
   namespace: langturbo
 spec:
   interval: 1m0s
-  url: https://meilisearch.github.io/meilisearch-kubernetes
+  url: https://github.com/meilisearch/meilisearch-kubernetes/
+  ref:
+    branch: master
+  ignore: |
+    # exclude all
+    /*
+    # include charts directory
+    !/charts/    
