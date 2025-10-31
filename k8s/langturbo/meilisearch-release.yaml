@@ -25,3 +25,4 @@ spec:
       existingMasterKeySecret: meilisearch-secrets
     persistence:
       enabled: true
+      existingClaim: postgres-cluster-1
