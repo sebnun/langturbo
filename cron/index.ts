@@ -1,24 +1,15 @@
-import { createServer } from "node:http";
+import { runDoctorCron } from "./jobs/doctor.ts";
+import { runPopularizerCron } from "./jobs/popularizer.ts";
+import { runScraperCron } from "./jobs/scraper.ts";
 
-const PORT = 3000;
+process.loadEnvFile()
 
-const server = createServer((req, res) => {
-  if (req.url === "/") {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "text/html");
-    res.end("<h1>Home Page</h1>");
-  } else if (req.url === "/about") {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "text/html");
-    res.end("<h1>About Page</h1><p>Welcome to the about page!</p>");
-  } else {
-    res.statusCode = 404;
-    res.setHeader("Content-Type", "text/html");
-    res.end("<h1>Error 404</h1><p>Page not found!</p>");
-  }
-});
+const jobType = process.env.JOB_TYPE as "scraper" | "popularizer" | "doctor";
 
-
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/`);
-});
+if (jobType === "doctor") {
+  runDoctorCron();
+} else if (jobType === "popularizer") {
+  runPopularizerCron();
+} else if (jobType === "scraper") {
+  runScraperCron();
+} 
