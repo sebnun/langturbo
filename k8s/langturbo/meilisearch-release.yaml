@@ -23,11 +23,11 @@ spec:
     #   - --
     #   - /bin/meilisearch
     #   - --experimental-dumpless-upgrade
-    # environment:
-    #   MEILI_NO_ANALYTICS: true
-    #   MEILI_ENV: "production"
-    # auth:
-    #   existingMasterKeySecret: meilisearch-secret
+    environment:
+      MEILI_NO_ANALYTICS: true
+      MEILI_ENV: "production"
+    auth:
+      existingMasterKeySecret: meilisearch-secrets
     # persistence:
     #   enabled: true
     #   existingClaim: *app
