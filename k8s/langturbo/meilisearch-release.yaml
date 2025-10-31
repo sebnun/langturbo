@@ -25,4 +25,5 @@ spec:
       existingMasterKeySecret: meilisearch-secrets
     persistence:
       enabled: true
+      # TODO: shouldn't be hardcoded
       existingClaim: postgres-cluster-1
