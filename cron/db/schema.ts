@@ -22,4 +22,5 @@ export const showsTable = pgTable("shows", {
   popularity: integer().notNull().default(0),
   language_code: languageCodeEnum().notNull(),
   show_type: showTypeEnum().default('podcast').notNull(),
+  health_checked_at: timestamp().defaultNow().notNull(),
 });
