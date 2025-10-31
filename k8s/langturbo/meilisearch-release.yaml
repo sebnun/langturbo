@@ -18,24 +18,10 @@ spec:
   values:
     image:
       repository: docker.io/getmeili/meilisearch
-    # command:
-    #   - tini
-    #   - --
-    #   - /bin/meilisearch
-    #   - --experimental-dumpless-upgrade
     environment:
       MEILI_NO_ANALYTICS: true
       MEILI_ENV: "production"
     auth:
       existingMasterKeySecret: meilisearch-secrets
-    # persistence:
-    #   enabled: true
-    #   existingClaim: *app
-    # resources:
-    #   requests:
-    #     cpu: 10m
-    #     memory: 256Mi
-    #   limits:
-    #     memory: 2Gi
-    # serviceMonitor:
-    #   enabled: true
+    persistence:
+      enabled: true
