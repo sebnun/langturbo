@@ -8,6 +8,8 @@ export const runDoctorCron = async () => {
   console.log("Running doctor cron job");
   const shows = await db.select().from(showsTable).orderBy(showsTable.health_checked_at).limit(1000);
 
+  let deletedCount = 0;
+
   for (const show of shows) {
     try {
       const parsedPodcast = await podcastXmlParser(new URL(show.source_url), {
@@ -31,5 +33,9 @@ export const runDoctorCron = async () => {
       .update(showsTable)
       .set({ health_checked_at: sql`NOW()` })
       .where(eq(showsTable.id, show.id));
+
+    deletedCount++;
   }
+
+  console.log(`Doctor cron job completed. Deleted ${deletedCount} shows.`);
 };
