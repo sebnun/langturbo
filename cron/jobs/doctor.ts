@@ -3,6 +3,12 @@ import { showsTable } from "../db/schema.ts";
 import { podcastXmlParser } from "podcast-xml-parser";
 import { USER_AGENT } from "../lib/constants.ts";
 import { eq, sql } from "drizzle-orm";
+import { MeiliSearch } from "meilisearch";
+
+const client = new MeiliSearch({
+  host: process.env.MEILI_URL,
+  apiKey: process.env.MEILI_MASTER_KEY,
+});
 
 export const runDoctorCron = async () => {
   console.log("Running doctor cron job");
@@ -26,7 +32,12 @@ export const runDoctorCron = async () => {
     } catch (e) {
       console.log("Failed to parse feed, deleting", show.id, e);
 
-      // TODO: delete on meilisearch
+      client.index(`captions_${show.language_code}`).deleteDocuments({
+        filter: `show_id = ${show.id}`,
+      });
+      client.index(`shows_${show.language_code}`).deleteDocument(show.id);
+
+      // Should cascade on db
       await db.delete(showsTable).where(eq(showsTable.id, show.id));
       continue;
     }

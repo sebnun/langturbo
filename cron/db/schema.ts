@@ -1,9 +1,7 @@
-import { LANGUAGES_LIST } from "../lib/languages.ts";
+import { ISO_LANGUAGE_CODES } from "../lib/languages.ts";
 import { pgTable, text, integer, timestamp, uuid, smallint, pgEnum, boolean } from "drizzle-orm/pg-core";
 
-const isoLanguageCodes = Object.keys(LANGUAGES_LIST);
-
-export const languageCodeEnum = pgEnum("language_code", isoLanguageCodes as [string, ...string[]]);
+export const languageCodeEnum = pgEnum("language_code", ISO_LANGUAGE_CODES as [string, ...string[]]);
 export const showTypeEnum = pgEnum("show_type", ["podcast", "youtube", "other"]);
 
 export const showsTable = pgTable("shows", {

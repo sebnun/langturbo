@@ -3,9 +3,15 @@ import { franc } from "franc-all";
 import * as he from "he";
 import { getProxyUrl, USER_AGENT } from "./constants.ts";
 import { backOff } from "exponential-backoff";
-import { iso6393To1, LANGUAGES_LIST } from "./languages.ts";
+import { iso6393To1, ISO_LANGUAGE_CODES, LANGUAGES_LIST } from "./languages.ts";
 import { showsTable } from "../db/schema.ts";
 import { db } from "../db/index.ts";
+import { MeiliSearch } from "meilisearch";
+
+const client = new MeiliSearch({
+  host: process.env.MEILI_URL,
+  apiKey: process.env.MEILI_MASTER_KEY,
+});
 
 export const processItunesId = async (id: string) => {
   let lookupResponse;
@@ -79,20 +85,30 @@ export const processItunesId = async (id: string) => {
     console.log("language detection", language, id, languageCode);
   }
 
-  // TODO: add to meilisearch.
-  await db.insert(showsTable).values({
-    source_id: id,
-    title,
-    description,
-    author,
-    explicit,
-    image_url: imageUrl,
-    show_url: link,
-    source_url: feedUrl,
-    country: country,
-    category_ids: categories,
-    language_code: languageCode,
-  });
+  const shows = await db
+    .insert(showsTable)
+    .values({
+      source_id: id,
+      title,
+      description,
+      author,
+      explicit,
+      image_url: imageUrl,
+      show_url: link,
+      source_url: feedUrl,
+      country: country,
+      category_ids: categories,
+      language_code: languageCode,
+    })
+    .returning();
+
+  client.index(`shows_${languageCode}`).addDocuments([
+    {
+      id: shows[0].id,
+      title,
+      author,
+    },
+  ]);
 };
 
 const getLanguageCode = (languageMetadata: string) => {
@@ -118,9 +134,7 @@ const getLanguageCode = (languageMetadata: string) => {
     correctIso = "id";
   }
 
-  const isoLanguageCodes = Object.keys(LANGUAGES_LIST);
-
-  if (!isoLanguageCodes.includes(correctIso)) {
+  if (!ISO_LANGUAGE_CODES.includes(correctIso)) {
     console.error("Invalid language code", languageMetadata);
     return; // Not a valid language
   }
