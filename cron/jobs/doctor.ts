@@ -25,6 +25,8 @@ export const runDoctorCron = async () => {
       }
     } catch (e) {
       console.log("Failed to parse feed, deleting", show.id, e);
+
+      // TODO: delete on meilisearch
       await db.delete(showsTable).where(eq(showsTable.id, show.id));
       continue;
     }

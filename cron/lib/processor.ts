@@ -79,7 +79,7 @@ export const processItunesId = async (id: string) => {
     console.log("language detection", language, id, languageCode);
   }
 
-  //await sql`insert into content (id, language_id, title, author, image_url, feed_url, country, explicit, category_ids, description) values (${id.toString()}, ${languageId}, ${title}, ${author}, ${imageUrl}, ${feedUrl}, ${country}, ${explicit}, ${categories}, ${description})`;
+  // TODO: add to meilisearch.
   await db.insert(showsTable).values({
     source_id: id,
     title,
