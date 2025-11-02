@@ -72,7 +72,8 @@ spec:
     minio:
       enabled: true
     lokiCanary:
-      enabled: false
+    # ccccccchhhanged
+      enabled: true
     deploymentMode: SingleBinary
     singleBinary:
       replicas: 1
