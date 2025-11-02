@@ -5,6 +5,8 @@ kind: HelmRelease
 metadata:
   name: meilisearch-release
   namespace: langturbo
+  labels:
+      app.kubernetes.io/component: monitoring
 spec:
   chart:
     spec:
@@ -29,7 +31,7 @@ spec:
       existingClaim: postgres-cluster-1
     serviceMonitor:
       enabled: true
-      #namespace: langturbo
+      namespace: langturbo
       targetLabels:
         app.kubernetes.io/component: monitoring
       additionalLabels:
