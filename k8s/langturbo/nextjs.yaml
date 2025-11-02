@@ -82,7 +82,7 @@ metadata:
   namespace: langturbo
 spec:
   endpoints:
-    targetPort: 9464
+    - targetPort: 9464
   selector:
     matchLabels:
       app: nextjs-monitoring
