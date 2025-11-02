@@ -14,7 +14,6 @@ metadata:
   name: postgres-podmonitor
   namespace: monitoring
 spec:
-  namespaceSelector: langturbo
   selector:
     matchLabels:
       cnpg.io/cluster: postgres-cluster
