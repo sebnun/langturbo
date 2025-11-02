@@ -66,6 +66,7 @@ metadata:
   namespace: langturbo
   labels:
     app.kubernetes.io/component: monitoring
+    release: kube-prometheus-stack
 spec:
   selector:
     matchLabels:
