@@ -58,3 +58,17 @@ spec:
                 name: nextjs-svc
                 port:
                   number: 80
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: nextjs-podmonitor
+  namespace: langturbo
+  labels:
+    app.kubernetes.io/component: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: nextjs
+  podMetricsEndpoints:
+  - targetPort: 9464
