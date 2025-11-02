@@ -28,11 +28,8 @@ spec:
       enabled: false
     prometheus:
       prometheusSpec:
-      # Added by me
-        ruleSelectorNilUsesHelmValues: false
+        # Added by me to pickup all servicemonitors
         serviceMonitorSelectorNilUsesHelmValues: false
-        podMonitorSelectorNilUsesHelmValues: false
-        probeSelectorNilUsesHelmValues: false
 
 
         retention: 24h
@@ -44,9 +41,6 @@ spec:
         podMonitorSelector:
           matchLabels:
             app.kubernetes.io/component: monitoring
-        # Added by me
-        serviceMonitorSelector: {}
-        serviceMonitorNamespaceSelector: {}
     grafana:
       defaultDashboardsEnabled: false
       adminPassword: flux
