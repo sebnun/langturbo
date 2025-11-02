@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: nextjs-container
-        image: docker.io/sebnun/langturbo-nextjs:6
+        image: docker.io/sebnun/langturbo-nextjs:7
         envFrom:
         - secretRef:
             name: nextjs-secrets
