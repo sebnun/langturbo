@@ -15,12 +15,6 @@ spec:
         name: grafana-charts
       interval: 60m
   values:
-
-## added by me
-    storage:
-      bucketNames:
-        chunks: jkhjkhjk
-
     chunksCache:
       enabled: false
     resultsCache:
@@ -50,6 +44,12 @@ spec:
               version: 1
               isDefault: false
     loki:
+
+      ## added by me
+      storage:
+        bucketNames:
+          chunks: jkhjkhjk
+
       auth_enabled: false
       serviceMonitor:
         enabled: true
