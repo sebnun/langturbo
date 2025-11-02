@@ -3,9 +3,10 @@ kind: Cluster
 metadata:
   name: postgres-cluster
   namespace: langturbo
+  labels:
+    app.kubernetes.io/component: monitoring
 spec:
   instances: 1
-
   storage:
     size: 100Gi
 ---
