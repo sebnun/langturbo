@@ -29,7 +29,3 @@ spec:
       existingClaim: postgres-cluster-1
     serviceMonitor:
       enabled: true
-    targetLabels:
-      wat: wat
-    additionalLabels:
-      wat: wat
