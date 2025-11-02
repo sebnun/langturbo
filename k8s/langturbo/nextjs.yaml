@@ -71,4 +71,5 @@ spec:
     matchLabels:
       app: nextjs
   podMetricsEndpoints:
-  - targetPort: 9464
+  - path: /metrics
+    targetPort: 9464
