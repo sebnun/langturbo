@@ -27,3 +27,8 @@ spec:
       enabled: true
       # TODO: shouldn't be hardcoded
       existingClaim: postgres-cluster-1
+    serviceMonitor:
+      enabled: false
+      namespace: langturbo
+      targetLabels:
+        app.kubernetes.io/component: monitoring
