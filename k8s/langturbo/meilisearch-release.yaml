@@ -5,6 +5,8 @@ kind: HelmRelease
 metadata:
   name: meilisearch-release
   namespace: langturbo
+  labels:
+      app: meilisearch
 spec:
   chart:
     spec:
@@ -29,3 +31,25 @@ spec:
       existingClaim: postgres-cluster-1
     serviceMonitor:
       enabled: true
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: meilisearch-servicemonitor
+  namespace: langturbo
+  labels:
+    app.kubernetes.io/component: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: meilisearch
+
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s
+      authorization:
+        credentials:
+          name: meilisearch-secrets
+          key: MEILI_MASTER_KEY
