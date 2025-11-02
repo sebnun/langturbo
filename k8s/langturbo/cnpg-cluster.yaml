@@ -3,21 +3,20 @@ kind: Cluster
 metadata:
   name: postgres-cluster
   namespace: langturbo
-  labels:
-    app.kubernetes.io/component: monitoring
 spec:
   instances: 1
   storage:
     size: 100Gi
-# ---
-# apiVersion: monitoring.coreos.com/v1
-# kind: PodMonitor
-# metadata:
-#   name: postgres-podmonitor
-#   namespace: langturbo
-# spec:
-#   selector:
-#     matchLabels:
-#       app.kubernetes.io/component: monitoring
-#   podMetricsEndpoints:
-#   - port: metrics
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: postgres-podmonitor
+  namespace: langturbo
+spec:
+  namespaceSelector: langturbo
+  selector:
+    matchLabels:
+      cnpg.io/cluster: postgres-cluster
+  podMetricsEndpoints:
+  - port: metrics
