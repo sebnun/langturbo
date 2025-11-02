@@ -13,7 +13,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: postgres-podmonitor
-  namespace: langturbo
+  #namespace: langturbo
 spec:
   selector:
     matchLabels:
