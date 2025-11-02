@@ -1,39 +1,39 @@
-# ---
-# # yaml-language-server: $schema=https://schemas.bykaj.io/helm.toolkit.fluxcd.io/helmrelease_v2.json
-# apiVersion: helm.toolkit.fluxcd.io/v2
-# kind: HelmRelease
-# metadata:
-#   name: meilisearch-release
-#   namespace: langturbo
-#   labels:
-#       app.kubernetes.io/component: monitoring
-# spec:
-#   chart:
-#     spec:
-#       chart: meilisearch
-#       version: 0.17.1
-#       reconcileStrategy: ChartVersion
-#       sourceRef:
-#         kind: HelmRepository
-#         name: meilisearch-repo
-#   interval: 1h
-#   values:
-#     image:
-#       repository: docker.io/getmeili/meilisearch
-#     environment:
-#       MEILI_NO_ANALYTICS: true
-#       MEILI_ENV: "production"
-#     auth:
-#       existingMasterKeySecret: meilisearch-secrets
-#     persistence:
-#       enabled: true
-#       # TODO: shouldn't be hardcoded
-#       existingClaim: postgres-cluster-1
-#     serviceMonitor:
-#       enabled: true
-#       namespace: langturbo
-#       targetLabels:
-#         app.kubernetes.io/component: monitoring
-#       additionalLabels:
-#         app.kubernetes.io/component: monitoring
-#       telemetryPath: /metrics
+---
+# yaml-language-server: $schema=https://schemas.bykaj.io/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: meilisearch-release
+  namespace: langturbo
+  labels:
+      app.kubernetes.io/component: monitoring
+spec:
+  chart:
+    spec:
+      chart: meilisearch
+      version: 0.17.1
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: meilisearch-repo
+  interval: 1h
+  values:
+    image:
+      repository: docker.io/getmeili/meilisearch
+    environment:
+      MEILI_NO_ANALYTICS: true
+      MEILI_ENV: "production"
+    auth:
+      existingMasterKeySecret: meilisearch-secrets
+    persistence:
+      enabled: true
+      # TODO: shouldn't be hardcoded
+      existingClaim: postgres-cluster-1
+    serviceMonitor:
+      enabled: true
+      namespace: langturbo
+      targetLabels:
+        app.kubernetes.io/component: monitoring
+      additionalLabels:
+        app.kubernetes.io/component: monitoring
+      telemetryPath: /metrics
