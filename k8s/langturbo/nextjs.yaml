@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: nextjs-container
-        image: docker.io/sebnun/langturbo-nextjs:7
+        image: docker.io/sebnun/langturbo-nextjs:8
         envFrom:
         - secretRef:
             name: nextjs-secrets
@@ -31,22 +31,6 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 3000
-  selector:
-    app: nextjs
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nextjs-monitoring-svc
-  namespace: langturbo
-  labels:
-    app: nextjs-monitoring
-spec:
-  type: ClusterIP
-  ports:
-    - protocol: TCP
-      port: 9464
-      targetPort: 9464
   selector:
     app: nextjs
 ---
@@ -74,15 +58,3 @@ spec:
                 name: nextjs-svc
                 port:
                   number: 80
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: nextjs-servicemonitor
-  namespace: langturbo
-spec:
-  endpoints:
-    - targetPort: 9464
-  selector:
-    matchLabels:
-      app: nextjs-monitoring
