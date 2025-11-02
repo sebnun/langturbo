@@ -5,6 +5,8 @@ kind: HelmRelease
 metadata:
   name: meilisearch-release
   namespace: langturbo
+  labels:
+    app.kubernetes.io/component: monitoring
 spec:
   chart:
     spec:
