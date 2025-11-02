@@ -85,6 +85,8 @@ spec:
   - interval: 30s
     targetPort: 9464
     path: /metrics
+  namespaceSelector:
+    matchNames: langturbo
   selector:
     matchLabels:
       app: nextjs-monitoring
