@@ -32,3 +32,5 @@ spec:
       namespace: langturbo
       targetLabels:
         app.kubernetes.io/component: monitoring
+      additionalLabels:
+        app.kubernetes.io/component: monitoring
