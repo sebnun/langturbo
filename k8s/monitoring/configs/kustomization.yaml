@@ -10,6 +10,7 @@ configMapGenerator:
       - dashboards/cluster.json
       - dashboards/logs.json
       - dashboards/cnpg.json
+      - dashboards/meilisearch.json
     options:
       labels:
         grafana_dashboard: "1"
