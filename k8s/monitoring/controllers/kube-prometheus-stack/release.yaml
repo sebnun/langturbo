@@ -28,6 +28,13 @@ spec:
       enabled: false
     prometheus:
       prometheusSpec:
+      # Added by me
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+
+
         retention: 24h
         resources:
           requests:
