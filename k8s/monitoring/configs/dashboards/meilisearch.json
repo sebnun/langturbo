@@ -46,7 +46,7 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": "prometheus",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -70,7 +70,7 @@
   "panels": [
     {
       "collapsed": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -81,7 +81,7 @@
       "panels": [],
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "refId": "A"
         }
       ],
@@ -89,7 +89,7 @@
       "type": "row"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -138,7 +138,7 @@
       "pluginVersion": "10.4.1",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "exemplar": true,
           "expr": "meilisearch_index_count{job=\"$job\", instance=\"$instance\"}",
@@ -152,7 +152,7 @@
       "type": "gauge"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -197,7 +197,7 @@
       "pluginVersion": "10.4.1",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "expr": "meilisearch_index_docs_count{job=\"$job\", index=\"$Index\", instance=\"$instance\"}",
           "hide": false,
@@ -209,7 +209,7 @@
       "type": "gauge"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -258,7 +258,7 @@
       "pluginVersion": "10.4.1",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "exemplar": true,
           "expr": "round(increase(meilisearch_degraded_search_requests{job=\"$job\"}[1h]))",
@@ -272,7 +272,7 @@
       "type": "gauge"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -321,7 +321,7 @@
       "pluginVersion": "10.4.1",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "exemplar": true,
           "expr": "round(increase(meilisearch_http_requests_total{method=\"POST\", path=\"/indexes/$Index/search\", job=\"$job\"}[1h]))",
@@ -335,7 +335,7 @@
       "type": "gauge"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -380,7 +380,7 @@
       "pluginVersion": "10.4.1",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "exemplar": true,
           "expr": "round(increase(meilisearch_http_requests_total{method=\"POST\", path=\"/indexes/$Index/search\", job=\"$job\"}[24h]))",
@@ -394,7 +394,7 @@
       "type": "gauge"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -439,7 +439,7 @@
       "pluginVersion": "10.4.1",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "exemplar": true,
           "expr": "round(increase(meilisearch_http_requests_total{method=\"POST\", path=\"/indexes/$Index/search\", job=\"$job\"}[30d]))",
@@ -453,7 +453,7 @@
       "type": "gauge"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -537,7 +537,7 @@
       "pluginVersion": "9.5.2",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "exemplar": true,
           "expr": "meilisearch_db_size_bytes{job=\"$job\", instance=\"$instance\"}",
@@ -547,7 +547,7 @@
           "refId": "DB Size on disk"
         },
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "expr": "meilisearch_used_db_size_bytes{job=\"$job\", instance=\"$instance\"}",
           "hide": false,
@@ -560,7 +560,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -639,7 +639,7 @@
       "pluginVersion": "8.1.4",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "exemplar": true,
           "expr": "rate(meilisearch_http_response_time_seconds_sum{instance=\"$instance\", job=\"$job\"}[5m]) / rate(meilisearch_http_response_time_seconds_count[5m])",
@@ -653,7 +653,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "description": "number of requests per second, faceted by its HTTP status code",
       "fieldConfig": {
         "defaults": {
@@ -726,7 +726,7 @@
       },
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "code",
           "expr": "sum(rate(meilisearch_http_requests_total{instance=~\"$instance\",job=~\"$job\"} [$__rate_interval])) by (status)",
           "instant": false,
@@ -739,7 +739,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "description": "percentage of 4xx and 5xx HTTP responses over the total of the requests",
       "fieldConfig": {
         "defaults": {
@@ -812,7 +812,7 @@
       },
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "code",
           "expr": "sum by (status) (rate(meilisearch_http_requests_total{status=~\"(4|5).*\",instance=~\"$instance\",job=~\"$job\"}[$__rate_interval])) / ignoring(status) group_left sum(rate(meilisearch_http_requests_total{instance=~\"$instance\",job=~\"$job\"}[$__rate_interval]))",
           "instant": false,
@@ -825,7 +825,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -902,7 +902,7 @@
       },
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "exemplar": true,
           "expr": "rate(meilisearch_http_requests_total{instance=\"$instance\", job=\"$job\"}[5m])",
@@ -925,7 +925,7 @@
         "mode": "spectrum"
       },
       "dataFormat": "tsbuckets",
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -997,7 +997,7 @@
       "reverseYBuckets": false,
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "exemplar": true,
           "expr": "sum by(le) (increase(meilisearch_http_response_time_seconds_bucket{path=\"/indexes/$Index/search\", instance=\"$instance\", job=\"$job\"}[30s]))",
@@ -1028,7 +1028,7 @@
       "yBucketNumber": 10
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1106,7 +1106,7 @@
       "pluginVersion": "8.1.4",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "exemplar": true,
           "expr": "meilisearch_nb_tasks{instance=\"$instance\", job=\"$job\", kind=\"statuses\"}",
@@ -1120,7 +1120,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1198,7 +1198,7 @@
       "pluginVersion": "8.1.4",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "exemplar": true,
           "expr": "meilisearch_nb_tasks{instance=\"$instance\", job=\"$job\", kind=\"types\"}",
@@ -1212,7 +1212,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1290,7 +1290,7 @@
       "pluginVersion": "8.1.4",
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "editorMode": "builder",
           "exemplar": true,
           "expr": "meilisearch_nb_tasks{instance=\"$instance\", job=\"$job\", kind=\"indexes\"}",
@@ -1305,7 +1305,7 @@
     },
     {
       "collapsed": true,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1315,7 +1315,7 @@
       "id": 12,
       "panels": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1393,7 +1393,7 @@
           },
           "targets": [
             {
-              "datasource": "${DS_PROMETHEUS}",
+              "datasource": "prometheus",
               "editorMode": "builder",
               "exemplar": true,
               "expr": "rate(process_cpu_seconds_total{job=\"$job\", instance=\"$instance\"}[1m])",
@@ -1403,7 +1403,7 @@
               "refId": "A"
             },
             {
-              "datasource": "${DS_PROMETHEUS}",
+              "datasource": "prometheus",
               "exemplar": true,
               "expr": "sum(rate(container_cpu_usage_seconds_total{name='mongodb-redis'}[1m])) by (name)",
               "interval": "",
@@ -1415,7 +1415,7 @@
           "type": "timeseries"
         },
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -1491,7 +1491,7 @@
           },
           "targets": [
             {
-              "datasource": "${DS_PROMETHEUS}",
+              "datasource": "prometheus",
               "editorMode": "builder",
               "exemplar": true,
               "expr": "process_resident_memory_bytes{job=\"$job\", instance=\"$instance\"} / 1024 / 1024",
@@ -1501,7 +1501,7 @@
               "refId": "A"
             },
             {
-              "datasource": "${DS_PROMETHEUS}",
+              "datasource": "prometheus",
               "exemplar": true,
               "expr": "container_memory_usage_bytes{name=\"mongodb-redis\"} / 1024 / 1024",
               "interval": "",
@@ -1515,7 +1515,7 @@
       ],
       "targets": [
         {
-          "datasource": "${DS_PROMETHEUS}",
+          "datasource": "prometheus",
           "refId": "A"
         }
       ],
@@ -1530,7 +1530,7 @@
     "list": [
       {
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": "prometheus",
         "definition": "label_values(instance)",
         "hide": 0,
         "includeAll": false,
@@ -1550,7 +1550,7 @@
       },
       {
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": "prometheus",
         "definition": "label_values(index)",
         "hide": 0,
         "includeAll": false,
@@ -1570,7 +1570,7 @@
       },
       {
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": "prometheus",
         "definition": "label_values(job)",
         "description": "Prometheus job_name from scrape config (default is meilisearch)",
         "hide": 0,
