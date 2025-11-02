@@ -82,7 +82,8 @@ metadata:
   namespace: langturbo
 spec:
   endpoints:
-  - targetPort: 9464
+  - interval: 30s
+    targetPort: 9464
     path: /metrics
   selector:
     matchLabels:
