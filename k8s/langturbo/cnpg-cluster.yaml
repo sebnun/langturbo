@@ -3,6 +3,8 @@ kind: Cluster
 metadata:
   name: postgres-cluster
   namespace: langturbo
+  labels:
+    cnpg.io/cluster: postgres-cluster
 spec:
   instances: 1
   storage:
@@ -12,7 +14,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: postgres-podmonitor
-  namespace: monitoring
+  namespace: langturbo
 spec:
   selector:
     matchLabels:
