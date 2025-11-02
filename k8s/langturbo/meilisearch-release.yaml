@@ -30,6 +30,6 @@ spec:
     serviceMonitor:
       enabled: true
     targetLabels:
-      app.kubernetes.io/component: monitoring
+      wat: wat
     additionalLabels:
-      app.kubernetes.io/component: monitoring
+      wat: wat

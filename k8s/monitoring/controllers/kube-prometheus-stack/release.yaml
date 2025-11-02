@@ -40,7 +40,7 @@ spec:
         # Added by me
         serviceMonitorSelector:
           matchLabels:
-            app.kubernetes.io/component: monitoring
+            wat: wat
     grafana:
       defaultDashboardsEnabled: false
       adminPassword: flux
