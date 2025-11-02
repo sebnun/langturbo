@@ -39,6 +39,7 @@ spec:
             app.kubernetes.io/component: monitoring
         # Added by me
         serviceMonitorSelector: {}
+        serviceMonitorNamespaceSelector: {}
     grafana:
       defaultDashboardsEnabled: false
       adminPassword: flux
