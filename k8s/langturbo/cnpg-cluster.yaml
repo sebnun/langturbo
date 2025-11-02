@@ -8,15 +8,3 @@ spec:
 
   storage:
     size: 100Gi
----
-apiVersion: monitoring.coreos.com/v1
-kind: PodMonitor
-metadata:
-  name: postgres-podmonitor
-  namespace: langturbo
-spec:
-  selector:
-    matchLabels:
-      cnpg.io/cluster: postgres-cluster
-  podMetricsEndpoints:
-  - port: metrics
