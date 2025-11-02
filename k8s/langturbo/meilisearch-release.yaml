@@ -29,7 +29,7 @@ spec:
       existingClaim: postgres-cluster-1
     serviceMonitor:
       enabled: false
-      namespace: langturbo
+      #namespace: langturbo
       targetLabels:
         app.kubernetes.io/component: monitoring
       additionalLabels:
