@@ -5,8 +5,6 @@ kind: HelmRelease
 metadata:
   name: meilisearch-release
   namespace: langturbo
-  labels:
-      app.kubernetes.io/component: monitoring
 spec:
   chart:
     spec:
@@ -34,6 +32,3 @@ spec:
       namespace: langturbo
       targetLabels:
         app.kubernetes.io/component: monitoring
-      additionalLabels:
-        app.kubernetes.io/component: monitoring
-      telemetryPath: /metrics
