@@ -45,10 +45,12 @@ spec:
               isDefault: false
     loki:
       storage:
-        type: filesystem  
         # https://github.com/grafana/loki/issues/19655
         bucketNames:  
-          chucks: 0 
+            chucks: 0 
+        type: filesystem  
+        
+        
 
       auth_enabled: false
       serviceMonitor:
