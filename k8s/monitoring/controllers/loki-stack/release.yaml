@@ -76,8 +76,8 @@ spec:
         enabled: true
       ruler:
         enable_api: true
-    # minio:
-    #   enabled: true
+    minio:
+      enabled: true
     lokiCanary:
       enabled: false
     deploymentMode: SingleBinary
