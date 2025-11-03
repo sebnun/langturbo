@@ -91,10 +91,10 @@ spec:
     deploymentMode: SingleBinary
     singleBinary:
       replicas: 1
-      persistence:
-        storageClass: oci
-        enabled: true
-        size: 10Gi
+      # persistence:
+      #   storageClass: oci
+      #   enabled: true
+      #   size: 10Gi
     # Zero out replica counts of other deployment modes
     backend:
       replicas: 0
