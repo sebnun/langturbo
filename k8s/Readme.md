@@ -1,4 +1,4 @@
-# Ops
+# Operations
 
 ## Prometheus
 
