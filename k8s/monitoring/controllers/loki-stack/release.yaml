@@ -78,16 +78,14 @@ spec:
             index:
               prefix: loki_index_
               period: 24h
-      storage_config:
-        filesystem:
-          chunks_directory: /var/loki/chunks
-          rules_directory: /var/loki/rules
+      # storage_config:
+      #   filesystem:
+      #     chunks_directory: /var/loki/chunks
+      #     rules_directory: /var/loki/rules
       pattern_ingester:
         enabled: true
       ruler:
         enable_api: true
-    minio:
-      enabled: false
     lokiCanary:
       enabled: false
     deploymentMode: SingleBinary
@@ -96,7 +94,7 @@ spec:
       persistence:
         storageClass: local-loki
         enabled: true
-        size: 5Gi
+        size: 10Gi
     # Zero out replica counts of other deployment modes
     backend:
       replicas: 0
