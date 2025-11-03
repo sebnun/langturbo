@@ -19,6 +19,23 @@ spec:
         envFrom:
         - secretRef:
             name: nextjs-secrets
+        livenessProbe:
+          httpGet:
+            path: /api/v1/k8s/liveness
+            port: 3000
+          initialDelaySeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/v1/k8s/readiness
+            port: 3000
+          initialDelaySeconds: 10
+        resources:
+          requests:
+            cpu: 2000m # 2 cores?
+            memory: 4G
+          limits:
+            #cpu: 3000m
+            memory: 18G
 ---
 apiVersion: v1
 kind: Service
