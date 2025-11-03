@@ -12,6 +12,7 @@ configMapGenerator:
       - dashboards/cnpg.json
       - dashboards/meilisearch.json
       - dashboards/node.json
+      - dashboards/coredns.json
     options:
       labels:
         grafana_dashboard: "1"
