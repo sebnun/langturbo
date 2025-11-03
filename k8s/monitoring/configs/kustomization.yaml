@@ -9,10 +9,6 @@ configMapGenerator:
       - dashboards/control-plane.json
       - dashboards/cluster.json
       - dashboards/logs.json
-      - dashboards/cnpg.json
-      - dashboards/meilisearch.json
-      - dashboards/node.json
-      - dashboards/coredns.json
     options:
       labels:
         grafana_dashboard: "1"
