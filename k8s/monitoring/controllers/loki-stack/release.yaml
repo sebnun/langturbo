@@ -49,7 +49,7 @@ spec:
       # https://github.com/grafana/loki/issues/19655
       storage:
         bucketNames:
-          chunks: jkhjkhjk
+          chunks: 0
 
       auth_enabled: false
       serviceMonitor:
