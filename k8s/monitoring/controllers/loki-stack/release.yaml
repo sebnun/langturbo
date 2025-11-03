@@ -45,6 +45,12 @@ spec:
               isDefault: false
     loki:
 
+      # added by me
+      # https://github.com/grafana/loki/issues/19655
+      storage:
+        bucketNames:
+          chunks: jkhjkhjk
+
       auth_enabled: false
       serviceMonitor:
         enabled: true
@@ -70,8 +76,8 @@ spec:
         enabled: true
       ruler:
         enable_api: true
-    minio:
-      enabled: true
+    # minio:
+    #   enabled: true
     lokiCanary:
       enabled: false
     deploymentMode: SingleBinary
