@@ -31,7 +31,7 @@ spec:
           initialDelaySeconds: 10
         resources:
           requests:
-            cpu: 2000m # 2 cores?
+            #cpu: 2000m # 2 cores?
             memory: 4G
           limits:
             #cpu: 3000m
