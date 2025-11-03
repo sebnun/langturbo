@@ -44,12 +44,8 @@ spec:
               version: 1
               isDefault: false
     loki:
-
-      # added by me
-      # https://github.com/grafana/loki/issues/19655
       storage:
-        bucketNames:
-          chunks: 0
+        type: filesystem   
 
       auth_enabled: false
       serviceMonitor:
@@ -67,22 +63,30 @@ spec:
         configs:
           - from: "2024-04-01"
             store: tsdb
-            object_store: s3
+            object_store: filesystem
             schema: v13
             index:
               prefix: loki_index_
               period: 24h
+      storage_config:
+        filesystem:
+          chunks_directory: /var/loki/chunks
+          rules_directory: /var/loki/rules
       pattern_ingester:
         enabled: true
       ruler:
         enable_api: true
     minio:
-      enabled: true
+      enabled: false
     lokiCanary:
       enabled: false
     deploymentMode: SingleBinary
     singleBinary:
       replicas: 1
+      persistence:
+        enabled: true          # ✅ ensure Loki can write to disk
+        # storageClass: standard # or whatever is available in your cluster
+        # size: 10Gi             # adjust as needed
     # Zero out replica counts of other deployment modes
     backend:
       replicas: 0
