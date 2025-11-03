@@ -6,6 +6,8 @@ process.loadEnvFile()
 
 const jobType = process.env.JOB_TYPE as "scraper" | "popularizer" | "doctor";
 
+console.log(jobType, ' hi')
+
 if (jobType === "doctor") {
   runDoctorCron();
 } else if (jobType === "popularizer") {
