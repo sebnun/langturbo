@@ -88,10 +88,10 @@ spec:
     deploymentMode: SingleBinary
     singleBinary:
       replicas: 1
-      persistence:
-        enabled: true          # ✅ ensure Loki can write to disk
-        # storageClass: standard # or whatever is available in your cluster
-        size: 10Gi             # adjust as needed
+      # persistence:
+      #   enabled: true          # ✅ ensure Loki can write to disk
+      #   # storageClass: standard # or whatever is available in your cluster
+      #   size: 10Gi             # adjust as needed
     # Zero out replica counts of other deployment modes
     backend:
       replicas: 0
