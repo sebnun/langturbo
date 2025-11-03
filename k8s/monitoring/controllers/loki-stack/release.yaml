@@ -92,7 +92,7 @@ spec:
     singleBinary:
       replicas: 1
       persistence:
-        storageClass: local-storage
+        storageClass: oci
         enabled: true
         size: 10Gi
     # Zero out replica counts of other deployment modes
