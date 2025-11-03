@@ -45,11 +45,6 @@ spec:
               isDefault: false
     loki:
 
-      ## added by me
-      storage:
-        bucketNames:
-          chunks: jkhjkhjk
-
       auth_enabled: false
       serviceMonitor:
         enabled: true
