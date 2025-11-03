@@ -1,18 +1,19 @@
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: doctor-job
-  namespace: langturbo
-spec:
-  schedule: "* * * * *"   # every minute
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-          - name: cron-container
-            image: docker.io/sebnun/langturbo-cron:3
-            envFrom:
-            - secretRef:
-                name: cron-secrets
-          restartPolicy: Never 
+# apiVersion: batch/v1
+# kind: CronJob
+# metadata:
+#   name: doctor-job
+#   namespace: langturbo
+# spec:
+#   schedule: "* * * * *"   # every minute
+#   jobTemplate:
+#     spec:
+#       template:
+#         spec:
+#           backoffLimit: 1 # 6 by default
+#           containers:
+#           - name: cron-container
+#             image: docker.io/sebnun/langturbo-cron:3
+#             envFrom:
+#             - secretRef:
+#                 name: cron-secrets
+#           restartPolicy: Never 

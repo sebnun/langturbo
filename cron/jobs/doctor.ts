@@ -12,6 +12,7 @@ const client = new MeiliSearch({
 
 export const runDoctorCron = async () => {
   console.log("Running doctor cron job");
+  console.log(process.env)
   const shows = await db.select().from(showsTable).orderBy(showsTable.health_checked_at).limit(1000);
 
   let deletedCount = 0;
