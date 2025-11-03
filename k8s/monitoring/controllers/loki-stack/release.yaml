@@ -47,7 +47,7 @@ spec:
       storage:
         # https://github.com/grafana/loki/issues/19655
         bucketNames:  
-          chucks: 0 
+          chuncks: 0 
         type: filesystem  
         
         
