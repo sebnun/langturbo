@@ -1,0 +1,12 @@
+# This is just used for local development
+services:
+  # nextjs:
+  #   build: ./nextjs
+  #   ports:
+  #     - "80:3000"
+  postgres:
+    image: "groonga/pgroonga"
+    environment:
+      POSTGRES_PASSWORD: devpassword
+    ports:
+      - "5432:5432"
