@@ -16,6 +16,7 @@ export const showsTable = pgTable(
     title: text().notNull(),
     description: text(),
     author: text(),
+    fts: text().generatedAlwaysAs(sql`(${sql.identifier("title")} || ' ' || ${sql.identifier("author")})`),
     explicit: boolean(),
     image_url: text().notNull(),
     show_url: text(),
@@ -42,6 +43,7 @@ export const episodesTable = pgTable(
   {
     id: uuid().notNull().primaryKey().defaultRandom(),
     created_at: timestamp().defaultNow().notNull(),
+    last_played_at: timestamp().defaultNow().notNull(),
     title: text().notNull(),
     file_name: text().notNull(), // same as id but need the extension
     language_code: languageCodeEnum().notNull(),
@@ -50,7 +52,10 @@ export const episodesTable = pgTable(
       .references(() => showsTable.id, { onDelete: "cascade" })
       .notNull(),
   },
-  (table) => [index("episodes_language_code_idx").on(table.language_code)]
+  (table) => [
+    index("episodes_language_code_idx").on(table.language_code),
+    index("episodes_last_played_at_idx").on(table.last_played_at),
+  ]
 );
 
 export const captionsTable = pgTable(

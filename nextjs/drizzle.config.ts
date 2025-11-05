@@ -1,12 +1,12 @@
-import 'dotenv/config';
-import { defineConfig } from 'drizzle-kit';
-import { getDatabaseUri } from './lib/utils';
+import "dotenv/config";
+import { defineConfig } from "drizzle-kit";
+import { getDatabaseUri } from "./lib/utils";
 
 export default defineConfig({
-  out: './drizzle',
-  schema: './db/schema.ts',
-  dialect: 'postgresql',
+  out: "./drizzle",
+  schema: "./db/schema.ts",
+  dialect: "postgresql",
   dbCredentials: {
-    url: getDatabaseUri(),
+    url: getDatabaseUri().replace("nextjs-postgres", "127.0.0.1"),
   },
 });
