@@ -87,7 +87,6 @@ accessories:
   postgres:
     image: groonga/pgroonga
     host: 163.192.109.201
-    port: 5432
     env:
       clear:
         POSTGRES_DB: langturbo
