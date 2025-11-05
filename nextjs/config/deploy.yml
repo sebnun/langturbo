@@ -87,7 +87,7 @@ accessories:
   postgres:
     image: groonga/pgroonga
     host: 163.192.109.201
-    port: 5432
+    port: 5432 # Blocked by OCI
     env:
       clear:
         POSTGRES_DB: langturbo
@@ -95,9 +95,24 @@ accessories:
         - POSTGRES_PASSWORD
     directories:
       - data:/var/lib/postgresql/18/docker
-#   redis:
-#     image: valkey/valkey:8
-#     host: 192.168.0.2
-#     port: 6379
-#     directories:
-#       - data:/data
+  pg-backup:
+    image: kartoza/pg-backup:latest
+    host: 163.192.109.201 
+    env:
+      clear:
+        # Run backups every night
+        CRON_SCHEDULE: "@daily"
+        REMOVE_BEFORE: 2 # Only keep the n most recent days of backups
+        STORAGE_BACKEND: S3
+        SSL_SECURE: "True"
+        POSTGRES_MAJOR_VERSION: 18 
+      secret: 
+        - POSTGRES_USER
+        - POSTGRES_PASS
+        - POSTGRES_HOST
+        - ACCESS_KEY_ID
+        - SECRET_ACCESS_KEY
+        - BUCKET
+        - HOST_BUCKET
+        - HOST_BASE
+        - DEFAULT_REGION
