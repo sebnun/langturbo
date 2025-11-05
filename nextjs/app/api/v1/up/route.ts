@@ -4,7 +4,7 @@ import { showsTable } from "@/db/schema";
 // Kamal
 
 export async function GET() {
-  // TODO
-  //await db.select().from(showsTable).limit(1);
+  await db.select().from(showsTable).limit(1);
+  console.log("is up");
   return new Response("ok");
 }
