@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/node-postgres";
+import { getDatabaseUri } from "../lib/utils.ts";
 
-const db = drizzle({ connection: process.env.DATABASE_URL!, casing: "snake_case" });
+const db = drizzle({ connection: getDatabaseUri(), casing: "snake_case" });
 
 export { db };

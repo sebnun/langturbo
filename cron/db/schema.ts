@@ -16,6 +16,7 @@ export const showsTable = pgTable(
     title: text().notNull(),
     description: text(),
     author: text(),
+    fts: text().generatedAlwaysAs(sql`(${sql.identifier("title")} || ' ' || ${sql.identifier("author")})`),
     explicit: boolean(),
     image_url: text().notNull(),
     show_url: text(),
@@ -35,53 +36,4 @@ export const showsTable = pgTable(
     index("shows_show_type_idx").on(table.show_type),
     index("shows_health_checked_at_idx").on(table.health_checked_at),
   ]
-);
-
-export const episodesTable = pgTable(
-  "episodes",
-  {
-    id: uuid().notNull().primaryKey().defaultRandom(),
-    created_at: timestamp().defaultNow().notNull(),
-    title: text().notNull(),
-    file_name: text().notNull(), // same as id but need the extension
-    language_code: languageCodeEnum().notNull(),
-    processed_seconds: real().default(-1),
-    show_id: uuid()
-      .references(() => showsTable.id, { onDelete: "cascade" })
-      .notNull(),
-  },
-  (table) => [index("episodes_language_code_idx").on(table.language_code)]
-);
-
-export const captionsTable = pgTable(
-  "captions",
-  {
-    id: uuid().notNull().primaryKey().defaultRandom(),
-    created_at: timestamp().defaultNow().notNull(),
-    caption: text().notNull(),
-    start: real().notNull(),
-    words: text()
-      .array()
-      .notNull()
-      .default(sql`'{}'::text[]`),
-    language_code: languageCodeEnum().notNull(),
-    episode_id: uuid()
-      .references(() => episodesTable.id, { onDelete: "cascade" })
-      .notNull(),
-  },
-  (table) => [index("captions_language_code_idx").on(table.language_code)]
-);
-
-export const translationsTable = pgTable(
-  "translations",
-  {
-    id: uuid().notNull().primaryKey().defaultRandom(),
-    created_at: timestamp().defaultNow().notNull(),
-    translation: text().notNull(),
-    language_code: languageCodeEnum().notNull(),
-    caption_id: uuid()
-      .references(() => captionsTable.id, { onDelete: "cascade" })
-      .notNull(),
-  },
-  (table) => [index("translations_language_code_idx").on(table.language_code)]
 );

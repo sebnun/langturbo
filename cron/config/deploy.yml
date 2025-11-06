@@ -1,0 +1,24 @@
+service: cron
+image: sebnun/langtubo-cron
+
+servers:
+  jobs:
+    hosts:
+      - 163.192.109.201
+
+registry:
+  username: sebnun
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: arm64
+
+primary_role: jobs
+
+env:
+  secret:
+    - POSTGRES_PASSWORD
+
+ssh:
+  user: ubuntu
