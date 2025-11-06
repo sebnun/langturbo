@@ -140,7 +140,7 @@ const makeTextForDetection = (podcast: Podcast, episodes: Episode[]) => {
   return text;
 };
 
-const getCountry = (language: string) => {
+export const getCountry = (language: string) => {
   if (!language.includes("-") && !language.includes("_")) {
     return;
   }
@@ -150,7 +150,7 @@ const getCountry = (language: string) => {
   return iso31661;
 };
 
-const stripHtml = (html: string) => {
+export const stripHtml = (html: string) => {
   try {
     return he.decode(html.replace(/<[^>]*>?/gi, "")).trim();
   } catch (e) {

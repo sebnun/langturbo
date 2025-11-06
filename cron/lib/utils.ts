@@ -1,6 +1,6 @@
 export const getDatabaseUri = () => {
   return `postgresql://postgres:${process.env.POSTGRES_PASSWORD!}@${
-    process.env.NODE_ENV === "development" ? "127.0.0.1" : "nextjs-postgres"
+    process.env.NODE_ENV === "production" ? "nextjs-postgres" : "127.0.0.1"
   }:5432/langturbo`;
 };
 

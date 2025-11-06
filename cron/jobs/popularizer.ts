@@ -35,6 +35,7 @@ export const runPopularizerCron = async () => {
       }
 
       if (!response.feed.entry) {
+        console.log('no feed entry', storeFront, categoryId)
         continue;
       }
 
