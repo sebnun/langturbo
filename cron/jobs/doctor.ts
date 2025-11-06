@@ -1,7 +1,6 @@
 import { db } from "../db/index.ts";
 import { showsTable } from "../db/schema.ts";
 import { podcastXmlParser } from "podcast-xml-parser";
-import { USER_AGENT } from "../lib/constants.ts";
 import { eq, sql } from "drizzle-orm";
 
 export const runDoctorCron = async () => {
@@ -15,7 +14,7 @@ export const runDoctorCron = async () => {
     try {
       const parsedPodcast = await podcastXmlParser(new URL(show.source_url), {
         requestHeaders: {
-          "User-Agent": USER_AGENT,
+          "User-Agent": process.env.USER_AGENT,
         },
       });
 

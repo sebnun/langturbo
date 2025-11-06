@@ -19,6 +19,47 @@ primary_role: jobs
 env:
   secret:
     - POSTGRES_PASSWORD
+    - PROXY_0
+    - PROXY_1
+    - PROXY_2
+    - PROXY_3
+    - PROXY_4
+    - PROXY_5
+    - PROXY_6
+    - PROXY_7
+    - PROXY_8
+    - PROXY_9
+    - PROXY_10
+    - PROXY_11
+    - PROXY_12
+    - PROXY_13
+    - PROXY_14
+    - PROXY_15
+    - PROXY_16
+    - PROXY_17
+    - PROXY_18
+    - PROXY_19
+    - PROXY_20
+    - PROXY_21
+    - PROXY_22
+    - PROXY_23
+    - PROXY_24
+    - PROXY_25
+    - PROXY_26
+    - PROXY_27
+    - PROXY_28
+    - PROXY_29
+    - PROXY_30
+    - PROXY_31
+    - PROXY_32
+    - PROXY_33
+    - PROXY_34
+    - PROXY_35
+    - PROXY_36
+    - PROXY_37
+    - PROXY_38
+    - PROXY_39
+
 
 ssh:
   user: ubuntu

@@ -1,11 +1,11 @@
 import { podcastXmlParser, type Episode, type Podcast } from "podcast-xml-parser";
 import { franc } from "franc-all";
 import * as he from "he";
-import { getProxyUrl, USER_AGENT } from "./constants.ts";
 import { backOff } from "exponential-backoff";
 import { iso6393To1, ISO_LANGUAGE_CODES, LANGUAGES_LIST } from "./languages.ts";
 import { showsTable } from "../db/schema.ts";
 import { db } from "../db/index.ts";
+import { getProxyUrl } from "./utils.ts";
 
 export const processItunesId = async (id: string) => {
   let lookupResponse;
@@ -52,7 +52,7 @@ export const processItunesId = async (id: string) => {
   try {
     const parsedPodcast = await podcastXmlParser(new URL(feedUrl), {
       requestHeaders: {
-        "User-Agent": USER_AGENT,
+        "User-Agent": process.env.USER_AGENT,
       },
     });
 

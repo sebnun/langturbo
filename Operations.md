@@ -8,3 +8,7 @@
 
 1) Make changes to schema and/or add .sql files with ```npx drizzle-kit generate --custom --name=example``` or ```npx drizzle-kit generate```
 3) ```npx drizzle-kit migrate```
+
+## Kamal job deployment
+
+```kamal deploy -d doctor```

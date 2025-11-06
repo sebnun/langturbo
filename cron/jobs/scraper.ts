@@ -4,13 +4,12 @@ import { db } from "../db/index.ts";
 import { showsTable } from "../db/schema.ts";
 import { processItunesId } from "../lib/processor.ts";
 import { eq } from "drizzle-orm";
-import { ITUNES_SITEMAP_URL } from "../lib/constants.ts";
 
 export const runScraperCron = async () => {
   console.log("Running scraper cron job...");
 
   const Sitemap = new Sitemapper({
-    url: ITUNES_SITEMAP_URL,
+    url: process.env.ITUNES_SITEMAP_URL,
   });
   const { sites } = await Sitemap.fetch();
 

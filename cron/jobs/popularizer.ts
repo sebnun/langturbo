@@ -1,10 +1,10 @@
 import { backOff } from "exponential-backoff";
 import { ITUNES_STOREFRONTS, ITUNES_US_CATEGORY_IDS } from "../lib/itunes.ts";
-import { getProxyUrl } from "../lib/constants.ts";
 import { db } from "../db/index.ts";
 import { showsTable } from "../db/schema.ts";
 import { eq, sql } from "drizzle-orm";
 import { processItunesId } from "../lib/processor.ts";
+import { getProxyUrl } from "../lib/utils.ts";
 
 export const runPopularizerCron = async () => {
   console.log("Running popularizer cron job...");
