@@ -3,27 +3,25 @@ import { runPopularizerCron } from "./jobs/popularizer.ts";
 import { runScraperCron } from "./jobs/scraper.ts";
 import { CronJob } from "cron";
 
-// if (process.env.NODE_ENV === "development") {
-//   process.loadEnvFile();
-// }
+if (process.env.NODE_ENV === "development") {
+  process.loadEnvFile();
+}
 
-// const jobType = process.env.JOB_TYPE as "scraper" | "popularizer" | "doctor";
+const jobType = process.env.JOB_TYPE as "scraper" | "popularizer" | "doctor";
 
-// // Every hour
-// const doctorCron = new CronJob("0 * * * *", runDoctorCron);
+// Every hour
+const doctorCron = new CronJob("0 * * * *", runDoctorCron);
 
-// // At 06:00 every day
-// const popularizerCron = new CronJob("0 6 * * *", runPopularizerCron);
+// At 06:00 every day
+const popularizerCron = new CronJob("0 6 * * *", runPopularizerCron);
 
-// // At 18:00 every day
-// const scraperCron = new CronJob("0 18 * * *", runScraperCron);
+// At 18:00 every day
+const scraperCron = new CronJob("0 18 * * *", runScraperCron);
 
-// if (jobType === "doctor") {
-//   doctorCron.start();
-// } else if (jobType === "popularizer") {
-//   popularizerCron.start();
-// } else if (jobType === "scraper") {
-//   scraperCron.start();
-// }
-
-runDoctorCron()
+if (jobType === "doctor") {
+  doctorCron.start();
+} else if (jobType === "popularizer") {
+  popularizerCron.start();
+} else if (jobType === "scraper") {
+  scraperCron.start();
+}

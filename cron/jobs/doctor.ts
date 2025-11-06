@@ -39,7 +39,7 @@ export const runDoctorCron = async () => {
       continue;
     }
 
-    // These are have different source than itunes processor, but should be similar enough
+    // These are different sources than itunes processor, but should be similar enough
     await db
       .update(showsTable)
       .set({
