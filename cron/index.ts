@@ -10,8 +10,7 @@ if (process.env.NODE_ENV === "development") {
 const jobType = process.env.JOB_TYPE as "scraper" | "popularizer" | "doctor";
 
 // Every hour
-//const doctorCron = new CronJob("0 * * * *", runDoctorCron);
-const doctorCron = new CronJob("* * * * * *", runDoctorCron);
+const doctorCron = new CronJob("0 * * * *", runDoctorCron);
 
 // At 06:00 every day
 const popularizerCron = new CronJob("0 6 * * *", runPopularizerCron);

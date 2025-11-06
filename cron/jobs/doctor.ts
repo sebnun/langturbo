@@ -4,7 +4,7 @@ import { podcastXmlParser } from "podcast-xml-parser";
 import { eq, sql } from "drizzle-orm";
 
 export const runDoctorCron = async () => {
-  console.log("Running doctor cron job");
+  console.log("Running doctor cron job", new Date());
   return
   const shows = await db.select().from(showsTable).orderBy(showsTable.health_checked_at).limit(1000);
 
