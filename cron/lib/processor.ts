@@ -1,7 +1,7 @@
 import { podcastXmlParser, type Episode, type Podcast } from "podcast-xml-parser";
 import { franc } from "franc-all";
 import { backOff } from "exponential-backoff";
-import { iso6393To1, ISO_LANGUAGE_CODES, LANGUAGES_LIST } from "./languages.ts";
+import { iso6393To1, ISO_LANGUAGE_CODES } from "./languages.ts";
 import { showsTable } from "../db/schema.ts";
 import { db } from "../db/index.ts";
 import { getProxyUrl, stripHtml } from "./utils.ts";
@@ -23,7 +23,7 @@ export const processItunesId = async (id: string) => {
     return;
   }
 
-  if (lookupResponse.results.length === 0) {
+  if (!lookupResponse.results || lookupResponse.results.length === 0) {
     // Some valid podcasts do not return data
     // TODO: evaluate if it is worth it to add a dummy placeholder on db to avoid reprocessing like before
     return;

@@ -15,7 +15,11 @@ export const runScraperCron = async () => {
 
   const ids = new Set<string>();
   for (const url of sites) {
-    const id = url.split("/").pop()!.replace("id", "");
+    const id = url
+      .split("/")
+      .pop()!
+      .replace("id", "")
+      .replace(/(\d+).*/, "$1");
     ids.add(id);
   }
 
