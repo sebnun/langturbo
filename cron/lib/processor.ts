@@ -1,11 +1,10 @@
 import { podcastXmlParser, type Episode, type Podcast } from "podcast-xml-parser";
 import { franc } from "franc-all";
-import * as he from "he";
 import { backOff } from "exponential-backoff";
 import { iso6393To1, ISO_LANGUAGE_CODES, LANGUAGES_LIST } from "./languages.ts";
 import { showsTable } from "../db/schema.ts";
 import { db } from "../db/index.ts";
-import { getProxyUrl } from "./utils.ts";
+import { getProxyUrl, stripHtml } from "./utils.ts";
 
 export const processItunesId = async (id: string) => {
   let lookupResponse;
@@ -148,13 +147,4 @@ export const getCountry = (language: string) => {
   let iso31661 = language.replace("_", "-").split("-")[1].toLowerCase();
 
   return iso31661;
-};
-
-export const stripHtml = (html: string) => {
-  try {
-    return he.decode(html.replace(/<[^>]*>?/gi, "")).trim();
-  } catch (e) {
-    console.error("Failed to strip html", html, e);
-    return "";
-  }
 };

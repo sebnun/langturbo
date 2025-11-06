@@ -2,7 +2,7 @@ import { db } from "../db/index.ts";
 import { showsTable } from "../db/schema.ts";
 import { podcastXmlParser, type Episode, type Podcast } from "podcast-xml-parser";
 import { eq, sql } from "drizzle-orm";
-import { stripHtml } from "../lib/processor.ts";
+import { stripHtml } from "../lib/utils.ts";
 
 // Goal is to keep info up to date and remove unreachable (by feed) podcasts
 
@@ -13,6 +13,10 @@ export const runDoctorCron = async () => {
   let deletedCount = 0;
 
   for (const show of shows) {
+    if (show.source_url.startsWith("https://www.langturbo.com")) {
+      continue;
+    }
+
     // Do not rely on itunes here, I could add podcasts not from itunes in the future
 
     let podcast: Podcast;
@@ -39,9 +43,11 @@ export const runDoctorCron = async () => {
     await db
       .update(showsTable)
       .set({
-        title: podcast.title,
-        description: stripHtml(podcast.description),
+        title: podcast.title ? podcast.title : show.title,
+        description: podcast.description ? stripHtml(podcast.description) : show.description,
+        // This is new
         show_url: podcast.link,
+        author: podcast.itunesAuthor ? podcast.itunesAuthor : show.author,
         health_checked_at: sql`NOW()`,
       })
       .where(eq(showsTable.id, show.id));

@@ -10,7 +10,8 @@
       "name": "Cron Launch Program",
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/cron/index.ts",
-      "outFiles": ["${workspaceFolder}/**/*.js"]
+      "outFiles": ["${workspaceFolder}/**/*.js"],
+      "envFile": "${workspaceFolder}/cron/.env"
     },
   ]
 }

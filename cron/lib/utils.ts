@@ -1,3 +1,5 @@
+import { decode } from 'html-entities';
+
 export const getDatabaseUri = () => {
   return `postgresql://postgres:${process.env.POSTGRES_PASSWORD!}@${
     process.env.NODE_ENV === "production" ? "nextjs-postgres" : "127.0.0.1"
@@ -50,4 +52,13 @@ export const getProxyUrl = (url: string) => {
 
   const randomProxy = proxies.sort(() => 0.5 - Math.random())[0];
   return `${randomProxy}?url=${encodeURIComponent(url)}`;
+};
+
+export const stripHtml = (html: string) => {
+  try {
+    return decode(html.replace(/<[^>]*>?/gi, "")).trim();
+  } catch (e) {
+    console.error("Failed to strip html", html, e);
+    return "";
+  }
 };
