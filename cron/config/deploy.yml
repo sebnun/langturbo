@@ -5,6 +5,8 @@ servers:
   jobs:
     hosts:
       - 163.192.109.201
+    options:
+        health-cmd: node up.ts
 
 registry:
   username: sebnun
@@ -13,8 +15,6 @@ registry:
 
 builder:
   arch: arm64
-
-primary_role: jobs
 
 env:
   secret:
