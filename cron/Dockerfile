@@ -8,7 +8,7 @@ RUN npm ci --omit=dev
 
 COPY . .
 
-COPY lib/constants.ts /usr/src/app/constants.ts
+COPY ./lib/constants.ts /usr/src/app/constants.ts
 
 ENV NODE_ENV=production
 
