@@ -16,7 +16,7 @@ registry:
 builder:
   arch: arm64
 
-primary_role: jobs
+primary_role: jhghjg
 
 env:
   secret:

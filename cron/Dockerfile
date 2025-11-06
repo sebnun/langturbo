@@ -10,7 +10,7 @@ COPY . .
 
 ENV NODE_ENV=production
 
-HEALTHCHECK --start-period=10s --retries=3 \
-  CMD node up.ts || exit 1
+# HEALTHCHECK --start-period=10s --retries=3 \
+#   CMD node up.ts || exit 1
 
 CMD ["node", "index.ts"]
