@@ -5,8 +5,7 @@ servers:
   jobs:
     hosts:
       - 163.192.109.201
-    options:
-        health-cmd: node up.ts
+    proxy: false
 
 registry:
   username: sebnun
