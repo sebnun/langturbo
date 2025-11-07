@@ -90,3 +90,34 @@ export const translationsTable = pgTable(
   },
   (table) => [index("translations_language_code_idx").on(table.language_code)]
 );
+
+export const listsTable = pgTable(
+  "lists",
+  {
+    id: uuid().notNull().primaryKey().defaultRandom(),
+    created_at: timestamp().defaultNow().notNull(),
+    word: text().notNull(),
+    frequency: integer().notNull(),
+    language_code: languageCodeEnum().notNull(),
+    duration: real().notNull(),
+    voice: text().notNull(),
+    en_translation: text().notNull(),
+  },
+  (table) => [
+    index("lists_language_code_idx").on(table.language_code),
+    index("lists_frequency_idx").on(table.frequency),
+  ]
+);
+
+export const sentencesTable = pgTable("sentences", {
+  id: uuid().notNull().primaryKey().defaultRandom(),
+  created_at: timestamp().defaultNow().notNull(),
+  lists_id: uuid()
+    .references(() => listsTable.id, { onDelete: "cascade" })
+    .notNull(),
+  sentence: text().notNull(),
+  en_translation: text().notNull(),
+  context: text().notNull(),
+  duration: real().notNull(),
+  voice: text().notNull(),
+});

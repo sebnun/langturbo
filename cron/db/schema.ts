@@ -37,3 +37,87 @@ export const showsTable = pgTable(
     index("shows_health_checked_at_idx").on(table.health_checked_at),
   ]
 );
+
+export const episodesTable = pgTable(
+  "episodes",
+  {
+    id: uuid().notNull().primaryKey().defaultRandom(),
+    created_at: timestamp().defaultNow().notNull(),
+    last_played_at: timestamp().defaultNow().notNull(),
+    title: text().notNull(),
+    file_name: text().notNull(), // same as id but need the extension
+    language_code: languageCodeEnum().notNull(),
+    processed_seconds: real().default(-1),
+    show_id: uuid()
+      .references(() => showsTable.id, { onDelete: "cascade" })
+      .notNull(),
+  },
+  (table) => [
+    index("episodes_language_code_idx").on(table.language_code),
+    index("episodes_last_played_at_idx").on(table.last_played_at),
+  ]
+);
+
+export const captionsTable = pgTable(
+  "captions",
+  {
+    id: uuid().notNull().primaryKey().defaultRandom(),
+    created_at: timestamp().defaultNow().notNull(),
+    caption: text().notNull(),
+    start: real().notNull(),
+    words: text()
+      .array()
+      .notNull()
+      .default(sql`'{}'::text[]`),
+    language_code: languageCodeEnum().notNull(),
+    episode_id: uuid()
+      .references(() => episodesTable.id, { onDelete: "cascade" })
+      .notNull(),
+  },
+  (table) => [index("captions_language_code_idx").on(table.language_code)]
+);
+
+export const translationsTable = pgTable(
+  "translations",
+  {
+    id: uuid().notNull().primaryKey().defaultRandom(),
+    created_at: timestamp().defaultNow().notNull(),
+    translation: text().notNull(),
+    language_code: languageCodeEnum().notNull(),
+    caption_id: uuid()
+      .references(() => captionsTable.id, { onDelete: "cascade" })
+      .notNull(),
+  },
+  (table) => [index("translations_language_code_idx").on(table.language_code)]
+);
+
+export const listsTable = pgTable(
+  "lists",
+  {
+    id: uuid().notNull().primaryKey().defaultRandom(),
+    created_at: timestamp().defaultNow().notNull(),
+    word: text().notNull(),
+    frequency: integer().notNull(),
+    language_code: languageCodeEnum().notNull(),
+    duration: real().notNull(),
+    voice: text().notNull(),
+    en_translation: text().notNull(),
+  },
+  (table) => [
+    index("lists_language_code_idx").on(table.language_code),
+    index("lists_frequency_idx").on(table.frequency),
+  ]
+);
+
+export const sentencesTable = pgTable("sentences", {
+  id: uuid().notNull().primaryKey().defaultRandom(),
+  created_at: timestamp().defaultNow().notNull(),
+  lists_id: uuid()
+    .references(() => listsTable.id, { onDelete: "cascade" })
+    .notNull(),
+  sentence: text().notNull(),
+  en_translation: text().notNull(),
+  context: text().notNull(),
+  duration: real().notNull(),
+  voice: text().notNull(),
+});

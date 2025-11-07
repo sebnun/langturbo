@@ -15,6 +15,13 @@
       "when": 1762372917617,
       "tag": "0001_pgroonga",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1762510099992,
+      "tag": "0002_outstanding_rictor",
+      "breakpoints": true
     }
   ]
 }
