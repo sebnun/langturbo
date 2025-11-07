@@ -18,7 +18,7 @@ export const processItunesId = async (id: string) => {
       }
     );
   } catch (e) {
-    console.error("Failed to lookup API", id, e);
+    console.error("Failed to lookup API", id);
     // Don't add to db, this is recoverable
     return;
   }
@@ -58,7 +58,7 @@ export const processItunesId = async (id: string) => {
     podcast = parsedPodcast.podcast;
     episodes = parsedPodcast.episodes;
   } catch (e) {
-    console.info("Failed to parse feed", feedUrl, e);
+    console.info("Failed to parse feed", feedUrl);
     return;
   }
 
@@ -73,9 +73,17 @@ export const processItunesId = async (id: string) => {
   if (!languageCode || languageCode === "en") {
     const text = makeTextForDetection(podcast, episodes);
     const iso3 = franc(text);
-    languageCode = iso6393To1[iso3];
+    // Not all iso3 are convertable to iso1
+    const languageCodeFromIso3 = iso6393To1[iso3];
 
-    console.log("language detection", language, id, languageCode);
+    if (!languageCodeFromIso3 && !languageCode) {
+      console.info("Failed to get language", feedUrl);
+      return;
+    } else if (languageCodeFromIso3) {
+      languageCode = languageCodeFromIso3;
+    }
+
+    console.log("language detection", language, id, languageCode, languageCodeFromIso3);
   }
 
   await db.insert(showsTable).values({

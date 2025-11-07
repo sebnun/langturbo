@@ -30,12 +30,12 @@ export const runPopularizerCron = async () => {
           }
         );
       } catch (e) {
-        console.error("Failed to fetch", storeFront, categoryId, e);
+        console.error("Failed to fetch", storeFront, categoryId);
         continue;
       }
 
       if (!response.feed.entry) {
-        console.log('no feed entry', storeFront, categoryId)
+        //console.log('no feed entry', storeFront, categoryId)
         continue;
       }
 

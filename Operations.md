@@ -6,9 +6,18 @@
 
 ## Postgres migrations
 
-1) Make changes to schema and/or add .sql files with ```npx drizzle-kit generate --custom --name=example``` or ```npx drizzle-kit generate```
+1) Make changes to schema
+2) ```npx drizzle-kit generate``` or add manual .sql files with ```npx drizzle-kit generate --custom --name=example```
 3) ```npx drizzle-kit migrate```
+
+
 
 ## Kamal job deployment
 
 ```kamal deploy -d doctor```
+
+## Logs
+
+```kamal app logs -d popularizer -f```
+
+Kamal sets limit `"max-size": "10m"` to `json-file` driver by default

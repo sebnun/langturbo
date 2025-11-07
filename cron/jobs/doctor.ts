@@ -31,7 +31,7 @@ export const runDoctorCron = async () => {
       podcast = parsedPodcast.podcast;
       episodes = parsedPodcast.episodes;
     } catch (e) {
-      console.info("Failed to parse feed", show.source_url, e);
+      console.info("Failed to parse feed", show.source_url);
 
       await db.delete(showsTable).where(eq(showsTable.id, show.id));
       deletedCount++;
