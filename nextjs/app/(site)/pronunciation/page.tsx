@@ -1,5 +1,5 @@
-import { capitalizeFirstLetter } from "@/utils";
-import { getLanguageNameById, languageIds } from "@/utils/languages";
+import { capitalizeFirstLetter } from "@/lib/utils";
+import { getLanguageNameById, languageIds } from "@/lib/languages-legacy";
 import Link from "next/link";
 
 export const metadata = {

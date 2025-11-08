@@ -1,5 +1,6 @@
-import { capitalizeFirstLetter, formatDate, getBlogPosts } from "@/utils";
-import { getLanguageNameById, languageIds } from "@/utils/languages";
+import { formatDate, getBlogPosts } from "@/lib/blog";
+import { getLanguageNameById, languageIds } from "@/lib/languages-legacy";
+import { capitalizeFirstLetter } from "@/lib/utils";
 import Link from "next/link";
 
 export async function generateStaticParams() {

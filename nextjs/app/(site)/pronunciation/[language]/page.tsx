@@ -1,7 +1,9 @@
-import { capitalizeFirstLetter } from "@/utils";
-import sql from "@/utils/db";
-import { getLanguageIdByName, getLanguageNameById, languageIds } from "@/utils/languages";
+import { capitalizeFirstLetter } from "@/lib/utils";
+import { getLanguageCodeById, getLanguageIdByName, getLanguageNameById, languageIds } from "@/lib/languages-legacy";
 import Link from "next/link";
+import { db } from "@/db";
+import { listsTable } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 export async function generateStaticParams() {
   return [...new Set(Object.values(languageIds))]
@@ -28,11 +30,20 @@ export default async function FrequencyLanguageList({
   const language = (await params).language;
   const page = Number((await searchParams).page) || 1;
   const languageId = getLanguageIdByName(language);
+  const languageCode = getLanguageCodeById(languageId);
 
-  const wordRows =
-    await sql`select * from lists where language_id = ${languageId} and duration != -1 order by frequency limit 1000 offset ${
-      (page - 1) * 1000
-    }`;
+  // const wordRows =
+  //   await sql`select * from lists where language_id = ${languageId} and duration != -1 order by frequency limit 1000 offset ${
+  //     (page - 1) * 1000
+  //   }`;
+
+  const wordRows = await db
+    .select()
+    .from(listsTable)
+    .where(eq(listsTable.language_code, languageCode!))
+    .orderBy(listsTable.frequency)
+    .limit(1000)
+    .offset((page - 1) * 1000);
 
   return (
     <main className="max-w-6xl mx-auto p-6">

@@ -59,7 +59,7 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
         </div>
       </div>
 
-      {!isHome && (
+      {/* {!isHome && (
         <div className="mt-12 md:mt-0">
           <p className="font-bold mb-3">LEARN WITH PODCASTS</p>
           <div className="flex flex-col space-y-3">
@@ -82,7 +82,7 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
               })}
           </div>
         </div>
-      )}
+      )} */}
 
        <div className="mt-12 md:mt-0">
         <p className="font-bold mb-3">FREE TOOLS</p>

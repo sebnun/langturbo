@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { CustomMDX } from "@/components/mdx";
-import { getBlogPosts } from "@/utils";
-import { baseUrl } from "../../../../../sitemap";
+import { getBlogPosts } from "@/lib/blog";
+import { baseUrl } from "../../../../sitemap";
 
 export async function generateStaticParams() {
   const posts = getBlogPosts();
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   //const ogImage = image ? image : `${baseUrl}/og?title=${encodeURIComponent(title)}`;
 
   return {
-    title: `${title} - ${post.metadata.category} Pronunciation & Example Sentences`,
+    title: `${title} - ${post.metadata.category}`,
     // description,
     // openGraph: {
     //   title,

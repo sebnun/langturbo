@@ -1,6 +1,6 @@
 import { LANGUAGES_LIST } from "@/lib/languages";
 import { sql } from "drizzle-orm";
-import { index, pgTable, text, integer, timestamp, uuid, smallint, pgEnum, boolean, real } from "drizzle-orm/pg-core";
+import { index, pgTable, text, integer, timestamp, uuid, smallint, pgEnum, boolean, real, numeric } from "drizzle-orm/pg-core";
 
 const isoLanguageCodes = Object.keys(LANGUAGES_LIST);
 
@@ -94,7 +94,7 @@ export const translationsTable = pgTable(
 export const listsTable = pgTable(
   "lists",
   {
-    id: uuid().notNull().primaryKey().defaultRandom(),
+    id: numeric().primaryKey(),
     created_at: timestamp().defaultNow().notNull(),
     word: text().notNull(),
     frequency: integer().notNull(),
@@ -110,9 +110,9 @@ export const listsTable = pgTable(
 );
 
 export const sentencesTable = pgTable("sentences", {
-  id: uuid().notNull().primaryKey().defaultRandom(),
+  id: numeric().primaryKey(),
   created_at: timestamp().defaultNow().notNull(),
-  lists_id: uuid()
+  lists_id: numeric()
     .references(() => listsTable.id, { onDelete: "cascade" })
     .notNull(),
   sentence: text().notNull(),

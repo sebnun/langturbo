@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
-import { capitalizeFirstLetter, getOrdinal } from "@/utils";
-import sql from "@/utils/db";
+import { capitalizeFirstLetter, getOrdinal } from "@/lib/utils";
 import Link from "next/link";
+import { db } from "@/db";
+import { listsTable, sentencesTable } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 const affiliateLinks = {
   //english: "",
@@ -54,10 +56,10 @@ const affiliateLinks = {
 };
 
 // Generate static pages for each word in the list at runtime
-export const dynamic = 'force-static'
+export const dynamic = "force-static";
 
 export async function generateStaticParams() {
-  return []
+  return [];
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; language: string }> }) {
@@ -71,10 +73,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function Word({ params }: { params: Promise<{ slug: string; language: string }> }) {
   const { slug, language } = await params;
-  const id = parseInt(slug.split("-")[1]);
+  const id = slug.match(/-(.*)/)![1];
 
-  const wordRows = await sql`select * from lists where id = ${id}`;
-  const sentencesRows = await sql`select * from sentences where lists_id = ${id}`;
+  // const wordRows = await sql`select * from lists where id = ${id}`;
+  // const sentencesRows = await sql`select * from sentences where lists_id = ${id}`;
+
+  const wordRows = await db.select().from(listsTable).where(eq(listsTable.id, id));
+  const sentencesRows = await db.select().from(sentencesTable).where(eq(sentencesTable.lists_id, id));
 
   if (!id) {
     notFound();

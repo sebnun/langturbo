@@ -140,7 +140,7 @@ const migrateContent = async () => {
 const migrateLists = async () => {
   await client.connect();
 
-  const languageId = 44
+  const languageId = 49;
   const batchSize = 2000;
   let offset = 0;
   let hasMore = true;
@@ -161,7 +161,10 @@ const migrateLists = async () => {
     const res = await client.query(query, values);
     const rows = res.rows;
 
+    const rowsToInsert = [];
+
     for (const row of rows) {
+      const id = row.id;
       const word = row.word;
       const frequency = row.frequency;
       const language_code = getLanguageCodeById(row.language_id);
@@ -169,27 +172,34 @@ const migrateLists = async () => {
       const voice = row.voice;
       const en_translation = row.en_translation;
 
-      const listsRows = await db
-        .insert(listsTable)
-        .values({ word, frequency, language_code, duration, voice, en_translation })
-        .returning();
+      rowsToInsert.push({ id, word, frequency, language_code, duration, voice, en_translation });
+    }
 
-      const newListsId = listsRows[0].id;
+    if (rowsToInsert.length) {
+      await db.insert(listsTable).values(rowsToInsert);
+    }
 
-      const { rows: sentencesRows } = await client.query("SELECT * FROM sentences where lists_id = $1", [row.id]);
+    for (const row of rows) {
+      const sentencesRes = await client.query("SELECT * FROM sentences WHERE lists_id = $1 AND duration != -1", [
+        row.id,
+      ]);
 
-      const sentecesToInsert = [];
-      for (const sentenceRow of sentencesRows) {
-        sentecesToInsert.push({
-          lists_id: newListsId,
+      const sentencesToInsert = [];
+
+      for (const sentenceRow of sentencesRes.rows) {
+        sentencesToInsert.push({
+          id: sentenceRow.id,
+          lists_id: sentenceRow.lists_id,
           sentence: sentenceRow.sentence,
           en_translation: sentenceRow.en_translation,
           context: sentenceRow.context,
           duration: sentenceRow.duration,
-          voice: sentenceRow.voice || 'no voice',
+          voice: sentenceRow.voice || "no voice",
         });
+      }
 
-        await db.insert(sentencesTable).values(sentecesToInsert);
+      if (sentencesToInsert.length) {
+        await db.insert(sentencesTable).values(sentencesToInsert);
       }
     }
 

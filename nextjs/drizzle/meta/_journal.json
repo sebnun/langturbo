@@ -22,6 +22,20 @@
       "when": 1762510099992,
       "tag": "0002_outstanding_rictor",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1762621447160,
+      "tag": "0003_charming_skin",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1762621482549,
+      "tag": "0004_sturdy_jimmy_woo",
+      "breakpoints": true
     }
   ]
 }
