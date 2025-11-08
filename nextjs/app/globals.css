@@ -40,12 +40,6 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --colorprimary: var(--colorprimary);
-  --colorscreenbackground: var(--colorScreenBackground);
-  --colorcardbackground: var(--colorCardBackground);
-  --colortextsubdued: var(--colorTextSubdued);
-  --colorseparator: var(--colorSeparator);
-
 }
 
 :root {
@@ -82,13 +76,6 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
-  /* My styles */
-  --colorprimary: #0064e6;
-  --colorScreenBackground: #121212;
-  --colorCardBackground: #1e1e1e;
-  --colorTextSubdued: #a7a7a7;
-  --colorSeparator: #dddddd80;
-  scrollbar-color: #555 transparent;
 }
 
 .dark {

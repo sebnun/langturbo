@@ -101,7 +101,6 @@ accessories:
     env:
       clear:
         # Run backups every night
-        CRON_SCHEDULE: "@daily"
         REMOVE_BEFORE: 2 # Only keep the n most recent days of backups
         STORAGE_BACKEND: S3
         SSL_SECURE: "True"
