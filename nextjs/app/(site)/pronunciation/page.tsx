@@ -24,7 +24,9 @@ export default async function FrequencyLists() {
                 </div>
                 <Link
                   href={`/pronunciation/${language}`}
-                  className="py-1 before:block before:content-[''] before:absolute before:h-[1px] before:bg-white before:w-full before:bottom-0 after:bottom-0 relative w-fit block after:block after:content-[''] after:absolute after:h-[1px] after:bg-colorprimary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left mx-auto md:mx-0"
+                  className="relative block w-fit mx-auto md:mx-0 py-1
+             before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
                 >
                   {capitalizeFirstLetter(language)}
                 </Link>

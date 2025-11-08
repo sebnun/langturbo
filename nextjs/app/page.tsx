@@ -1,9 +1,11 @@
 import Footer from "@/components/Footer";
-import { getLanguageNameById, languageIds } from "@/lib/languages-legacy";
+import { getLanguageCodeByName, getLanguageNameById, languageIds } from "@/lib/languages-legacy";
 import RetroGrid from "@/components/RetroGrid";
 import { LanguagesMarquee } from "@/components/LanguagesMarquee";
 import LogoTextSpan, { LogoIcon } from "@/components/Logo";
-import LanguageLink from "@/components/LanguageLink";
+import ChevronImage from "../public/images/chevron.svg";
+import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title: "LangTurbo - Learn Languages with Podcasts",
@@ -20,31 +22,45 @@ export default function Home() {
             <LogoIcon />
             <LogoTextSpan />
           </div>
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6">
-            Learn <span className="italic">faster</span> with podcasts and the latest language learning research.
+          <h1 className="scroll-m-20 text-4xl font-extrabold leading-normal lg:text-5xl my-6">
+            Learn{" "}
+            <a
+              href="#start"
+              className="italic underline decoration-colorprimary decoration-4 underline-offset-6 lg:decoration-8 lg:underline-offset-12 "
+            >
+              faster
+            </a>{" "}
+            with podcasts and the latest language learning research
           </h1>
         </div>
         <LanguagesMarquee />
       </section>
-
-      <main className="bg-colorscreenbackground">
+      <main className="bg-colorscreenbackground" id="start">
         <div className="max-w-6xl mx-auto p-6">
-          {/* <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6 text-center md:text-left">
-            LangTurbo is not accepting new users at the moment. Check back soon!
-          </h1> */}
-                    <h1 className="bg-colorprimary">
-            LangTurbo is not accepting new users at the moment. Check back soon!
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6 text-center md:text-left">
+            We are relaunching LangTurbo, check back later!
           </h1>
-          <article className="py-12">
+
+          {/* <article className="py-12">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {Array.from(new Set(Object.values(languageIds)))
                 .map((id) => getLanguageNameById(id))
                 .sort()
                 .map((language) => (
-                  <LanguageLink key={language} language={language} />
+                  <Link
+                    key={language}
+                    prefetch={false}
+                    className={
+                      "bg-colorprimary font-bold rounded-full hover:opacity-90 p-3 px-6 flex justify-between items-center"
+                    }
+                    href={`/${getLanguageCodeByName(language)}`}
+                  >
+                    {`${language.charAt(0).toUpperCase() + language.slice(1)}`}
+                    <Image src={ChevronImage} height={8} width={8} alt="Next" className="inline" />
+                  </Link>
                 ))}
             </div>
-          </article>
+          </article> */}
         </div>
       </main>
       <Footer isHome />

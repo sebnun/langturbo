@@ -2,15 +2,14 @@ import Link from "next/link";
 import IosImage from "../../public/images/ios.svg";
 import AndroidImage from "../../public/images/android.svg";
 import XImage from "../public/images/x.svg";
-// import YoutubeImage from "../../public/images/youtube.svg";
+import YoutubeImage from "../public/images/youtube.svg";
 // import TiktokImage from "../../public/images/tiktok.svg";
 import RSSImage from "../public/images/rss.svg";
 import Image from "next/image";
-import { getLanguageNameById, languageIds } from "@/lib/languages-legacy";
+import { getLanguageCodeByName, getLanguageNameById, languageIds } from "@/lib/languages-legacy";
 import { cn } from "@/lib/utils";
 import Surprise from "./Surprise";
 // import { ANDROID_LINK, IOS_LINK } from "@/utils/constants";
-import LanguageLink from "./LanguageLink";
 
 export default function Footer({ isHome }: { isHome?: boolean }) {
   return (
@@ -23,33 +22,35 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
       <div className="mt-12 md:mt-0">
         <p className="font-bold mb-3">ABOUT</p>
         <div className="flex flex-col space-y-3 justify-center mx-auto text-center">
-          <Surprise />
           <Link
-            className="py-1 before:block before:content-[''] before:absolute before:h-[1px] before:bg-white before:w-full before:bottom-0 after:bottom-0 relative w-fit block after:block after:content-[''] after:absolute after:h-[1px] after:bg-colorprimary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left mx-auto md:mx-0"
+            className="relative block w-fit mx-auto md:mx-0 py-1
+             before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
             href="/blog"
           >
             Blog
           </Link>
+
           <Link
-            className="py-1 before:block before:content-[''] before:absolute before:h-[1px] before:bg-white before:w-full before:bottom-0 after:bottom-0 relative w-fit block after:block after:content-[''] after:absolute after:h-[1px] after:bg-colorprimary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left mx-auto md:mx-0"
-            href="/pronunciation"
-          >
-            Frequency Lists
-          </Link>
-          <Link
-            className="py-1 before:block before:content-[''] before:absolute before:h-[1px] before:bg-white before:w-full before:bottom-0 after:bottom-0 relative w-fit block after:block after:content-[''] after:absolute after:h-[1px] after:bg-colorprimary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left mx-auto md:mx-0"
+            className="relative block w-fit mx-auto md:mx-0 py-1
+             before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
             href="/contact"
           >
             Contact
           </Link>
           <Link
-            className="py-1 before:block before:content-[''] before:absolute before:h-[1px] before:bg-white before:w-full before:bottom-0 after:bottom-0 relative w-fit block after:block after:content-[''] after:absolute after:h-[1px] after:bg-colorprimary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left mx-auto md:mx-0"
+            className="relative block w-fit mx-auto md:mx-0 py-1
+             before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
             href="/privacy"
           >
             Privacy
           </Link>
           <Link
-            className="py-1 before:block before:content-[''] before:absolute before:h-[1px] before:bg-white before:w-full before:bottom-0 after:bottom-0 relative w-fit block after:block after:content-[''] after:absolute after:h-[1px] after:bg-colorprimary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left mx-auto md:mx-0"
+            className="relative block w-fit mx-auto md:mx-0 py-1
+             before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
             href="/terms"
           >
             Terms
@@ -66,32 +67,67 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
               .map((id) => getLanguageNameById(id))
               .sort()
               .map((language) => {
-                return <LanguageLink key={language} language={language} isFooter />;
+                return (
+                  <Link
+                    key={language}
+                    prefetch={false}
+                    className={`relative block w-fit mx-auto md:mx-0 py-1
+             before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300`}
+                    href={`/${getLanguageCodeByName(language)}`} // TODO
+                  >
+                    {`${language.charAt(0).toUpperCase() + language.slice(1)}`}
+                  </Link>
+                );
               })}
           </div>
         </div>
       )}
 
+       <div className="mt-12 md:mt-0">
+        <p className="font-bold mb-3">FREE TOOLS</p>
+        <div className="flex flex-col space-y-3 justify-center mx-auto text-center">
+          
+          <Link
+            className="relative block w-fit mx-auto md:mx-0 py-1
+             before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
+            href="/pronunciation"
+          >
+            Frequency Lists
+          </Link>
+          <Surprise />
+        </div>
+      </div>
+
       <div className="mt-12 md:mt-0">
         <p className="font-bold mb-3">SOCIAL</p>
         <div className="flex flex-col space-y-3">
           <Link
-            className="py-1 before:block before:content-[''] before:absolute before:h-[1px] before:bg-white before:w-full before:bottom-0 after:bottom-0 relative w-fit block after:block after:content-[''] after:absolute after:h-[1px] after:bg-colorprimary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left mx-auto md:mx-0"
+            className="relative block w-fit mx-auto md:mx-0 py-1
+             before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
             href="https://x.com/LangTurbo"
           >
             <Image src={XImage} height={14} width={14} alt="X" className="mr-2 inline align-baseline" />X
           </Link>
-          {/* <Link className="py-1 before:block before:content-[''] before:absolute before:h-[1px] before:bg-white before:w-full before:bottom-0 after:bottom-0 relative w-fit block after:block after:content-[''] after:absolute after:h-[1px] after:bg-colorprimary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left mx-auto md:mx-0" href="/contact">
+           {/* <Link className="relative block w-fit mx-auto md:mx-0 py-1
+             before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300" href="/contact">
             <Image src={YoutubeImage} height={14} width={14} alt="YouTube" className="mr-2 inline align-baseline" />
             YouTube
             
-          </Link>
-          <Link className="py-1 before:block before:content-[''] before:absolute before:h-[1px] before:bg-white before:w-full before:bottom-0 after:bottom-0 relative w-fit block after:block after:content-[''] after:absolute after:h-[1px] after:bg-colorprimary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left mx-auto md:mx-0" href="/contact">
+          </Link> */}
+          {/*<Link className="relative block w-fit mx-auto md:mx-0 py-1
+             before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300" href="/contact">
             <Image src={TiktokImage} height={14} width={14} alt="TikTok" className="mr-2 inline align-baseline" />
             TikTok
           </Link> */}
           <Link
-            className=" py-1 before:block before:content-[''] before:absolute before:h-[1px] before:bg-white before:w-full before:bottom-0 after:bottom-0 relative w-fit block after:block after:content-[''] after:absolute after:h-[1px] after:bg-colorprimary after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left mx-auto md:mx-0"
+            className="relative block w-fit mx-auto md:mx-0 py-1
+             before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
             href="/rss"
           >
             <Image src={RSSImage} height={14} width={14} alt="RSS Link" className="mr-2 inline align-baseline" />
@@ -99,18 +135,6 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
           </Link>
         </div>
       </div>
-
-      {/* <div>
-        <p className="font-bold mb-3">GET THE APP</p>
-        <div className="flex flex-col space-y-3">
-          <Link href={IOS_LINK}>
-            <Image src={IosImage} alt="Download iOS app" className="inline" />
-          </Link>
-          <Link href={ANDROID_LINK}>
-            <Image src={AndroidImage} alt="Download Android app" className="inline" />
-          </Link>
-        </div>
-      </div> */}
     </footer>
   );
 }

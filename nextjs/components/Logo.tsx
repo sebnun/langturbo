@@ -13,7 +13,7 @@ const font = Handjet({
 export default function LogoTextSpan() {
   return (
     <span
-      className={cn("text-white", font.className, 'text-3xl')}
+      className={cn("text-white", font.className, 'text-4xl')}
     >
       LangTurbo
     </span>

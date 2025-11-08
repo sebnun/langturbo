@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --color-colorprimary: #0064e6;
+  --color-colorscreenbackground: #121212;
+  --color-colorcardbackground: #1e1e1e;
+  --color-colortextsubdued: #a7a7a7;
+  --color-colorseparator: #dddddd80;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -40,6 +48,36 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  --animate-grid: grid 15s linear infinite;
+
+  @keyframes grid {
+    0% {
+      transform: translateY(-50%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  --animate-marquee: marquee var(--duration) infinite linear;
+  --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
 }
 
 :root {
@@ -75,7 +113,6 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-
 }
 
 .dark {
@@ -119,6 +156,10 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+html {
+  scrollbar-color: #555 transparent;
 }
 
 body {
