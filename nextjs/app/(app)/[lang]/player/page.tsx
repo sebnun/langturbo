@@ -7,5 +7,5 @@ export default async function PlayerPage({ params }: { params: { lang: string } 
 
   const data = await transcribe()
 
-  return <main className="">player</main>;
+  return <main className="">{data}</main>;
 }
