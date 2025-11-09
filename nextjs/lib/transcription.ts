@@ -2,6 +2,8 @@ import { GoogleGenAI } from "@google/genai";
 
 const serviceAccount = JSON.parse(process.env.GOOGLE_KEY_FILE!);
 
+console.log(serviceAccount, 'wat')
+
 const ai = new GoogleGenAI({
   vertexai: true,
   project: process.env.GOOGLE_CLOUD_PROJECT,
