@@ -4,7 +4,7 @@ import { GoogleGenAI } from "@google/genai";
 
 export const transcribe = async () => {
 
-  const serviceAccount = JSON.parse(process.env.GOOGLE_KEY_FILE!);
+  const serviceAccount = JSON.parse(process.env.GOOGLE_KEY_FILE!.split(String.raw`\n`).join('\n'));
 
 const ai = new GoogleGenAI({
   vertexai: true,
