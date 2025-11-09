@@ -5,7 +5,7 @@ import { db } from "@/db";
 import { listsTable, sentencesTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-const affiliateLinks = {
+const affiliateLinks: Record<string, string> = {
   //english: "",
   chinese: "https://amzn.to/4ipgAF6",
   german: "https://amzn.to/4irRJAB",
@@ -75,9 +75,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function Word({ params }: { params: Promise<{ slug: string; language: string }> }) {
   const { slug, language } = await params;
   const id = slug.match(/-(.*)/)![1];
-
-  // const wordRows = await sql`select * from lists where id = ${id}`;
-  // const sentencesRows = await sql`select * from sentences where lists_id = ${id}`;
 
   const wordRows = await db.select().from(listsTable).where(eq(listsTable.id, id));
   const sentencesRows = await db.select().from(sentencesTable).where(eq(sentencesTable.lists_id, id));
@@ -170,7 +167,7 @@ export default async function Word({ params }: { params: Promise<{ slug: string;
           </audio>
           <h3 style={{ margin: "2rem", fontWeight: "normal" }}>{sentencesRows[2].en_translation}</h3>
         </div>
-        {/* <hr />
+        <hr />
         <div className="flex justify-center">
           <Link
             href={affiliateLinks[`${language}`]}
@@ -179,9 +176,9 @@ export default async function Word({ params }: { params: Promise<{ slug: string;
              before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
              after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
           >
-            {capitalizeFirstLetter(language)} Language Learning Resources
+            {capitalizeFirstLetter(language)} Language Learning Resources at Amazon
           </Link>
-        </div> */}
+        </div>
       </article>
     </main>
   );
