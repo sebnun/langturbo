@@ -32,11 +32,6 @@ export default async function FrequencyLanguageList({
   const languageId = getLanguageIdByName(language);
   const languageCode = getLanguageCodeById(languageId);
 
-  // const wordRows =
-  //   await sql`select * from lists where language_id = ${languageId} and duration != -1 order by frequency limit 1000 offset ${
-  //     (page - 1) * 1000
-  //   }`;
-
   const wordRows = await db
     .select()
     .from(listsTable)

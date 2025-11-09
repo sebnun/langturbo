@@ -1,5 +1,3 @@
-import ErrorTest from "@/components/ErrorTest";
-
 export const metadata = {
   title: "Request account termination - LangTurbo",
 };

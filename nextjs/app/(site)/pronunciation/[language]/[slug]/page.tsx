@@ -58,6 +58,7 @@ const affiliateLinks = {
 // Generate static pages for each word in the list at runtime
 export const dynamic = "force-static";
 
+// To statically render all paths the first time they're visited
 export async function generateStaticParams() {
   return [];
 }
