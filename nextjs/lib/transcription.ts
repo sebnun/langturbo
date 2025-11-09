@@ -5,7 +5,7 @@ const ai = new GoogleGenAI({
   project: process.env.GOOGLE_CLOUD_PROJECT,
   location: process.env.GOOGLE_CLOUD_LOCATION,
   googleAuthOptions: {
-      keyFile: "./gcp-service.json",
+      keyFile: "gcp-service.json",
   }
 });
 
