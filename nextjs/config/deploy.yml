@@ -105,7 +105,7 @@ accessories:
         STORAGE_BACKEND: S3
         SSL_SECURE: "True"
         POSTGRES_MAJOR_VERSION: 18 
-        CRON_SCHEDULE: 0 2 * * *
+        CRON_SCHEDULE: 5 1 * * *
       secret: 
         - POSTGRES_USER
         - POSTGRES_PASS
