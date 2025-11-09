@@ -1,7 +1,6 @@
 import { transcribe } from "@/lib/transcription";
 
-export default async function PlayerPage({ params }: { params: { lang: string } }) {
-  const { lang } = await params;
+export default async function PlayerPage() {
 
   // do check like is this in db already etc, see legacy
 
