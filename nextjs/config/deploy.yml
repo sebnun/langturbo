@@ -98,6 +98,6 @@ accessories:
   pg-backup:
     image: rostislavdugin/postgresus:latest
     host: 163.192.109.201 
-    port: 4005
+    port: 4005 # Blocked by OCI
     directories:
       - postgresus-data:/postgresus-data
