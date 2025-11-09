@@ -6,7 +6,7 @@ export const transcribe = async () => {
 
   //const serviceAccount = JSON.parse(process.env.GOOGLE_KEY_FILE!);
 
-console.log(process.env.GOOGLE_KEY_FILE, 'wat')
+console.log(process.env.GOOGLE_KEY_FILE, process.env.GOOGLE_CLOUD_PROJECT, 'wat')
 
 // const ai = new GoogleGenAI({
 //   vertexai: true,
