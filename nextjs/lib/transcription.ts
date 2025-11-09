@@ -22,4 +22,6 @@ export const transcribe = async () => {
 //     contents: "why is the sky blue?",
 //   });
 //   return response.text
+
+return "j"
 };
