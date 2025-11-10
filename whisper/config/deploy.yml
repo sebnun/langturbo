@@ -7,14 +7,7 @@ servers:
       - 34.136.90.35
     options:
       gpus: all
-    
-
-proxy:
-  ssl: false
-  app_port: 9000
-  healthcheck:
-    path: /docs
-    timeout: 60
+    proxy: false
 
 registry:
   username: sebnun
