@@ -16,7 +16,7 @@ const doctorCron = new CronJob("0 * * * *", runDoctorCron);
 const popularizerCron = new CronJob("0 6 * * *", runPopularizerCron);
 
 // At 18:00 every day
-const scraperCron = new CronJob("0 18 * * *", runScraperCron);
+const scraperCron = new CronJob("30 0 * * *", runScraperCron);
 
 if (jobType === "doctor") {
   doctorCron.start();
