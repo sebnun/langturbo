@@ -11,6 +11,7 @@ servers:
 
 proxy:
   ssl: false
+  host: 34.136.90.35
   app_port: 9000
   healthcheck:
     path: /docs
