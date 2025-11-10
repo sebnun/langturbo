@@ -22,7 +22,7 @@ locals {
         #runcmd : ["grubby --args selinux=0 --update-kernel ALL"],
 
         # https://kamal-deploy.org/docs/configuration/ssh/
-        runcmd : ["apt update", "apt upgrade -y", "sudo apt install -y docker.io curl git", "sudo usermod -aG docker ubuntu"],
+        runcmd : ["sudo apt update", "sudo apt upgrade -y", "sudo apt install -y docker.io curl git", "sudo usermod -aG docker ubuntu"],
       },
     },
   }

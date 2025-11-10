@@ -1,1 +1,1 @@
-FROM onerahmet/openai-whisper-asr-webservice:latest-gpu
+FROM ghcr.io/speaches-ai/speaches:latest-cuda
