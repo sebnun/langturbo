@@ -1,5 +1,5 @@
 service: whisper
-image: sebnun/langtubo-whisper
+image: sebnun/langturbo-whisper
 
 servers:
   web:
