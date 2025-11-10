@@ -1,6 +1,6 @@
 import { LANGUAGES_LIST } from "@/lib/languages";
 import { sql } from "drizzle-orm";
-import { index, pgTable, text, integer, timestamp, uuid, smallint, pgEnum, boolean, real, numeric } from "drizzle-orm/pg-core";
+import { index, pgTable, text, integer, timestamp, uuid, smallint, pgEnum, boolean, real, numeric, jsonb, doublePrecision } from "drizzle-orm/pg-core";
 
 const isoLanguageCodes = Object.keys(LANGUAGES_LIST);
 
@@ -45,9 +45,9 @@ export const episodesTable = pgTable(
     created_at: timestamp().defaultNow().notNull(),
     last_played_at: timestamp().defaultNow().notNull(),
     title: text().notNull(),
-    file_name: text().notNull(), // same as id but need the extension
+    file_name: text().notNull(),
     language_code: languageCodeEnum().notNull(),
-    processed_seconds: real().default(-1),
+    processed_seconds: doublePrecision().default(-1),
     show_id: uuid()
       .references(() => showsTable.id, { onDelete: "cascade" })
       .notNull(),
@@ -58,23 +58,21 @@ export const episodesTable = pgTable(
   ]
 );
 
-export const captionsTable = pgTable(
-  "captions",
+export const segmentsTable = pgTable(
+  "segments",
   {
     id: uuid().notNull().primaryKey().defaultRandom(),
     created_at: timestamp().defaultNow().notNull(),
-    caption: text().notNull(),
-    start: real().notNull(),
-    words: text()
-      .array()
-      .notNull()
-      .default(sql`'{}'::text[]`),
+    text: text().notNull(),
+    start: doublePrecision().notNull(),
+    end: doublePrecision().notNull(),
+    words: jsonb(),
     language_code: languageCodeEnum().notNull(),
     episode_id: uuid()
       .references(() => episodesTable.id, { onDelete: "cascade" })
       .notNull(),
   },
-  (table) => [index("captions_language_code_idx").on(table.language_code)]
+  (table) => [index("segments_language_code_idx").on(table.language_code)]
 );
 
 export const translationsTable = pgTable(
@@ -84,8 +82,8 @@ export const translationsTable = pgTable(
     created_at: timestamp().defaultNow().notNull(),
     translation: text().notNull(),
     language_code: languageCodeEnum().notNull(),
-    caption_id: uuid()
-      .references(() => captionsTable.id, { onDelete: "cascade" })
+    segment_id: uuid()
+      .references(() => segmentsTable.id, { onDelete: "cascade" })
       .notNull(),
   },
   (table) => [index("translations_language_code_idx").on(table.language_code)]

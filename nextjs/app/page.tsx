@@ -1,8 +1,8 @@
-import Footer from "@/components/Footer";
+import Footer from "@/components/site/Footer";
 import { getLanguageCodeByName, getLanguageNameById, languageIds } from "@/lib/languages-legacy";
-import RetroGrid from "@/components/RetroGrid";
-import { LanguagesMarquee } from "@/components/LanguagesMarquee";
-import LogoTextSpan, { LogoIcon } from "@/components/Logo";
+import RetroGrid from "@/components/site/RetroGrid";
+import { LanguagesMarquee } from "@/components/site/LanguagesMarquee";
+import LogoTextSpan, { LogoIcon } from "@/components/site/Logo";
 import ChevronImage from "../public/images/chevron.svg";
 import Link from "next/link";
 import Image from "next/image";
