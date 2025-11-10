@@ -1,0 +1,29 @@
+service: whisper
+image: sebnun/langtubo-whisper
+
+servers:
+  web:
+    hosts:
+      - 34.136.90.35
+    options:
+      gpus: all
+
+proxy:
+  ssl: false
+  app_port: 9000
+
+registry:
+  username: sebnun
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: amd64
+
+env:
+  ASR_MODEL: large-v3
+  ASR_ENGINE: faster_whisper
+  ASR_DEVICE: cuda
+
+ssh:
+  user: pablo
