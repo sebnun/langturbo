@@ -19,6 +19,8 @@ primary_role: jobs
 
 env:
   secret:
+    - USER_AGENT
+    - ITUNES_SITEMAP_URL
     - POSTGRES_PASSWORD
     - PROXY_0
     - PROXY_1
