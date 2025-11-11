@@ -1,4 +1,3 @@
-import { console } from "inspector";
 import Sitemapper from "sitemapper";
 import { db } from "../db/index.ts";
 import { showsTable } from "../db/schema.ts";
