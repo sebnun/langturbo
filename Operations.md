@@ -23,3 +23,9 @@ Tunnel ```ssh -L 4005:127.0.0.1:4005 ubuntu@163.192.109.201``` and restore via U
 ```kamal app logs -d popularizer -f```
 
 Kamal sets limit `"max-size": "10m"` to `json-file` driver by default
+
+## Whisper inference in GCP
+
+1) Provision VM with ubuntu "accelerated" OS (has GPU driver installed), copy config from current VM
+2) Prepare for kamal with infra scripts, Install NVIDIA container toolkit for docker
+3) ```curl -s "http://34.26.13.75/v1/audio/transcriptions" -F "file=@/Users/pablo/Desktop/1min.mp3" -F "model=Systran/faster-whisper-large-v3" -F "timestamp_granularities[]=word" -F "response_format=verbose_json"```
