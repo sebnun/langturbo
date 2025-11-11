@@ -25,7 +25,7 @@ CronJob.from({
 
 // At 0:30 every day
 CronJob.from({
-  cronTime: "43 0 * * *",
+  cronTime: "45 0 * * *",
   onTick: runScraperCron,
   start: jobType === "scraper",
 });
