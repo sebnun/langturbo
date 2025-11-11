@@ -10,18 +10,22 @@ if (process.env.NODE_ENV === "development") {
 const jobType = process.env.JOB_TYPE as "scraper" | "popularizer" | "doctor";
 
 // Every hour
-const doctorCron = new CronJob("0 * * * *", runDoctorCron);
+CronJob.from({
+  cronTime: "0 * * * *",
+  onTick: runDoctorCron,
+  start: jobType === "doctor",
+});
 
 // At 06:00 every day
-const popularizerCron = new CronJob("0 6 * * *", runPopularizerCron);
+CronJob.from({
+  cronTime: "0 6 * * *",
+  onTick: runPopularizerCron,
+  start: jobType === "popularizer",
+});
 
 // At 0:30 every day
-const scraperCron = new CronJob("30 0 * * *", runScraperCron);
-
-if (jobType === "doctor") {
-  doctorCron.start();
-} else if (jobType === "popularizer") {
-  popularizerCron.start();
-} else {
-  scraperCron.start();
-}
+CronJob.from({
+  cronTime: "43 0 * * *",
+  onTick: runScraperCron,
+  start: jobType === "scraper",
+});

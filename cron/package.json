@@ -17,7 +17,7 @@
     "tsx": "^4.20.6"
   },
   "dependencies": {
-    "cron": "^4.3.3",
+    "cron": "^4.3.4",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.7",
     "exponential-backoff": "^3.1.3",
