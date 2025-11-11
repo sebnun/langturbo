@@ -13,7 +13,8 @@ console.log(jobType, 'hgjgj')
 
 if (jobType === "scraper") {
   // At 01:07 every day
-  cron.schedule("07 1 * * *", runScraperCron);
+  runScraperCron()
+  //cron.schedule("07 1 * * *", runScraperCron);
 } else if (jobType === "doctor") {
   // Every hour
   cron.schedule("0 * * * *", runDoctorCron);
