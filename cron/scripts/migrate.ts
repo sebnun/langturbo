@@ -1,6 +1,14 @@
 import { Client } from "pg";
 import { db } from "../db/index.ts";
-import { showsTable, listsTable, sentencesTable } from "../db/schema.ts";
+import {
+  showsTable,
+  listsTable,
+  sentencesTable,
+  episodesTable,
+  segmentsTable,
+  translationsTable,
+} from "../db/schema.ts";
+import { eq } from "drizzle-orm";
 
 process.loadEnvFile();
 const client = new Client({ connectionString: process.env.LEGACY_DATABASE_URL });
@@ -215,5 +223,157 @@ const migrateLists = async () => {
   await client.end();
 };
 
+const migrateEpisodes = async () => {
+  await client.connect();
+
+  const languageId = 49;
+  const batchSize = 1000;
+  let offset = 0;
+  let hasMore = true;
+
+  while (hasMore) {
+    const query = `
+        SELECT *
+        FROM episodes
+        where language_id = $3
+        ORDER BY id
+        LIMIT $1 OFFSET $2
+      `;
+    const values = [batchSize, offset, languageId];
+
+    console.log(offset, languageId);
+
+    const res = await client.query(query, values);
+    const rows = res.rows;
+
+    const showIdPromises = rows.map((row) =>
+      db.select({ id: showsTable.id }).from(showsTable).where(eq(showsTable.source_id, row.content_id)).limit(1)
+    );
+
+    const showIdPromisesResults = await Promise.all(showIdPromises);
+
+    const rowsToInsert = [];
+
+    for (let i = 0; i < rows.length; i++) {
+      if (showIdPromisesResults[i].length === 0 || !showIdPromisesResults[i][0].id) {
+        console.log(rows[i].content_id, "not in db ?????");
+        continue;
+      }
+
+      const id = rows[i].id;
+      const last_played_at = new Date("1986-07-15T03:24:00");
+      const title = rows[i].title;
+      const file_name = rows[i].file_name;
+      const language_code = getLanguageCodeById(rows[i].language_id);
+      const processed_seconds = rows[i].processed_seconds;
+      const show_id = showIdPromisesResults[i][0].id;
+
+      rowsToInsert.push({
+        id,
+        title,
+        language_code,
+        last_played_at,
+        file_name,
+        processed_seconds,
+        show_id,
+      });
+    }
+
+    //console.log(rowsToInsert)
+    await db.insert(episodesTable).values(rowsToInsert);
+
+    if (rows.length < batchSize) {
+      hasMore = false; // No more rows left
+    } else {
+      offset += batchSize;
+    }
+  }
+
+  console.log("done");
+
+  await client.end();
+};
+
+const migrateSegments = async () => {
+  await client.connect();
+
+  const languageId = 49;
+  const batchSize = 1000;
+  let offset = 0;
+  let hasMore = true;
+
+  while (hasMore) {
+    const query = `
+        SELECT *
+        FROM segments
+        where language_id = $3
+        ORDER BY id
+        LIMIT $1 OFFSET $2
+      `;
+    const values = [batchSize, offset, languageId];
+
+    console.log(offset, languageId);
+
+    const res = await client.query(query, values);
+    const rows = res.rows;
+
+    const segmentsRowsToInsert = [];
+    const translationRowsToInsert = [];
+
+    const episodesRows = await Promise.all(
+      rows.map((row) =>
+        db.select({ id: episodesTable.id }).from(episodesTable).where(eq(episodesTable.id, row.episode_id)).limit(1)
+      )
+    );
+
+    for (let i = 0; i < rows.length; i++) {
+      if (!episodesRows[i].length) {
+        console.log(rows[i].episode_id, " not found on episodes");
+        continue;
+      }
+
+      const id = rows[i].id;
+      const text = rows[i].text;
+      const start = rows[i].start;
+      const end = rows[i].end;
+      const words = rows[i].tokens;
+      const language_code = getLanguageCodeById(rows[i].language_id);
+      const episode_id = rows[i].episode_id;
+
+      segmentsRowsToInsert.push({
+        id,
+        language_code,
+        text,
+        start,
+        end,
+        words,
+        episode_id,
+      });
+
+      translationRowsToInsert.push({
+        translation: rows[i].en_translation || '',
+        language_code: "en",
+        segment_id: rows[i].id,
+      });
+    }
+
+    //console.log(segmentsRowsToInsert)
+    await db.insert(segmentsTable).values(segmentsRowsToInsert).onConflictDoNothing()
+    await db.insert(translationsTable).values(translationRowsToInsert)
+
+    if (rows.length < batchSize) {
+      hasMore = false; // No more rows left
+    } else {
+      offset += batchSize;
+    }
+  }
+
+  console.log("done");
+
+  await client.end();
+};
+
 //migrateContent();
-migrateLists();
+//migrateLists();
+//migrateEpisodes()
+migrateSegments();
