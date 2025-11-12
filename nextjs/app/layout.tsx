@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
+import "overlayscrollbars/overlayscrollbars.css";
 import "./globals.css";
-import { baseUrl } from "./sitemap";
 
+import { baseUrl } from "./sitemap";
+import ScrollableBody from "@/components/shell/ScrollableBody";
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: "LangTurbo - Learn Languages Faster",
@@ -27,8 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`antialiased`}>{children}</body>
+    <html lang="en" className="scroll-smooth" data-overlayscrollbars-initialize>
+      <ScrollableBody>{children}</ScrollableBody>
     </html>
   );
 }

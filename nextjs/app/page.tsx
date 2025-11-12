@@ -37,11 +37,10 @@ export default function Home() {
       </section>
       <main className="bg-colorscreenbackground" id="start">
         <div className="max-w-6xl mx-auto p-6">
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6 text-center md:text-left">
-            We are relaunching LangTurbo, check back later!
+          <h1 className="scroll-m-20 text-4xl font-extrabold leading-normal lg:text-5xl my-6 text-center">
+            What language do you want to learn?
           </h1>
-
-          {/* <article className="py-12">
+          <article className="py-12">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {Array.from(new Set(Object.values(languageIds)))
                 .map((id) => getLanguageNameById(id))
@@ -60,7 +59,7 @@ export default function Home() {
                   </Link>
                 ))}
             </div>
-          </article> */}
+          </article>
         </div>
       </main>
       <Footer isHome />

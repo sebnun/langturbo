@@ -1,4 +1,4 @@
-import LogoTextSpan, { LogoIcon } from "@/components/Logo";
+import LogoTextSpan, { LogoIcon } from "@/components/site/Logo";
 import Link from "next/link";
 
 export default async function Nav({ isHome }: { isHome?: boolean }) {

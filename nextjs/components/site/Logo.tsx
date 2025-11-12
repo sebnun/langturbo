@@ -1,6 +1,6 @@
 import { Handjet } from "next/font/google";
 import Image from "next/image";
-import LogoImage from "../public/images/logo.svg";
+import LogoImage from "../../public/images/logo.svg";
 
 import { cn } from "@/lib/utils";
 

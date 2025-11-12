@@ -1,6 +1,20 @@
 import { LANGUAGES_LIST } from "@/lib/languages";
 import { sql } from "drizzle-orm";
-import { index, pgTable, text, integer, timestamp, uuid, smallint, pgEnum, boolean, real, numeric, jsonb, doublePrecision } from "drizzle-orm/pg-core";
+import {
+  index,
+  pgTable,
+  text,
+  integer,
+  timestamp,
+  uuid,
+  smallint,
+  pgEnum,
+  boolean,
+  real,
+  numeric,
+  jsonb,
+  doublePrecision,
+} from "drizzle-orm/pg-core";
 
 const isoLanguageCodes = Object.keys(LANGUAGES_LIST);
 
@@ -41,7 +55,7 @@ export const showsTable = pgTable(
 export const episodesTable = pgTable(
   "episodes",
   {
-    id: uuid().notNull().primaryKey().defaultRandom(),
+    id: text().primaryKey(),
     created_at: timestamp().defaultNow().notNull(),
     last_played_at: timestamp().defaultNow().notNull(),
     title: text().notNull(),
@@ -68,7 +82,7 @@ export const segmentsTable = pgTable(
     end: doublePrecision().notNull(),
     words: jsonb(),
     language_code: languageCodeEnum().notNull(),
-    episode_id: uuid()
+    episode_id: text()
       .references(() => episodesTable.id, { onDelete: "cascade" })
       .notNull(),
   },

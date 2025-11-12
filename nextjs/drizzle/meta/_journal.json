@@ -50,6 +50,20 @@
       "when": 1762780964374,
       "tag": "0006_loud_sue_storm",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1762877421623,
+      "tag": "0007_spooky_karma",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1762877489186,
+      "tag": "0008_wooden_jack_murdock",
+      "breakpoints": true
     }
   ]
 }

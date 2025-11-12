@@ -1,4 +1,4 @@
-import Marquee from "@/components/Marquee";
+import Marquee from "@/components/site/Marquee";
 import { languagesNames } from "@/lib/languages-legacy";
 
 export function LanguagesMarquee() {
