@@ -52,9 +52,7 @@ export const processItunesId = async (id: string) => {
       requestHeaders: {
         "User-Agent": process.env.USER_AGENT,
       },
-      // curl -sL "https://www.deeplydiscussingdexter.com/feed/podcast/" | wc -c
-      // 70794
-      requestSize: 50000, // 50000 is safe
+      //requestSize: 50000, // This can cause exception that make the feed invalid
     });
 
     podcast = parsedPodcast.podcast;

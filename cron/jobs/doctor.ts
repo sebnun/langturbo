@@ -8,7 +8,7 @@ import { stripHtml } from "../lib/utils.ts";
 
 export const runDoctorCron = async () => {
   console.log("Running doctor cron job");
-  const shows = await db.select().from(showsTable).orderBy(showsTable.health_checked_at).limit(400);
+  const shows = await db.select().from(showsTable).orderBy(showsTable.health_checked_at).limit(500);
 
   const toDeleteIds = [];
 
@@ -25,11 +25,7 @@ export const runDoctorCron = async () => {
         requestHeaders: {
           "User-Agent": process.env.USER_AGENT,
         },
-        // curl -sL "https://www.deeplydiscussingdexter.com/feed/podcast/" | wc -c
-        // 70794
-        // curl -sL "https://feeds.captivate.fm/causepods/" | wc -c
-        // 1042194
-        requestSize: 50000, // ATTN lower than this and it shows valid poscasts as invalid
+        //requestSize: 50000, // This can cause exception that make the feed invalid
       });
 
       podcast = parsedPodcast.podcast;
