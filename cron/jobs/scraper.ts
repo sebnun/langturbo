@@ -1,8 +1,12 @@
 import Sitemapper from "sitemapper";
 import { db } from "../db/index.ts";
-import { showsTable } from "../db/schema.ts";
+import { itunesTable } from "../db/schema.ts";
 import { processItunesId } from "../lib/processor.ts";
-import { eq } from "drizzle-orm";
+
+// It takes at least 6 hours to scrape the sitemap checking only the shows table
+// Keep all seen iyunes ids on its own table, a podcast is unlikely to become usable if it fails here
+// Popularizer will pick up new ones if popular
+// Popularizer also adds to shows table, so shows will not be in sync with itunes table, but KISS
 
 export const runScraperCron = async () => {
   console.log("Running scraper cron job...");
@@ -22,19 +26,17 @@ export const runScraperCron = async () => {
     ids.add(id);
   }
 
-  const idsArray = Array.from(ids);
-  let notOnDb = 0;
+  console.log(`Found ${ids.size} unique podcast IDs from sitemap`);
 
-  console.log(`Found ${idsArray.length} unique podcast IDs from sitemap`);
+  const seenItunesIdsRows = await db.select({ id: itunesTable.id }).from(itunesTable);
+  const seenItunesIds = new Set(seenItunesIdsRows.map((sid) => sid.id));
 
-  for (const id of idsArray) {
-    const count = await db.$count(showsTable, eq(showsTable.source_id, id));
+  const newIds = ids.difference(seenItunesIds);
 
-    if (count === 0) {
-      notOnDb++;
-      await processItunesId(id);
-    }
+  for (const id of newIds) {
+    await processItunesId(id);
   }
 
-  console.log("Not on db", notOnDb);
+  await db.insert(itunesTable).values(Array.from(newIds).map((id) => ({ id })));
+  console.log("Not on db", newIds.size);
 };

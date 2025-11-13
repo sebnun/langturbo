@@ -13,7 +13,7 @@ const jobType = process.env.JOB_TYPE as "scraper" | "popularizer" | "doctor";
 
 if (jobType === "scraper") {
   // At 00:00 every day
-  cron.schedule("0 0 * * *", runScraperCron);
+  cron.schedule("48 5 * * *", runScraperCron);
 } else if (jobType === "doctor") {
   // Every hour
   cron.schedule("7 * * * *", runDoctorCron);

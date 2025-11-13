@@ -120,3 +120,8 @@ export const sentencesTable = pgTable("sentences", {
   duration: real().notNull(),
   voice: text().notNull(),
 });
+
+export const itunesTable = pgTable("itunes", {
+  id: numeric().primaryKey(),
+  created_at: timestamp().defaultNow().notNull(),
+});
