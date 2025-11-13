@@ -64,6 +64,13 @@
       "when": 1762877489186,
       "tag": "0008_wooden_jack_murdock",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1763010347796,
+      "tag": "0009_exotic_sabra",
+      "breakpoints": true
     }
   ]
 }
