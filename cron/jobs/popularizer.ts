@@ -53,7 +53,9 @@ export const runPopularizerCron = async () => {
   const notSeenIds = [];
 
   const seenItunesIdsRows = await db.select({ id: itunesTable.id }).from(itunesTable);
-  const seenItunesIds = new Set(seenItunesIdsRows.map((sid) => sid.id));
+  const seenItunesIds = seenItunesIdsRows.map((sid) => sid.id)
+
+   // Not all ids on itunes table are on shows table
 
   for (const id of uniqueIds) {
     const showRows = await db
@@ -63,7 +65,7 @@ export const runPopularizerCron = async () => {
       .limit(1);
 
     if (!showRows.length) {
-      if (!seenItunesIds.has(id)) {
+      if (!seenItunesIds.includes(id)) {
         await processItunesId(id);
         notSeenIds.push(id);
       }

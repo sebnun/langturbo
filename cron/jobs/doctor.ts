@@ -8,7 +8,7 @@ import { stripHtml } from "../lib/utils.ts";
 
 export const runDoctorCron = async () => {
   console.log("Running doctor cron job");
-  const shows = await db.select().from(showsTable).orderBy(showsTable.health_checked_at).limit(700);
+  const shows = await db.select().from(showsTable).orderBy(showsTable.health_checked_at).limit(500);
 
   const toDeleteIds = [];
 
@@ -27,7 +27,7 @@ export const runDoctorCron = async () => {
         },
         // curl -sL "https://www.deeplydiscussingdexter.com/feed/podcast/" | wc -c
         // 70794
-        requestSize: 30000,
+        requestSize: 10000,
       });
 
       podcast = parsedPodcast.podcast;
