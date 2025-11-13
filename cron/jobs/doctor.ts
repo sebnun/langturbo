@@ -8,7 +8,7 @@ import { stripHtml } from "../lib/utils.ts";
 
 export const runDoctorCron = async () => {
   console.log("Running doctor cron job");
-  const shows = await db.select().from(showsTable).orderBy(showsTable.health_checked_at).limit(2000);
+  const shows = await db.select().from(showsTable).orderBy(showsTable.health_checked_at).limit(3000);
 
   const toDeleteIds = [];
 
