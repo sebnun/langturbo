@@ -4,9 +4,7 @@ import { itunesTable } from "../db/schema.ts";
 import { processItunesId } from "../lib/processor.ts";
 
 // It takes at least 6 hours to scrape the sitemap checking only the shows table
-// Keep all seen iyunes ids on its own table, a podcast is unlikely to become usable if it fails here
-// Popularizer will pick up new ones if popular
-// Popularizer also adds to shows table, so shows will not be in sync with itunes table, but KISS
+// Keep all seen itunes ids on its own table, a podcast is unlikely to become usable if it fails here
 
 export const runScraperCron = async () => {
   console.log("Running scraper cron job...");

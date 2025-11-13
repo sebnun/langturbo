@@ -11,13 +11,14 @@ const jobType = process.env.JOB_TYPE as "scraper" | "popularizer" | "doctor";
 
 // Db backup is run at 12:00 every day, it takes about 10 min with 1 core
 
+
 if (jobType === "scraper") {
   // At 00:00 every day
-  cron.schedule("48 5 * * *", runScraperCron);
+  cron.schedule("0 0 * * *", runScraperCron);
 } else if (jobType === "doctor") {
   // Every hour
-  cron.schedule("5 * * * *", runDoctorCron);
+  cron.schedule("40 * * * *", runDoctorCron);
 } else if (jobType === "popularizer") {
-  // At 06:00 every day, takes about 3 hours
+  // At 06:00 every day
   cron.schedule("0 6 * * *", runPopularizerCron);
 }

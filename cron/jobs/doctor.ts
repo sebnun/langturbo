@@ -8,7 +8,7 @@ import { stripHtml } from "../lib/utils.ts";
 
 export const runDoctorCron = async () => {
   console.log("Running doctor cron job", new Date());
-  const shows = await db.select().from(showsTable).orderBy(showsTable.health_checked_at).limit(2000);
+  const shows = await db.select().from(showsTable).orderBy(showsTable.health_checked_at).limit(1000);
 
   const toDeleteIds = [];
   const toUpdatePromises = [];
@@ -18,7 +18,7 @@ export const runDoctorCron = async () => {
       continue;
     }
 
-    // Do not rely on itunes here, I could add podcasts not from itunes in the future
+    // Do not rely on itunes here, original source is not just itunes
 
     let podcast: Podcast;
     try {
@@ -26,6 +26,9 @@ export const runDoctorCron = async () => {
         requestHeaders: {
           "User-Agent": process.env.USER_AGENT,
         },
+        // curl -sL "https://www.deeplydiscussingdexter.com/feed/podcast/" | wc -c
+        // 70794
+        requestSize: 50000 // 50000 is safe
       });
 
       podcast = parsedPodcast.podcast;
@@ -36,7 +39,7 @@ export const runDoctorCron = async () => {
       continue;
     }
 
-    // These are different sources than itunes processor, but should be similar enough
+    // RSS feed might have different data than itunes processor, but should be similar enough
     toUpdatePromises.push(
       db
         .update(showsTable)

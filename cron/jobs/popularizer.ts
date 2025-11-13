@@ -1,7 +1,7 @@
 import { backOff } from "exponential-backoff";
 import { ITUNES_STOREFRONTS, ITUNES_US_CATEGORY_IDS } from "../lib/itunes.ts";
 import { db } from "../db/index.ts";
-import { showsTable } from "../db/schema.ts";
+import { itunesTable, showsTable } from "../db/schema.ts";
 import { eq, sql } from "drizzle-orm";
 import { processItunesId } from "../lib/processor.ts";
 import { getProxyUrl } from "../lib/utils.ts";
@@ -48,16 +48,25 @@ export const runPopularizerCron = async () => {
     }
   }
 
-  const idsArray = Array.from(uniqueIds);
-  console.log(`Found ${idsArray.length} unique podcast IDs`);
+  console.log(`Found ${uniqueIds.size} unique podcast IDs`);
 
-  let notOnDb = 0;
+  const notSeenIds = [];
 
-  for (const id of idsArray) {
-    const count = await db.$count(showsTable, eq(showsTable.source_id, id));
-    if (count === 0) {
-      notOnDb++;
-      await processItunesId(id);
+  const seenItunesIdsRows = await db.select({ id: itunesTable.id }).from(itunesTable);
+  const seenItunesIds = new Set(seenItunesIdsRows.map((sid) => sid.id));
+
+  for (const id of uniqueIds) {
+    const showRows = await db
+      .select({ id: showsTable.id })
+      .from(showsTable)
+      .where(eq(showsTable.source_id, id))
+      .limit(1);
+
+    if (!showRows.length) {
+      if (!seenItunesIds.has(id)) {
+        await processItunesId(id);
+        notSeenIds.push(id);
+      }
     } else {
       await db
         .update(showsTable)
@@ -66,5 +75,6 @@ export const runPopularizerCron = async () => {
     }
   }
 
-  console.log(`Popularizer done. ${notOnDb} podcasts not on DB.`);
+  await db.insert(itunesTable).values(notSeenIds.map((id) => ({ id })));
+  console.log(`Popularizer done. ${notSeenIds.length} podcasts not seen.`);
 };

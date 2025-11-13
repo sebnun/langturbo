@@ -25,7 +25,6 @@ export const processItunesId = async (id: string) => {
 
   if (!lookupResponse.results || lookupResponse.results.length === 0) {
     // Some valid podcasts do not return data
-    // TODO: evaluate if it is worth it to add a dummy placeholder on db to avoid reprocessing like before
     return;
   }
 
@@ -53,6 +52,9 @@ export const processItunesId = async (id: string) => {
       requestHeaders: {
         "User-Agent": process.env.USER_AGENT,
       },
+      // curl -sL "https://www.deeplydiscussingdexter.com/feed/podcast/" | wc -c
+      // 70794
+      requestSize: 50000, // 50000 is safe
     });
 
     podcast = parsedPodcast.podcast;
