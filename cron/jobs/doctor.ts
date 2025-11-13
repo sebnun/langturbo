@@ -27,7 +27,9 @@ export const runDoctorCron = async () => {
         },
         // curl -sL "https://www.deeplydiscussingdexter.com/feed/podcast/" | wc -c
         // 70794
-        requestSize: 10000,
+        // curl -sL "https://feeds.captivate.fm/causepods/" | wc -c
+        // 1042194
+        requestSize: 50000,
       });
 
       podcast = parsedPodcast.podcast;
