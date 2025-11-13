@@ -16,7 +16,7 @@ if (jobType === "scraper") {
   cron.schedule("48 5 * * *", runScraperCron);
 } else if (jobType === "doctor") {
   // Every hour
-  cron.schedule("7 * * * *", runDoctorCron);
+  cron.schedule("5 * * * *", runDoctorCron);
 } else if (jobType === "popularizer") {
   // At 06:00 every day, takes about 3 hours
   cron.schedule("0 6 * * *", runPopularizerCron);
