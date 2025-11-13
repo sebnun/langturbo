@@ -1,17 +1,16 @@
 import { db } from "../db/index.ts";
 import { showsTable } from "../db/schema.ts";
-import { podcastXmlParser, type Episode, type Podcast } from "podcast-xml-parser";
+import { podcastXmlParser, type Podcast } from "podcast-xml-parser";
 import { eq, sql, inArray } from "drizzle-orm";
 import { stripHtml } from "../lib/utils.ts";
 
 // Goal is to keep info up to date and remove unreachable (by feed) podcasts
 
 export const runDoctorCron = async () => {
-  console.log("Running doctor cron job", new Date());
-  const shows = await db.select().from(showsTable).orderBy(showsTable.health_checked_at).limit(1000);
+  console.log("Running doctor cron job");
+  const shows = await db.select().from(showsTable).orderBy(showsTable.health_checked_at).limit(700);
 
   const toDeleteIds = [];
-  const toUpdatePromises = [];
 
   for (const show of shows) {
     if (show.source_url.startsWith("https://www.langturbo.com")) {
@@ -28,7 +27,7 @@ export const runDoctorCron = async () => {
         },
         // curl -sL "https://www.deeplydiscussingdexter.com/feed/podcast/" | wc -c
         // 70794
-        requestSize: 50000 // 50000 is safe
+        requestSize: 30000,
       });
 
       podcast = parsedPodcast.podcast;
@@ -40,22 +39,20 @@ export const runDoctorCron = async () => {
     }
 
     // RSS feed might have different data than itunes processor, but should be similar enough
-    toUpdatePromises.push(
-      db
-        .update(showsTable)
-        .set({
-          title: podcast.title ? podcast.title : show.title,
-          description: podcast.description ? stripHtml(podcast.description) : show.description,
-          // This is new
-          show_url: podcast.link,
-          author: podcast.itunesAuthor ? podcast.itunesAuthor : show.author,
-          health_checked_at: sql`NOW()`,
-        })
-        .where(eq(showsTable.id, show.id))
-    );
+    await db
+      .update(showsTable)
+      .set({
+        title: podcast.title ? podcast.title : show.title,
+        description: podcast.description ? stripHtml(podcast.description) : show.description,
+        // This is new
+        show_url: podcast.link,
+        author: podcast.itunesAuthor ? podcast.itunesAuthor : show.author,
+        health_checked_at: sql`NOW()`,
+      })
+      .where(eq(showsTable.id, show.id));
   }
 
-  await Promise.all([db.delete(showsTable).where(inArray(showsTable.id, toDeleteIds)), ...toUpdatePromises]);
+  await db.delete(showsTable).where(inArray(showsTable.id, toDeleteIds));
 
   console.log(`Doctor cron job completed. Deleted ${toDeleteIds.length} shows.`);
 };
