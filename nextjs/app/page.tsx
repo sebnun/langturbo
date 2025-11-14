@@ -30,12 +30,12 @@ export default function Home() {
               className="bg-colorprimary font-bold px-4 py-2 items-center hover:opacity-90"
             >
               <Image src={PatreonImage} height={14} width={14} alt="TikTok" className="mr-2 inline align-baseline" />
-              Support on Patreon
+              Support me on Patreon
             </Link>
           </div>
 
           <div>
-            <h1 className="font-old-standard-tt scroll-m-20 text-5xl font-extrabold leading-normal lg:text-6xl my-6">
+            <h1 className="font-old-standard-tt scroll-m-20 text-5xl font-extrabold md:leading-normal lg:text-6xl my-6">
               Learn languages{" "}
               <a
                 href="#start"
@@ -44,7 +44,7 @@ export default function Home() {
                 faster
               </a>{" "}
             </h1>
-            <h2 className="font-old-standard-tt scroll-m-20 text-3xl leading-normal lg:text-4xl my-6">
+            <h2 className="font-old-standard-tt scroll-m-20 text-3xl md:leading-normal lg:text-4xl my-6">
               with podcasts and the latest research, 100% free.
             </h2>
           </div>
@@ -53,7 +53,7 @@ export default function Home() {
       </section>
       <main className="bg-colorprimary " id="start">
         <div className="max-w-6xl mx-auto p-6">
-          <h1 className="font-old-standard-tt scroll-m-20 text-5xl font-extrabold leading-normal lg:text-6xl my-6 text-center">
+          <h1 className="font-old-standard-tt scroll-m-20 text-5xl font-extrabold md:leading-normal lg:text-6xl my-6 text-center">
             What language do you want to learn?
           </h1>
           <article className="py-12">

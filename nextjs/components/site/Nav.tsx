@@ -15,7 +15,7 @@ export default async function Nav() {
 
       <Link prefetch={false} href="/" className="bg-colorprimary font-bold px-4 py-2 items-center hover:opacity-90">
         <Image src={PatreonImage} height={14} width={14} alt="TikTok" className="mr-2 inline align-baseline" />
-        Support on Patreon
+        Support me on Patreon
       </Link>
     </nav>
   );

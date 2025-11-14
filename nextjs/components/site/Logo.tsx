@@ -1,13 +1,11 @@
 import Image from "next/image";
 import LogoImage from "../../public/images/logo.svg";
 
-import { cn } from "@/lib/utils";
-
 
 export default function LogoTextSpan() {
   return (
     <span
-      className="text-white text-4xl font-handjet"
+      className="text-white text-4xl font-handjet hidden sm:inline-block"
     >
       LangTurbo
     </span>

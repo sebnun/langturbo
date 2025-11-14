@@ -18,7 +18,7 @@ export default async function AppLayout({ children }: PropsWithChildren) {
           href="/"
           className="bg-colorprimary font-bold rounded-full px-4 py-2 items-center hover:opacity-90"
         >
-          Support on Patreon
+          Support me on Patreon
         </Link>
       </nav>
       {children}
