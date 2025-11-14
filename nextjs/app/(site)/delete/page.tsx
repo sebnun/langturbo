@@ -5,7 +5,7 @@ export const metadata = {
 export default async function Delete() {
   return (
     <main className="flex flex-col flex-1 justify-center rounded-lg bg-colorscreenbackground">
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-center mb-6 font-proza">
+      <h1 className="font-old-standard-tt scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-center mb-6 font-proza">
         Request Account Termination
       </h1>
       <article className="ml-auto mr-auto space-y-4 text-center mt-4 px-4 max-w-lg">

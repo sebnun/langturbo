@@ -109,7 +109,7 @@ export default async function Word({ params }: { params: Promise<{ slug: string;
           }),
         }}
       /> */}
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6">{wordRows[0].word}</h1>
+      <h1 className="font-old-standard-tt scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6">{wordRows[0].word}</h1>
       <article className="prose prose-invert md:prose-lg max-w-none my-12">
         <p>
           This is the {wordRows[0].frequency + 1}

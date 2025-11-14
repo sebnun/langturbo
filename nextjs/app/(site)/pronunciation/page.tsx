@@ -9,7 +9,7 @@ export const metadata = {
 export default async function FrequencyLists() {
   return (
     <main className="max-w-6xl mx-auto p-6">
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6">Frequency Lists</h1>
+      <h1 className="font-old-standard-tt scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6">Frequency Lists</h1>
       <article className="py-12">
         {[...new Set(Object.values(languageIds))]
           .filter((id) => id !== 1)

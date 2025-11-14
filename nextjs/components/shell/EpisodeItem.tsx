@@ -7,47 +7,35 @@ const EpisodeItem = ({
   showImageUrl,
   title,
   showTitle,
-  duration,
-  date,
+  showAuthor,
 }: {
   id: string;
   showId: string;
   showImageUrl: string;
   title: string;
   showTitle: string;
-  duration?: string;
-  date?: string;
+  showAuthor?: string | null;
 }) => {
   return (
-    <Link
-      prefetch={false}
-      key={id}
-      href={`/player?id=${encodeURIComponent(id)}&podcastId=${"todo"}&title=${encodeURIComponent(title)}`}
-      className="m-4 border-red-200 border-4 flex flex-1"
-    >
-      <div className="rounded-md flex-1">
-        <Image
-          unoptimized // This count towards the free limit
-          width={200}
-          height={200}
-          src={showImageUrl}
-          alt={showTitle}
-          className="object-cover transition-all hover:scale-105 aspect-square"
-        />
+    <div className="relative hover:bg-black flex justify-between items-center space-x-2 min-w-xl">
+      <div className="rounded-md flex-none">
+        <Image width={120} height={120} src={showImageUrl} alt={showTitle} className="object-cover aspect-square" />
       </div>
-      <div className="space-y-1 text-sm">
-        <h3 title={title} className="leading-normal font-medium text-md truncate">
+      <div className="flex-1 overflow-clip">
+        <Link href="jhgj" title={title} className="leading-normal font-medium text-md truncate">
+          <span className="absolute inset-0"></span>
           {title}
-        </h3>
-        {date && duration && (
-          <div className="flex justify-between items-center">
-            <span className="text-xs text-muted-foreground">{date}</span>
-            <code className="text-xs">{duration}</code>
+        </Link>
+
+        <div>
+          <div>
+            <p className="text-xs">{showTitle}</p>
+            <p className="text-xs">{showAuthor}</p>
           </div>
-        )}
+        </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
-export default EpisodeItem
+export default EpisodeItem;

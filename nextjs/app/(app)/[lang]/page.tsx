@@ -44,9 +44,9 @@ export default async function AppHomePage({ params }: { params: Promise<{ lang: 
   // cat 2
 
   return (
-    <main>
+    <main className="m-2 bg-colorscreenbackground rounded-md">
       <h1>Now playing</h1>
-      <section className="flex overflow-x-auto scrollbar-hide border-amber-200 border-2">
+      <section className="flex overflow-x-scroll scrollbar-hide space-x-2">
         {episodeShowRows.map((row) => (
           <EpisodeItem
             key={row.episodes.id}
@@ -55,6 +55,22 @@ export default async function AppHomePage({ params }: { params: Promise<{ lang: 
             showId={row.shows!.id}
             showImageUrl={row.shows!.image_url}
             showTitle={row.shows!.title}
+            showAuthor={row.shows?.author}
+          />
+        ))}
+      </section>
+
+           <h1>Top podcasts</h1>
+      <section className="flex overflow-x-scroll scrollbar-hide space-x-2">
+        {episodeShowRows.map((row) => (
+          <EpisodeItem
+            key={row.episodes.id}
+            id={row.episodes.id}
+            title={row.episodes.title}
+            showId={row.shows!.id}
+            showImageUrl={row.shows!.image_url}
+            showTitle={row.shows!.title}
+            showAuthor={row.shows?.author}
           />
         ))}
       </section>

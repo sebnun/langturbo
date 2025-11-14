@@ -2,7 +2,8 @@ import Link from "next/link";
 import IosImage from "../../public/images/ios.svg";
 import AndroidImage from "../../public/images/android.svg";
 import XImage from "../../public/images/x.svg";
-import YoutubeImage from "../public/images/youtube.svg";
+//import YoutubeImage from "../public/images/youtube.svg";
+import PatreonImage from "../../public/images/patreon.svg";
 // import TiktokImage from "../../public/images/tiktok.svg";
 import RSSImage from "../../public/images/rss.svg";
 import Image from "next/image";
@@ -15,7 +16,7 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
   return (
     <footer
       className={cn(
-        !isHome && "border-t border-colorcardbackground",
+        !isHome && "border-t border-white",
         "max-w-6xl mx-auto p-6 py-12 flex flex-col-reverse text-center md:flex-row md:space-y-0 md:justify-between md:text-left bg-black"
       )}
     >
@@ -84,10 +85,9 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
         </div>
       )} */}
 
-       <div className="mt-12 md:mt-0">
+      <div className="mt-12 md:mt-0">
         <p className="font-bold mb-3">FREE TOOLS</p>
         <div className="flex flex-col space-y-3 justify-center mx-auto text-center">
-          
           <Link
             className="relative block w-fit mx-auto md:mx-0 py-1
              before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
@@ -107,11 +107,20 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
             className="relative block w-fit mx-auto md:mx-0 py-1
              before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
              after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
+            href="/contact"
+          >
+            <Image src={PatreonImage} height={14} width={14} alt="TikTok" className="mr-2 inline align-baseline" />
+            Patreon
+          </Link>
+          <Link
+            className="relative block w-fit mx-auto md:mx-0 py-1
+             before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
             href="https://x.com/LangTurbo"
           >
             <Image src={XImage} height={14} width={14} alt="X" className="mr-2 inline align-baseline" />X
           </Link>
-           {/* <Link className="relative block w-fit mx-auto md:mx-0 py-1
+          {/* <Link className="relative block w-fit mx-auto md:mx-0 py-1
              before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
              after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300" href="/contact">
             <Image src={YoutubeImage} height={14} width={14} alt="YouTube" className="mr-2 inline align-baseline" />

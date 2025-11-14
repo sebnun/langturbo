@@ -10,7 +10,7 @@ export default async function BlogList() {
 
   return (
     <main className="max-w-6xl mx-auto p-6">
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6">Blog</h1>
+      <h1 className="font-old-standard-tt scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6">Blog</h1>
       <article className="py-12">
         {allBlogs
           .sort((a, b) => {
@@ -31,7 +31,7 @@ export default async function BlogList() {
                     <code className="flex justify-center">
                       <Link
                         href={`/blog/${post.metadata.category.toLowerCase()}`}
-                        className="rounded-full bg-colorprimary text-sm px-2 tabular-nums"
+                        className="bg-colorprimary text-sm px-2 tabular-nums"
                       >
                         {post.metadata.category}
                       </Link>
