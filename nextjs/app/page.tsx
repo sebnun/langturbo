@@ -7,6 +7,7 @@ import ChevronImage from "../public/images/chevronblue.svg";
 import Link from "next/link";
 import Image from "next/image";
 import PatreonImage from "../public/images/patreon.svg";
+import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "LangTurbo - Learn Languages with Podcasts",
@@ -24,36 +25,34 @@ export default function Home() {
               <LogoIcon />
               <LogoTextSpan />
             </div>
-            <Link
-              prefetch={false}
-              href="/"
-              className="bg-colorprimary font-bold px-4 py-2 items-center hover:opacity-90"
-            >
-              <Image src={PatreonImage} height={14} width={14} alt="TikTok" className="mr-2 inline align-baseline" />
-              Support me on Patreon
-            </Link>
+
+            <Button size="lg" asChild>
+              <Link prefetch={false} href="/">
+                <Image src={PatreonImage} height={14} width={14} alt="Patreon" /> Support me on Patreon
+              </Link>
+            </Button>
           </div>
 
           <div>
-            <h1 className="font-old-standard-tt scroll-m-20 text-5xl font-extrabold md:leading-normal lg:text-6xl my-6">
+            <h1 className="font-cormorant-garamond scroll-m-20 text-5xl font-extrabold md:leading-normal lg:text-6xl my-6">
               Learn languages{" "}
               <a
                 href="#start"
-                className="italic underline decoration-colorprimary decoration-4 underline-offset-6 lg:decoration-8 lg:underline-offset-12 "
+                className="italic underline decoration-primary decoration-4 underline-offset-6 lg:decoration-8 lg:underline-offset-12 "
               >
                 faster
               </a>{" "}
             </h1>
-            <h2 className="font-old-standard-tt scroll-m-20 text-3xl md:leading-normal lg:text-4xl my-6">
+            <h2 className="font-cormorant-garamond scroll-m-20 text-3xl md:leading-normal lg:text-4xl my-6">
               with podcasts and the latest research, 100% free.
             </h2>
           </div>
         </div>
         <LanguagesMarquee />
       </section>
-      <main className="bg-colorprimary " id="start">
+      <main className="bg-primary" id="start">
         <div className="max-w-6xl mx-auto p-6">
-          <h1 className="font-old-standard-tt scroll-m-20 text-5xl font-extrabold md:leading-normal lg:text-6xl my-6 text-center">
+          <h1 className="font-cormorant-garamond scroll-m-20 text-5xl font-extrabold md:leading-normal lg:text-6xl my-6 text-center">
             What language do you want to learn?
           </h1>
           <article className="py-12">
@@ -62,17 +61,24 @@ export default function Home() {
                 .map((id) => getLanguageNameById(id))
                 .sort()
                 .map((language) => (
-                  <Link
-                    key={language}
-                    prefetch={false}
-                    className={
-                      "bg-white font-bold hover:opacity-90 p-3 px-6 flex justify-between items-center text-colorprimary"
-                    }
-                    href={`/${getLanguageCodeByName(language)}`}
-                  >
-                    {`${language.charAt(0).toUpperCase() + language.slice(1)}`}
-                    <Image src={ChevronImage} height={8} width={8} alt="Next" className="inline" style={{}} />
-                  </Link>
+                  // <Button size="lg" variant='outline' className="bg-white" asChild key={language}>
+                    <Link
+                      prefetch={false}
+                      key={language}
+                      className={
+                        "bg-white border font-bold hover:opacity-90 p-3 px-6 flex justify-between items-center text-primary"
+                      }
+                      href={`/${getLanguageCodeByName(language)}`}
+                    >
+                      {`${language.charAt(0).toUpperCase() + language.slice(1)}`}
+                      <Image
+                        src={ChevronImage}
+                        height={8}
+                        width={8}
+                        alt={`Start learning ${language.charAt(0).toUpperCase() + language.slice(1)}`}
+                      />
+                    </Link>
+                  // </Button>
                 ))}
             </div>
           </article>

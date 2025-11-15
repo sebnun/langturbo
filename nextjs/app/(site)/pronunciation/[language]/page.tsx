@@ -4,6 +4,8 @@ import Link from "next/link";
 import { db } from "@/db";
 import { listsTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { Button } from "@/components/ui/button";
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
 export async function generateStaticParams() {
   return [...new Set(Object.values(languageIds))]
@@ -42,7 +44,7 @@ export default async function FrequencyLanguageList({
 
   return (
     <main className="max-w-6xl mx-auto p-6">
-      <h1 className="font-old-standard-tt scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6">
+      <h1 className="font-cormorant-garamond scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6">
         {`${capitalizeFirstLetter(language)} Frequency List`}
       </h1>
       <article className="py-12">
@@ -50,7 +52,7 @@ export default async function FrequencyLanguageList({
           <div key={i} className="flex flex-col mb-6">
             <div className="w-full flex flex-col md:flex-row space-x-0 space-y-2 md:space-x-2 md:space-y-0 items-center">
               <div className="space-x-2">
-                <code className=" text-colortextsubdued tabular-nums text-sm text-center md:text-left">
+                <code className="text-muted-foreground tabular-nums text-sm text-center md:text-left">
                   # {(page - 1) * 1000 + i + 1}
                 </code>
               </div>
@@ -58,7 +60,7 @@ export default async function FrequencyLanguageList({
                 href={`/pronunciation/${language}/${row.word}-${row.id}`}
                 className="relative block w-fit mx-auto md:mx-0 py-1
              before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
-             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
               >
                 {row.word}
               </Link>
@@ -66,8 +68,20 @@ export default async function FrequencyLanguageList({
           </div>
         ))}
         <div className="flex justify-between mt-12">
-          {page > 1 && <Link href={`/pronunciation/${language}?page=${page - 1}`}>&lsaquo; Previous</Link>}
-          {wordRows.length === 1000 && <Link href={`/pronunciation/${language}?page=${page + 1}`}>Next &rsaquo;</Link>}
+          {page > 1 && (
+            <Button variant="secondary" asChild>
+              <Link href={`/pronunciation/${language}?page=${page - 1}`}>
+                <ArrowLeftIcon width={14} height={14} /> Previous
+              </Link>
+            </Button>
+          )}
+          {wordRows.length === 1000 && (
+            <Button variant="secondary" asChild>
+              <Link href={`/pronunciation/${language}?page=${page + 1}`}>
+                Next <ArrowRightIcon width={14} height={14} />
+              </Link>
+            </Button>
+          )}
         </div>
       </article>
     </main>

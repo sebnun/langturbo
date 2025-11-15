@@ -1,26 +1,16 @@
-import { PropsWithChildren } from "react";
-import LogoTextSpan, { LogoIcon } from "@/components/site/Logo";
-import Link from "next/link";
+import Nav from "@/components/shell/Nav";
 
-export default async function AppLayout({ children }: PropsWithChildren) {
+export default async function AppLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
   return (
     <>
-      <nav className="flex justify-between items-center p-4">
-        <Link href="/" className="flex items-center space-x-2 ">
-          <LogoIcon />
-          <span className="hidden sm:inline">
-            <LogoTextSpan />
-          </span>
-        </Link>
-
-        <Link
-          prefetch={false}
-          href="/"
-          className="bg-colorprimary font-bold rounded-full px-4 py-2 items-center hover:opacity-90"
-        >
-          Support me on Patreon
-        </Link>
-      </nav>
+      <Nav lang={lang} />
       {children}
     </>
   );

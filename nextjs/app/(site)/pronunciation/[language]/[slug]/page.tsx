@@ -109,7 +109,7 @@ export default async function Word({ params }: { params: Promise<{ slug: string;
           }),
         }}
       /> */}
-      <h1 className="font-old-standard-tt scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6">{wordRows[0].word}</h1>
+      <h1 className="font-cormorant-garamond scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl my-6">{wordRows[0].word}</h1>
       <article className="prose prose-invert md:prose-lg max-w-none my-12">
         <p>
           This is the {wordRows[0].frequency + 1}
@@ -174,7 +174,7 @@ export default async function Word({ params }: { params: Promise<{ slug: string;
             rel="sponsored"
             className="no-underline relative block w-fit mx-auto md:mx-0 py-1
              before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
-             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
           >
             {capitalizeFirstLetter(language)} Language Learning Resources at Amazon
           </Link>

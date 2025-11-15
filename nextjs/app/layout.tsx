@@ -3,12 +3,11 @@ import "overlayscrollbars/overlayscrollbars.css";
 import "./globals.css";
 import { baseUrl } from "./sitemap";
 import ScrollableBody from "@/components/shell/ScrollableBody";
-import { Old_Standard_TT, Handjet } from 'next/font/google'
+import { Cormorant_Garamond, Handjet } from 'next/font/google'
  
-const oldStandardTT = Old_Standard_TT({
-  weight: ['400'],
+const cormorantGaramond = Cormorant_Garamond({
   subsets: ['latin'],
-  variable: '--font-old-standard-tt',
+  variable: '--font-cormorant-garamond',
 })
 
 const handjet = Handjet({
@@ -42,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`scroll-smooth ${oldStandardTT.variable} ${handjet.variable}`} data-overlayscrollbars-initialize>
+    <html lang="en" className={`dark scroll-smooth ${cormorantGaramond.variable} ${handjet.variable}`} data-overlayscrollbars-initialize>
       <ScrollableBody>{children}</ScrollableBody>
     </html>
   );

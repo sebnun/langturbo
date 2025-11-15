@@ -211,7 +211,7 @@ export default function Surprise() {
     <Link
       className="relative block w-fit mx-auto md:mx-0 py-1
              before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
-             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-colorprimary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
       onClick={handleClick}
       href="#"
     >

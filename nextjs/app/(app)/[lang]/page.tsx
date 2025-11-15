@@ -4,6 +4,7 @@ import { episodesTable, showsTable } from "@/db/schema";
 import { CATEGORIES, LANGUAGE_CATEGORIES } from "@/lib/categories";
 import { getLanguageIdByName, languageIds } from "@/lib/languages-legacy";
 import { eq } from "drizzle-orm";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 
 export const metadata = {
   title: "Discover Podcasts - LangTurbo",
@@ -44,8 +45,19 @@ export default async function AppHomePage({ params }: { params: Promise<{ lang: 
   // cat 2
 
   return (
-    <main className="m-2 bg-colorscreenbackground rounded-md">
-      <h1>Now playing</h1>
+    <main className="bg-colorscreenbackground backdrop-blur-md">
+      <div className="flex items-center justify-between p-6">
+        <h1 className="text-xl md:text-2xl font-extrabold ">Now playing</h1>
+        <div className="flex items-center space-x-3">
+          <button className="bg-white p-2 hover:opacity-90  text-black">See all</button>
+          <button className="bg-white p-2 hover:opacity-90 rounded-full">
+            <ChevronLeft color="black" />
+          </button>
+          <button className="bg-white p-2 hover:opacity-90 rounded-full">
+            <ChevronRight color="black" />
+          </button>
+        </div>
+      </div>
       <section className="flex overflow-x-scroll scrollbar-hide space-x-2">
         {episodeShowRows.map((row) => (
           <EpisodeItem
@@ -60,7 +72,7 @@ export default async function AppHomePage({ params }: { params: Promise<{ lang: 
         ))}
       </section>
 
-           <h1>Top podcasts</h1>
+      <h1 className="font-cormorant-garamond text-3xl md:text-4xl font-extrabold p-8">Now playing</h1>
       <section className="flex overflow-x-scroll scrollbar-hide space-x-2">
         {episodeShowRows.map((row) => (
           <EpisodeItem
