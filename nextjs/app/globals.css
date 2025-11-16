@@ -198,7 +198,13 @@
       transform: translateY(calc(-100% - var(--gap)));
     }
   }
-}
+  --animate-skeleton: skeleton 2s -1s infinite linear
+;
+  @keyframes skeleton {
+  to {
+    background-position: -200% 0;
+    }
+  }}
 
 @layer base {
   button:not(:disabled),
@@ -217,7 +223,6 @@
   }
 }
 
-
 .os-scrollbar {
   --os-size: 12px;
   --os-handle-bg: white;
@@ -231,4 +236,13 @@ body {
   color: white;
   background: black;
   font-family: system-ui, Arial, Helvetica, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
