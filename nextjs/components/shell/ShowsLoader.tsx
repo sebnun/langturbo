@@ -3,7 +3,7 @@ import { showsTable } from "@/db/schema";
 import { and, arrayContains, eq } from "drizzle-orm";
 import ShowItem from "./ShowItem";
 
-const ShowsLoader = async ({ lang, catId }: { lang: string; catId?: number }) => {
+const ShowsLoader = async ({ lang, limit, catId }: { lang: string; limit: number, catId?: number }) => {
   const showsRows = catId
     ? await db
         .select()
@@ -16,10 +16,10 @@ const ShowsLoader = async ({ lang, catId }: { lang: string; catId?: number }) =>
         .from(showsTable)
         .where(eq(showsTable.language_code, lang))
         .orderBy(showsTable.popularity)
-        .limit(20);
+        .limit(limit);
 
   return showsRows.map((row) => (
-    <ShowItem key={row.id} id={row.id} title={row.title} imageUrl={row.image_url} author={row.author} />
+    <ShowItem lang={lang} key={row.id} id={row.id} title={row.title} imageUrl={row.image_url} author={row.author} />
   ));
 };
 

@@ -65,7 +65,7 @@ export default async function AppHomePage({ params }: { params: Promise<{ lang: 
               <ShowItemSkeleton key={i} />
             ))}
         >
-          <ShowsLoader lang={lang} />
+          <ShowsLoader lang={lang} limit={20} />
         </Suspense>
       </section>
 
@@ -89,7 +89,7 @@ export default async function AppHomePage({ params }: { params: Promise<{ lang: 
                     <ShowItemSkeleton key={i} />
                   ))}
               >
-                <ShowsLoader lang={lang} catId={tlc.id} />
+                <ShowsLoader lang={lang} catId={tlc.id} limit={20} />
               </Suspense>
             </section>
           </React.Fragment>
