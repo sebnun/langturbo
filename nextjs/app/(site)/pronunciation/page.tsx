@@ -3,7 +3,7 @@ import { getLanguageNameById, languageIds } from "@/lib/languages-legacy";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Frequency Lists - LangTurbo",
+  title: "Frequency Lists",
 };
 
 export default async function FrequencyLists() {

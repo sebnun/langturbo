@@ -9,7 +9,7 @@ const EpisodesLoader = async ({ lang }: { lang: string }) => {
     .from(episodesTable)
     .where(eq(episodesTable.language_code, lang))
     .orderBy(episodesTable.last_played_at)
-    .limit(3)
+    .limit(10)
     .leftJoin(showsTable, eq(showsTable.id, episodesTable.show_id));
 
   return episodeShowRows.map((row) => (

@@ -2,7 +2,7 @@ import { Skeleton } from "../ui/skeleton";
 
 const ShowItemSkeleton = () => {
   return (
-    <div className="relative hover:bg-secondary p-3 space-y-3">
+    <div className="relative hover:bg-secondary p-3 space-y-3 border">
       <div className="aspect-square w-36 h-36">
         <Skeleton className="aspect-square w-36 h-36" />
       </div>

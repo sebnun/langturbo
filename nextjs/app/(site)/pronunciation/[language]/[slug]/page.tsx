@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const word = decodeURIComponent(slug.split("-")[0]);
 
   return {
-    title: `${word} ${capitalizeFirstLetter(language)} Pronunciation & Example Sentences - LangTurbo`,
+    title: `${word} ${capitalizeFirstLetter(language)} Pronunciation & Example Sentences`,
   };
 }
 

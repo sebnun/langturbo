@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ language:
   const language = (await params).language;
 
   return {
-    title: `${capitalizeFirstLetter(language)} Frequency List - LangTurbo`,
+    title: `${capitalizeFirstLetter(language)} Frequency List`,
   };
 }
 

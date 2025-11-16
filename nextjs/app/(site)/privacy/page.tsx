@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Privacy Policy - LangTurbo",
+  title: "Privacy Policy",
 };
 
 export default async function Privacy() {

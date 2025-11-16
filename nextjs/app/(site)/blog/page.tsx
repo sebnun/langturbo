@@ -2,7 +2,7 @@ import { formatDate, getBlogPosts } from "@/lib/blog";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Blog - LangTurbo",
+  title: "Blog",
 };
 
 export default async function BlogList() {

@@ -1,5 +1,5 @@
 import { CATEGORIES, LANGUAGE_CATEGORIES } from "@/lib/categories";
-import { languageIds } from "@/lib/languages-legacy";
+import { getLanguageNameById, languageIds } from "@/lib/languages-legacy";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import SliderButtons from "@/components/shell/SliderButtons";
@@ -9,9 +9,13 @@ import EpisodeItemSkeleton from "@/components/shell/EpisodeItemSkeleton";
 import ShowsLoader from "@/components/shell/ShowsLoader";
 import ShowItemSkeleton from "@/components/shell/ShowItemSkeleton";
 
-export const metadata = {
-  title: "Discover Podcasts - LangTurbo",
-};
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+
+  return {
+    title: `Discover ${getLanguageNameById(languageIds[lang])} podcasts`,
+  };
+}
 
 export default async function AppHomePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -24,13 +28,17 @@ export default async function AppHomePage({ params }: { params: Promise<{ lang: 
     }))
     .sort((a, b) => a.name.localeCompare(b.name));
 
-
   return (
     <main className="pb-6">
-      <h1 className="p-6 pb-3 text-xl md:text-2xl font-extrabold ">Now playing</h1>
-      <section className="px-3 divide-y divide-muted-foreground/30">
+      <div className="flex items-center justify-between p-6 pb-3">
+        <h1 className="text-xl md:text-2xl font-extrabold ">Now playing</h1>
+        <div className="flex items-center space-x-3">
+          <SliderButtons targetId="now" />
+        </div>
+      </div>
+      <section id="now" className="px-3 flex overflow-x-scroll scrollbar-hide space-x-3">
         <Suspense
-          fallback={Array(3)
+          fallback={Array(10)
             .fill(0)
             .map((_, i) => (
               <EpisodeItemSkeleton key={i} />
@@ -44,7 +52,7 @@ export default async function AppHomePage({ params }: { params: Promise<{ lang: 
         <h1 className="text-xl md:text-2xl font-extrabold ">Top podcasts</h1>
         <div className="flex items-center space-x-3">
           <Button variant="outline" asChild>
-            <Link href="/">See all</Link>
+            <Link href={`/${lang}/cat/${encodeURIComponent(`Top Podcasts-0`)}`}>See all</Link>
           </Button>
           <SliderButtons targetId="top" />
         </div>
@@ -68,7 +76,7 @@ export default async function AppHomePage({ params }: { params: Promise<{ lang: 
               <h1 className="text-xl md:text-2xl font-extrabold ">{tlc.name}</h1>
               <div className="flex items-center space-x-3">
                 <Button variant="outline" asChild>
-                  <Link href="/">See all</Link>
+                  <Link href={`/${lang}/cat/${encodeURIComponent(`${tlc.name}-${tlc.id}`)}`}>See all</Link>
                 </Button>
                 <SliderButtons targetId={`cat${tlc.id}`} />
               </div>

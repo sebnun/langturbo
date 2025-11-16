@@ -18,11 +18,14 @@ const handjet = Handjet({
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
-  title: "LangTurbo - Learn Languages Faster",
+    title: {
+    template: '%s | LangTurbo',
+    default: 'LangTurbo | Learn Languages Faster'
+  },
   description: "LangTurbo takes you from intermediate to fluent in record time using podcasts",
 
   openGraph: {
-    title: "LangTurbo - Learn Languages Faster",
+    title: "LangTurbo | Learn Languages Faster",
     description: "LangTurbo takes you from intermediate to fluent in record time using podcasts",
     url: baseUrl,
     siteName: "LangTurbo",

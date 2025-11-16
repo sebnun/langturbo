@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Play } from "lucide-react";
+import { shimmer, toBase64 } from "@/lib/utils";
 
 const ShowItem = ({
   id,
@@ -14,7 +15,7 @@ const ShowItem = ({
   author?: string | null;
 }) => {
   return (
-    <div className="relative hover:bg-secondary p-3 space-y-3">
+    <div className="relative hover:bg-secondary p-3 space-y-3 border">
       <div className="aspect-square w-36 h-36">
       <Image
         // This is the intrinsic size, images do not come just from itunes, so this not optimal, but KISS
@@ -22,7 +23,8 @@ const ShowItem = ({
         height={600}
         src={imageUrl}
         alt={title}
-        className="object-cover"
+        className="object-cover border"
+        placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(600, 600))}`}
       />
       </div>
       <div className="truncate flex flex-col justify-center w-36">

@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   const category = (await params).category;
 
   return {
-    title: `${capitalizeFirstLetter(category)} - LangTurbo`,
+    title: `${capitalizeFirstLetter(category)}`,
   };
 }
 
