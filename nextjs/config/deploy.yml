@@ -47,14 +47,15 @@ builder:
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 #
 env:
-  # clear:
-  #   DB_HOST: 192.168.0.2
+  clear:
+     BETTER_AUTH_URL: https://www.langturbo.com
   secret:
     - NEXT_SERVER_ACTIONS_ENCRYPTION_KEY
     - POSTGRES_PASSWORD
     - GOOGLE_CLOUD_PROJECT
     - GOOGLE_CLOUD_LOCATION
     - GOOGLE_KEY_FILE
+    - BETTER_AUTH_SECRET
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal app logs -r job" will tail logs from the first server in the job section.
