@@ -66,7 +66,7 @@ export default function Home() {
                       prefetch={false}
                       key={language}
                       className={
-                        "bg-white border font-bold hover:opacity-90 p-3 px-6 flex justify-between items-center text-primary"
+                        "bg-white font-bold hover:opacity-90 p-3 px-6 flex justify-between items-center text-primary rounded-md"
                       }
                       href={`/${getLanguageCodeByName(language)}`}
                     >

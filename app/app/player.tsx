@@ -18,24 +18,17 @@ import Translation from "@/components/Translation";
 import WordModal from "@/components/WordModal";
 import { decodeUrl, useTitle } from "@/utils";
 import { SEEK_FORWARD_SECONDS } from "@/utils/constants";
-import * as Burnt from "burnt";
-import * as Speech from "expo-speech";
-import BookmarkButton from "@/components/BookmarkButton";
-import QueueButton from "@/components/QueueButton";
 
 export default function PlayerScreen() {
   const router = useRouter();
-  const { id, podcastId, title, podcastTitle, podcastImageUrl, playbackPercentage, playbackStart } =
+  const { id, podcastId, title, podcastTitle, podcastImageUrl } =
     useLocalSearchParams() as {
       id: string;
       podcastId: string;
       title: string;
       podcastTitle: string;
       podcastImageUrl: string;
-      playbackPercentage?: string;
-      playbackStart?: string;
     };
-  useTitle(title);
 
   const navigation = useNavigation();
 
@@ -129,17 +122,7 @@ export default function PlayerScreen() {
   }, [selectedWord]);
 
   useEffect(() => {
-    if (error && error === "PAYMENT_ERROR") {
-      //console.log("shouldUpgrade");
-      Burnt.toast({
-        title: `You need to upgrade to play this episode`,
-        preset: "error",
-      });
-
-      // Need to reset here, track subscription not called?
-      resetPlayer();
-      router.replace("/profile");
-    } else if (error && error === "DOWNLOAD_ERROR") {
+    if (error && error === "DOWNLOAD_ERROR") {
       //console.log("download error");
       Burnt.toast({
         title: `This podcast is offline`,
@@ -161,17 +144,9 @@ export default function PlayerScreen() {
   }, [slower]);
 
   const handlePrevious = async () => {
-    if (useAppStore.getState().speak) {
-      await Speech.stop();
-    }
     const wasAutoPause = useAppStore.getState().autoPause;
     if (wasAutoPause) {
       useAppStore.setState({ autoPause: false });
-    }
-
-    const wasSpeak = useAppStore.getState().speak;
-    if (wasSpeak) {
-      useAppStore.setState({ speak: false });
     }
 
     await TrackPlayer.seekTo(prevStart);
@@ -185,30 +160,13 @@ export default function PlayerScreen() {
         }, 200)
       );
     }
-
-    if (wasSpeak) {
-      await new Promise((resolve, reject) =>
-        setTimeout(() => {
-          useAppStore.setState({ speak: true });
-          resolve(0);
-        }, 200)
-      );
-    }
   };
 
   const handleNext = async () => {
-    if (useAppStore.getState().speak) {
-      await Speech.stop();
-    }
 
     const wasAutoPause = useAppStore.getState().autoPause;
     if (wasAutoPause) {
       useAppStore.setState({ autoPause: false });
-    }
-
-    const wasSpeak = useAppStore.getState().speak;
-    if (wasSpeak) {
-      useAppStore.setState({ speak: false });
     }
 
     await TrackPlayer.seekTo(nextStart);
@@ -218,15 +176,6 @@ export default function PlayerScreen() {
       await new Promise((resolve, reject) =>
         setTimeout(() => {
           useAppStore.setState({ autoPause: true });
-          resolve(0);
-        }, 200)
-      );
-    }
-
-    if (wasSpeak) {
-      await new Promise((resolve, reject) =>
-        setTimeout(() => {
-          useAppStore.setState({ speak: true });
           resolve(0);
         }, 200)
       );
@@ -275,7 +224,6 @@ export default function PlayerScreen() {
           </ScrollView>
         )}
         <View style={styles.playbackContainer}>
-          <QueueButton />
 
           <View style={styles.playbackCenterContainer}>
             <Button disabled={!duration || prevStart === -1} onPress={handlePrevious}>
@@ -298,15 +246,6 @@ export default function PlayerScreen() {
               </Button>
             )}
           </View>
-
-          <BookmarkButton
-            disabled={!duration}
-            id={decodedId}
-            podcastId={podcastId}
-            title={title}
-            podcastTitle={podcastTitle}
-            podcastImageUrl={podcastImageUrl}
-          />
         </View>
         <Progress />
       </SafeAreaView>

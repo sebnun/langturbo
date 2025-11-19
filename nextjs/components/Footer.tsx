@@ -16,7 +16,7 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
   return (
     <footer
       className={cn(
-        !isHome && "border-t border-white",
+        !isHome && "border-t border-muted-text-foreground",
         "max-w-6xl mx-auto p-6 py-12 flex flex-col-reverse text-center md:flex-row md:space-y-0 md:justify-between md:text-left bg-black"
       )}
     >

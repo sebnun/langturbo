@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 
 export default async function Nav() {
   return (
-    <nav className="max-w-6xl mx-auto flex justify-between items-center p-6 border-b border-white">
+    <nav className="max-w-6xl mx-auto flex justify-between items-center p-6 border-b border-muted-text-foreground">
       <Link href="/" className="flex items-center space-x-2 ">
         <LogoIcon />
         <span className="hidden sm:inline">

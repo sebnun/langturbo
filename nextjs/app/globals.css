@@ -41,7 +41,7 @@
   --font-sans: ui-sans-serif, sans-serif, system-ui;
   --font-serif: Cormorant Garamond, ui-serif, serif;
   /* --font-mono: Chivo Mono, ui-monospace, monospace; */
-  --radius: 0rem;
+  --radius: 2rem;
   --shadow-x: 0;
   --shadow-y: 0px;
   --shadow-blur: 0px;
@@ -96,7 +96,7 @@
   --font-sans: Inter, ui-sans-serif, sans-serif, system-ui;
   --font-serif: Cormorant Garamond, ui-serif, serif;
   /* --font-mono: Chivo Mono, ui-monospace, monospace; */
-  --radius: 0rem;
+  --radius: 3rem;
   --shadow-x: 0;
   --shadow-y: 0px;
   --shadow-blur: 0px;
@@ -165,7 +165,7 @@
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
 
-    --font-handjet: var(--font-handjet);
+  --font-handjet: var(--font-handjet);
   --font-cormorant-garamond: var(--font-cormorant-garamond);
 
   --animate-grid: grid 15s linear infinite;
@@ -213,23 +213,13 @@
   }
 }
 
-@layer utilities {
-  .scrollbar-hide {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none; /* Chrome, Safari and Opera */
-  }
-}
-
 .os-scrollbar {
-  --os-size: 12px;
+  /* --os-size: 12px; */
   --os-handle-bg: white;
   --os-handle-bg-hover: white;
   --os-handle-bg-active: white;
-  --os-track-border-radius: 0;
-  --os-handle-border-radius: 0;
+  /* --os-track-border-radius: 0;
+  --os-handle-border-radius: 0; */
 }
 
 body {
