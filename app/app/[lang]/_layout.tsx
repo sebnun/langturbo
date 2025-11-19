@@ -1,7 +1,6 @@
 import { Stack } from "expo-router";
-import "../assets/css/body.css";
 
-export default function RootLayout() {
+export default function DiscoverLayout() {
   return (
     <Stack
       screenOptions={{
