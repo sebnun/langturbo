@@ -9,3 +9,12 @@ export const getCategories = async (categoryId: number, languageCode: string, po
     .then((response) => response.json())
     .then((json) => json.categories as CategoryResponseItem[]);
 };
+
+export const getEpisodes = async (id: string, podcastId: string) => {
+  return fetch(`${getApiEndpoint()}episodes?sourceUrl=${encodeURIComponent(id)}&showId=${podcastId}`)
+    .then((response) => response.json())
+    .then((json) => ({
+      episodes: json.episodes as PodcastEpisode[],
+      categories: json.categories as { id: number; name: string }[],
+    }));
+};

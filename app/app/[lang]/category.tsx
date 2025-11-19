@@ -1,51 +1,40 @@
-import { StyleSheet, View, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
-import {
-  colorTextSubdued,
-  sizeElementSpacing,
-  sizeScreenPadding,
-  sizeTextLargest,
-  sizeTextSmall,
-  themeStyles,
-} from "@/utils/theme";
+import { sizeElementSpacing, themeStyles } from "@/utils/theme";
 import { useEffect, useState } from "react";
+import { getCategories } from "@/utils/api";
 import PodcastItem from "@/components/PodcastItem";
 import Loading from "@/components/Loading";
 import * as Device from "expo-device";
+import { styles } from "./index";
 import TextButton from "@/components/button/TextButton";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import WebTitle from "@/components/WebTitle";
-import { getLanguageNameById, languageIds } from "@/utils/languages";
-import { getCategories } from "@/utils/api";
+import React from "react";
 
-export default function DiscoverScreen() {
-  const { lang } = useLocalSearchParams<{ lang: string }>();
+export default function CategoryScreen() {
   const router = useRouter();
+  const { lang, categoryId, categoryName, popular } = useLocalSearchParams();
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<CategoryResponseItem[]>([]);
 
-  const insets = useSafeAreaInsets();
-
   useEffect(() => {
-    getCategories(0, lang)
+    setLoading(true);
+    getCategories(+categoryId, lang as string, !!popular)
       .then(setCategories)
       .finally(() => setLoading(false));
-  }, [lang]);
+  }, [categoryId, popular]);
 
   return (
     <>
-      <WebTitle title={`Discover ${getLanguageNameById(languageIds[lang])} podcasts`} />
       <Stack.Screen
         options={{
-          headerShown: false,
+          title: categoryName as string,
         }}
       />
-
-      <View style={[themeStyles.screen, { paddingTop: insets.top }]}>
+      <View style={themeStyles.screen}>
         {loading ? (
           <Loading />
-        ) : (
+        ) : categories.length > 1 ? (
           <ScrollView style={styles.scrollView}>
             {categories.map((category) => {
               return (
@@ -56,9 +45,10 @@ export default function DiscoverScreen() {
                         router.navigate({
                           pathname: `/[lang]/category`,
                           params: {
-                            lang,
+                            lang: lang as string,
                             categoryId: category.id,
                             categoryName: category.name,
+                            popular: category.name.startsWith("Top ") ? "true" : undefined,
                           },
                         })
                       }
@@ -70,9 +60,10 @@ export default function DiscoverScreen() {
                         router.navigate({
                           pathname: `/[lang]/category`,
                           params: {
-                            lang,
+                            lang: lang as string,
                             categoryId: category.id,
                             categoryName: category.name,
+                            popular: category.name.startsWith("Top ") ? "true" : undefined,
                           },
                         })
                       }
@@ -91,29 +82,14 @@ export default function DiscoverScreen() {
               );
             })}
           </ScrollView>
+        ) : (
+          <FlashList
+            contentContainerStyle={{ padding: sizeElementSpacing }}
+            data={categories[0].podcasts}
+            renderItem={({ item }) => <PodcastItem podcast={item} segment="discover" full />}
+          />
         )}
       </View>
     </>
   );
 }
-
-export const styles = StyleSheet.create({
-  scrollView: { flex: 1 },
-  categoryView: {
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    padding: sizeScreenPadding,
-    paddingBottom: sizeElementSpacing,
-  },
-  categoryTitle: {
-    color: "white",
-    fontSize: sizeTextLargest,
-    fontWeight: "bold",
-  },
-  showMoreText: {
-    color: colorTextSubdued,
-    fontSize: sizeTextSmall,
-    fontWeight: "bold",
-  },
-});

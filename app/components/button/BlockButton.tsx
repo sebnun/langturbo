@@ -14,7 +14,7 @@ export default function BlockButton({
 }) {
   const opacity = useSharedValue(1);
   const scale = useSharedValue(1);
-  const [backgroundColor, setBackgroundColor] = useState("inherit");
+  const [backgroundColor, setBackgroundColor] = useState("transparent");
 
   const handlePressIn = () => {
     opacity.value = withSpring(0.5);
@@ -31,7 +31,7 @@ export default function BlockButton({
   };
 
   const handleHoverOut = () => {
-    setBackgroundColor("inherit");
+    setBackgroundColor("transparent");
   };
 
   const buttonStyles = disabled

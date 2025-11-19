@@ -13,3 +13,11 @@ type Podcast = {
   description?: string;
   country?: string;
 };
+
+type PodcastEpisode = {
+  title: string;
+  id: string; // URL
+  description?: string;
+  duration?: string; // Human readable
+  date: string;
+};

@@ -1,5 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { decode } from 'html-entities';
+import dayjs from "dayjs";
+import "dayjs/locale/en";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -29,19 +32,31 @@ export function getOrdinal(n: number) {
   return ord;
 }
 
-export const shimmer = (w: number, h: number) => `
-<svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <defs>
-    <linearGradient id="g">
-      <stop stop-color="#333" offset="20%" />
-      <stop stop-color="#222" offset="50%" />
-      <stop stop-color="#333" offset="70%" />
-    </linearGradient>
-  </defs>
-  <rect width="${w}" height="${h}" fill="#333" />
-  <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-  <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
-</svg>`;
+export function convertSecondsDurationToHuman(seconds?: number) {
+  if (typeof seconds !== "number" || isNaN(seconds)) {
+    return "Unknown duration";
+  }
 
-export const toBase64 = (str: string) =>
-  typeof window === "undefined" ? Buffer.from(str).toString("base64") : window.btoa(str);
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor((seconds % 3600) % 60);
+
+  const hDisplay = h > 0 ? h + ":" : "";
+  const mDisplay = m > 0 ? (m > 9 ? m + ":" : "0" + m + ":") : "00:";
+  const sDisplay = s > 9 ? s : `0${s}`;
+
+  return hDisplay + mDisplay + sDisplay;
+}
+
+export function convertDateToHuman(date: string) {
+  return dayjs(date).locale("en").format("MMMM D, YYYY");
+}
+
+export const stripHtml = (html: string) => {
+  try {
+    return decode(html.replace(/<[^>]*>?/gi, "")).trim();
+  } catch (e) {
+    console.error("Failed to strip html", html, e);
+    return "";
+  }
+};
