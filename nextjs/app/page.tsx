@@ -1,8 +1,8 @@
-import Footer from "@/components/site/Footer";
+import Footer from "@/components/Footer";
 import { getLanguageCodeByName, getLanguageNameById, languageIds } from "@/lib/languages-legacy";
-import RetroGrid from "@/components/site/RetroGrid";
-import { LanguagesMarquee } from "@/components/site/LanguagesMarquee";
-import LogoTextSpan, { LogoIcon } from "@/components/site/Logo";
+import RetroGrid from "@/components/RetroGrid";
+import { LanguagesMarquee } from "@/components/LanguagesMarquee";
+import LogoTextSpan, { LogoIcon } from "@/components/Logo";
 import ChevronImage from "../public/images/chevronblue.svg";
 import Link from "next/link";
 import Image from "next/image";
@@ -66,7 +66,7 @@ export default function Home() {
                       prefetch={false}
                       key={language}
                       className={
-                        "bg-white border hover:opacity-90 p-3 px-6 flex justify-between items-center text-primary"
+                        "bg-white border font-bold hover:opacity-90 p-3 px-6 flex justify-between items-center text-primary"
                       }
                       href={`/${getLanguageCodeByName(language)}`}
                     >

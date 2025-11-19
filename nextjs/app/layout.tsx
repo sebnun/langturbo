@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "overlayscrollbars/overlayscrollbars.css";
 import "./globals.css";
 import { baseUrl } from "./sitemap";
-import ScrollableBody from "@/components/shell/ScrollableBody";
+import ScrollableBody from "@/components/ScrollableBody";
 import { Cormorant_Garamond, Handjet } from 'next/font/google'
  
 const cormorantGaramond = Cormorant_Garamond({

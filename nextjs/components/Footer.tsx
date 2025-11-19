@@ -1,11 +1,11 @@
 import Link from "next/link";
-import IosImage from "../../public/images/ios.svg";
-import AndroidImage from "../../public/images/android.svg";
-import XImage from "../../public/images/x.svg";
+import IosImage from "../public/images/ios.svg";
+import AndroidImage from "../public/images/android.svg";
+import XImage from "../public/images/x.svg";
 //import YoutubeImage from "../public/images/youtube.svg";
-import PatreonImage from "../../public/images/patreon.svg";
-// import TiktokImage from "../../public/images/tiktok.svg";
-import RSSImage from "../../public/images/rss.svg";
+import PatreonImage from "../public/images/patreon.svg";
+// import TiktokImage from "../public/images/tiktok.svg";
+import RSSImage from "../public/images/rss.svg";
 import Image from "next/image";
 import { getLanguageCodeByName, getLanguageNameById, languageIds } from "@/lib/languages-legacy";
 import { cn } from "@/lib/utils";

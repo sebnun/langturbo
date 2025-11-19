@@ -1,8 +1,8 @@
-import LogoTextSpan, { LogoIcon } from "@/components/site/Logo";
+import LogoTextSpan, { LogoIcon } from "@/components/Logo";
 import Link from "next/link";
 import Image from "next/image";
-import PatreonImage from "../../public/images/patreon.svg";
-import { Button } from "../ui/button";
+import PatreonImage from "../public/images/patreon.svg";
+import { Button } from "./ui/button";
 
 export default async function Nav() {
   return (
