@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import AudioPlayer from "./AudioPlayer";
 import { fillCaptionsStart } from "@/utils";
 
+const SEEK_FORWARD_SECONDS = 30;
+
 export default function Transcriber({
   id,
   sourceId,
@@ -43,7 +45,30 @@ export default function Transcriber({
     }
   }, []);
 
-  useEffect(() => {}, [currentTime]);
+  useEffect(() => {
+    const realCaptionIndex = captions.findLastIndex((caption) => caption.captionStart! <= currentTime);
+    usePlayerStore.setState({
+      caption: captions[realCaptionIndex],
+    });
+
+    if (
+      !isTranscribing.current &&
+      currentTime + SEEK_FORWARD_SECONDS > processedSeconds &&
+      processedSeconds < usePlayerStore.getState().duration
+    ) {
+      isTranscribing.current = true;
+
+      postTranscription(id, lang as string, sourceId, episodeTitle, processedSeconds, fileName)
+        .then((response) => {
+          const newCaptions = fillCaptionsStart([...captions, ...response.captions]);
+          setCaptions(newCaptions);
+          setProcessedSeconds(response.processedSeconds);
+        })
+        .finally(() => {
+          isTranscribing.current = false;
+        });
+    }
+  }, [currentTime]);
 
   if (!fileName) {
     return null;

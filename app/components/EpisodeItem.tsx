@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { colorSeparator, colorTextSubdued, sizeElementSpacing, sizeTextLarger } from "@/utils/theme";
 import BlockButton from "./button/BlockButton";
 import { Ionicons } from "@expo/vector-icons";

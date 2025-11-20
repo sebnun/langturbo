@@ -282,5 +282,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: sizeScreenPadding,
+    flex: 1
   },
 });
