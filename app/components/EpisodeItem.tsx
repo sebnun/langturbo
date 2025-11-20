@@ -3,6 +3,7 @@ import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { colorSeparator, colorTextSubdued, sizeElementSpacing, sizeTextLarger } from "@/utils/theme";
 import BlockButton from "./button/BlockButton";
 import { Ionicons } from "@expo/vector-icons";
+import { encodeUrl } from "@/utils";
 
 export const EPISODE_ITEM_HEIGHT = 80;
 
@@ -27,7 +28,7 @@ export default function EpisodeItem({
           pathname: `/[lang]/player`,
           params: {
             lang: lang as string,
-            id: episode.id,
+            id: encodeUrl(episode.id),
             podcastId,
             title: episode.title,
             podcastTitle,

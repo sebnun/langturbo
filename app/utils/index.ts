@@ -2,6 +2,7 @@ import { Platform } from "react-native";
 import * as Device from "expo-device";
 import { useFocusEffect } from "expo-router";
 import { useCallback } from "react";
+import { Buffer } from "buffer/";
 
 export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -42,3 +43,25 @@ export function convertSecondsDurationToHuman(seconds?: number) {
 
   return hDisplay + mDisplay + sDisplay;
 }
+
+export const encodeUrl = (url: string) => {
+  return encodeURIComponent(Buffer.from(url).toString("base64"));
+};
+
+export const decodeUrl = (encodedUrl: string) => {
+  return Buffer.from(decodeURIComponent(encodedUrl), "base64").toString();
+};
+
+export const fillCaptionsStart = (captions: Caption[]) => {
+  const sortedCaptions = captions.sort((a, b) => a.start - b.start);
+
+  for (let i = 0; i < sortedCaptions.length; i++) {
+    if (i === 0) {
+      sortedCaptions[i].captionStart = 0;
+    } else {
+      sortedCaptions[i].captionStart = (sortedCaptions[i - 1].end + sortedCaptions[i].start) / 2;
+    }
+  }
+
+  return sortedCaptions;
+};

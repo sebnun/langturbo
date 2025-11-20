@@ -3,8 +3,7 @@ import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
 import { useEffect } from "react";
 
 export default function AudioPlayer({ uri }: { uri: string }) {
-  // TODO need to release it manually to avoid memory leaks?
-
+  // TODO prolly need to .release this
   usePlayerStore.setState({ player: useAudioPlayer(uri, { updateInterval: 100 }) });
   const status = useAudioPlayerStatus(usePlayerStore.getState().player!);
 
@@ -16,6 +15,5 @@ export default function AudioPlayer({ uri }: { uri: string }) {
     });
   }, [status]);
 
-  //console.log(status);
   return null;
 }

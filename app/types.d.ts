@@ -21,3 +21,19 @@ type PodcastEpisode = {
   duration?: string; // Human readable
   date: string;
 };
+
+type Caption = {
+  id: string;
+  text: string;
+  start: number;
+  end: number;
+  captionStart?: number;
+  words: Word[];
+  translation?: string;
+};
+
+type Word = {
+  word: string;
+  start: number;
+  end: number;
+};

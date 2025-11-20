@@ -429,12 +429,12 @@ const translateSentencePromises = async (sentences: string[], languageCode: stri
               )} to English and respond only with the translation:\n${s}`,
             },
           ],
-          config: {
-            thinkingConfig: {
-              includeThoughts: false,
-              thinkingLevel: ThinkingLevel.LOW,
-            },
-          },
+          // config: {
+          //   thinkingConfig: {
+          //     includeThoughts: false,
+          //     thinkingLevel: ThinkingLevel.LOW,
+          //   },
+          // },
         })
         .then((response) => response?.candidates?.[0]?.content?.parts?.[0]?.text ?? "")
         .catch((e) => {

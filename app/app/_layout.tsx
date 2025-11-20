@@ -3,7 +3,6 @@ import "../assets/css/body.css";
 import { SourceCodePro_400Regular, useFonts } from "@expo-google-fonts/source-code-pro";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { Platform } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
