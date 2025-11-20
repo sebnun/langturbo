@@ -28,15 +28,14 @@ type Caption = {
   start: number;
   end: number;
   captionStart?: number;
-  tokens: Token[];
+  words: Word[];
   translation?: string;
 };
 
-// TODO
 type Word = {
-  text: string;
-  is_punct: boolean;
-  idx: number;
+  word: string;
+  start: number;
+  end: number;
 };
 
 ///////
@@ -68,6 +67,8 @@ type TranscriptionWord = {
    * @description End time of the word in seconds.
    */
   end: number;
+
+
   [key: string]: unknown;
 };
 
@@ -110,5 +111,9 @@ type TranscriptionSegment = {
    * @description Probability of no speech in the segment. If the value is higher than 1.0 and the `avg_logprob` is below -1, consider this segment silent.
    */
   no_speech_prob: number;
+
+    // Added by me
+  words?: TranscriptionWord[];
+
   [key: string]: unknown;
 };

@@ -6,16 +6,27 @@ import { capitalizeFirstLetter } from "@/lib/utils";
 import { randomUUID } from "crypto";
 import fs, { writeFileSync } from "fs";
 import { spawnSync } from "child_process";
-import { getLanguageCodeByName, getLanguageNameById } from "@/lib/languages-legacy";
+import { getLanguageNameById, languageIds } from "@/lib/languages-legacy";
 import { backOff } from "exponential-backoff";
 import CodecParser from "codec-parser";
 import { Storage } from "@google-cloud/storage";
+import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 
-const serviceAccount = JSON.parse(Buffer.from(process.env.GOOGLE_STORAGE_KEY_FILE!, "base64").toString("utf-8"));
+const serviceAccountStorage = JSON.parse(Buffer.from(process.env.GOOGLE_STORAGE_KEY_FILE!, "base64").toString("utf-8"));
+const serviceAccountVertex = JSON.parse(Buffer.from(process.env.GOOGLE_KEY_FILE!, "base64").toString("utf-8"));
 
 const storage = new Storage({
   projectId: process.env.GOOGLE_CLOUD_PROJECT,
-  credentials: serviceAccount,
+  credentials: serviceAccountStorage,
+});
+
+const ai = new GoogleGenAI({
+  vertexai: true,
+  project: process.env.GOOGLE_CLOUD_PROJECT,
+  location: process.env.GOOGLE_CLOUD_LOCATION,
+  googleAuthOptions: {
+    credentials: serviceAccountVertex,
+  },
 });
 
 const SEEK_FORWARD_SECONDS = 30;
@@ -110,10 +121,13 @@ export const POST = async (req: NextRequest) => {
   const persistPromise = from === 0 ? persistPodcastPromise(fileName!, fileData.mime) : Promise.resolve();
 
   console.time("transcribePersist");
-  const [transcriptionPromiseResponse] = await Promise.all([transcribePromise(outputPath, languageId), persistPromise]);
+  const [transcriptionPromiseResponse] = await Promise.all([
+    transcribePromise(outputPath, languageCode),
+    persistPromise,
+  ]);
   console.timeEnd("transcribePersist");
 
-  const { data: transcriptionResponse } = transcriptionPromiseResponse;
+  const transcriptionResponse = transcriptionPromiseResponse;
 
   // Some transcriptions have segments with no text, need to sort them också
   let actualSegments = (transcriptionResponse as CreateTranscriptionResponseVerboseJson).segments
@@ -132,21 +146,31 @@ export const POST = async (req: NextRequest) => {
       start: from,
       end,
       text: "No voices detected",
-      tokens: [],
+      words: [],
       translation: "",
     };
 
-    await sql`insert into segments (id, episode_id, start, "end", text, language_id, tokens) values (${fakeCaption.id}, ${id}, ${fakeCaption.start}, ${fakeCaption.end}, ${fakeCaption.text}, ${languageId}, ${fakeCaption.tokens})`;
+    await db.insert(segmentsTable).values({
+      id: fakeCaption.id,
+      episode_id: id,
+      start: fakeCaption.start,
+      end: fakeCaption.end,
+      text: fakeCaption.text,
+      language_code: languageCode,
+      words: fakeCaption.words,
+    });
+    if (languageCode != "en") {
+      await db.insert(translationsTable).values({ segment_id: fakeCaption.id, translation: "", language_code: "en" });
+    }
 
     // Need to make sure segments are inserted first
-    await sql`update episodes set processed_seconds = ${end}, file_name = ${fileName} where id = ${id}`;
+    await db.update(episodesTable).set({ processed_seconds: end, file_name: fileName }).where(eq(episodesTable.id, id));
 
-    res.status(200).json({
+    return Response.json({
       captions: [fakeCaption],
       fileName,
       processedSeconds: end,
     });
-    return;
   }
 
   // Remove duplicated text segments
@@ -166,16 +190,10 @@ export const POST = async (req: NextRequest) => {
   actualSegments = uniqueSegments;
 
   console.time("chatpromises");
-  const [translatedSentences, tokenizedSentences] = await Promise.all([
-    translateSentencePromises(
-      actualSegments!.map((sd) => sd.text),
-      languageId
-    ),
-    tokenizePromise(
-      actualSegments!.map((sd) => sd.text),
-      languageId
-    ),
-  ]);
+  const translatedSentences = await translateSentencePromises(
+    actualSegments!.map((sd) => sd.text),
+    languageCode
+  );
   console.timeEnd("chatpromises");
 
   const captions: Caption[] = [];
@@ -188,10 +206,8 @@ export const POST = async (req: NextRequest) => {
       text: segment.text.trim(),
       start: segment.start + from,
       end: segment.end + from,
-      tokens: tokenizedSentences[i],
-      translation: translatedSentences[i].data.choices[0].message
-        ? translatedSentences[i].data.choices[0].message.content || ""
-        : "",
+      words: segment.words!,
+      translation: translatedSentences[i],
     });
   }
 
@@ -207,21 +223,33 @@ export const POST = async (req: NextRequest) => {
     }
   }
 
-  await sql`insert into segments ${sql(
+  await db.insert(segmentsTable).values(
     captions.map((caption) => ({
       id: caption.id,
       episode_id: id,
       start: caption.start,
       end: caption.end,
       text: caption.text,
-      language_id: languageId,
-      tokens: caption.tokens,
-      en_translation: caption.translation || null,
+      language_code: languageCode,
+      words: caption.words,
     }))
-  )}`;
+  );
+
+  if (languageCode != "en") {
+    await db.insert(translationsTable).values(
+      captions.map((caption) => ({
+        segment_id: caption.id,
+        translation: caption.translation || "",
+        language_code: "en",
+      }))
+    );
+  }
 
   // Need to make sure segments are inserted first
-  await sql`update episodes set processed_seconds = ${newProcessedSeconds}, file_name = ${fileName} where id = ${id}`;
+  await db
+    .update(episodesTable)
+    .set({ processed_seconds: newProcessedSeconds, file_name: fileName })
+    .where(eq(episodesTable.id, id));
 
   return Response.json({
     captions,
@@ -352,78 +380,209 @@ const persistPodcastPromise = async (fileName: string, mime: string | null) => {
   });
 };
 
-// const transcribePromise = async (audioPath: string, languageId: number) => {
-//   // It needs to be here for firebase to pick up the env
-//   const groq = new Groq({
-//     apiKey: process.env.GROQ_API_KEY,
-//     //maxRetries: 5, // Default is 2 this is linear?
-//   });
-//   // Has own retry logic
-//   return backOff(
-//     () =>
-//       groq.audio.transcriptions
-//         .create({
-//           file: fs.createReadStream(audioPath),
-//           model: "whisper-large-v3",
-//           response_format: "verbose_json",
-//           language: getLanguageCodeByName(getLanguageNameById(languageId)),
-//           // Not supported in groq
-//           //timestamp_granularities: ["segment"], // word granularity have incorrect timestamps related to segments
-//         })
-//         .withResponse(),
-//     {
-//       numOfAttempts: 5,
-//       retry(e, attemptNumber) {
-//         console.error("Transcribe error", e, attemptNumber);
-//         return true;
-//       },
-//     }
-//   ).catch((e) => {
-//     console.error("from catch", e);
-//     return { data: { segments: [] } };
-//   });
-// };
+const transcribePromise = async (audioPath: string, languageCode: string) => {
+  const form = new FormData();
+  const fileBuffer = fs.readFileSync(audioPath);
+  form.append("file", new Blob([fileBuffer]), "audio"); // TODO need to add extension?
+  form.append("model", "Systran/faster-whisper-large-v3");
+  form.append("timestamp_granularities[]", "word");
+  form.append("response_format", "verbose_json");
+  form.append("language", languageCode);
 
-// const translateSentencePromises = async (sentences: string[], languageId: number) => {
-//   const regex = new RegExp("[\\p{Letter}]+", "u");
+  return backOff(
+    () =>
+      fetch("http://34.26.13.75/v1/audio/transcriptions", {
+        method: "POST",
+        body: form,
+      }).then((r) => r.json()),
+    {
+      numOfAttempts: 5,
+      retry(e, attemptNumber) {
+        console.error("Transcribe error", e, attemptNumber);
+        return true;
+      },
+    }
+  ).catch((e) => {
+    console.error("from catch", e);
+    return { segments: [] };
+  });
+};
 
-//   const openai = new AzureOpenAI({
-//     apiKey: process.env.AZURE_OPENAI_API_KEY,
-//     apiVersion: process.env.AZURE_OPENAI_API_VERSION,
-//     endpoint: process.env.AZURE_OPENAI_ENDPOINT,
-//     deployment: "gpt-4o-latest",
-//     maxRetries: 5, // Default is 2
-//     // Ok for whisper and chat
-//     //timeout: 20 * 1000, // 20 seconds ,default is 10 minutes,, requests which time out will be retried.
-//   });
+// TODO optimize to translate as a single text
+const translateSentencePromises = async (sentences: string[], languageCode: string) => {
+  const regex = new RegExp("[\\p{Letter}]+", "u");
 
-//   return Promise.all(
-//     sentences.map((s) => {
-//       // Dont translate if at least not a word character or the audio language is the same as the user language
-//       if (!regex.test(s) || languageId === 1) {
-//         return Promise.resolve({ data: { choices: [{ message: { content: "" } }] } });
-//       }
+  return Promise.all(
+    sentences.map((s) => {
+      // Dont translate if at least not a word character or the audio language is the same as the user language
+      if (!regex.test(s) || languageCode === "en") {
+        return Promise.resolve("");
+      }
 
-//       return openai.chat.completions
-//         .create({
-//           messages: [
-//             { role: "system", content: "You are a translator." },
-//             {
-//               role: "user",
-//               content: `Translate from ${capitalizeFirstLetter(
-//                 getLanguageNameById(languageId)
-//               )} to English and respond only with the translation:\n${s}`,
-//             },
-//           ],
-//           model: "gpt-4o",
-//         })
-//         .withResponse()
-//         .catch((e) => {
-//           console.error("from catch", e);
+      return ai.models
+        .generateContent({
+          model: "gemini-2.5-flash",
+          contents: [
+            {
+              text: `Translate from ${capitalizeFirstLetter(
+                getLanguageNameById(languageIds[languageCode])
+              )} to English and respond only with the translation:\n${s}`,
+            },
+          ],
+          config: {
+            thinkingConfig: {
+              includeThoughts: false,
+              thinkingLevel: ThinkingLevel.LOW,
+            },
+          },
+        })
+        .then((response) => response?.candidates?.[0]?.content?.parts?.[0]?.text ?? "")
+        .catch((e) => {
+          console.error("from catch", e);
 
-//           // This is needed to fail gracefully
-//           return { data: { choices: [{ message: { content: "" } }] } };
-//         });
-//     })
-//   );
-// };
+          // This is needed to fail gracefully
+          // TODO see shape
+          return "";
+        });
+    })
+  );
+};
+
+/*
+
+{
+  "task": "transcribe",
+  "language": "sv",
+  "duration": 59.99125,
+  "text": "Du lyssnar på en podd från Acast. MUNSÅR",
+  "words": [
+    {
+      "start": 0,
+      "end": 0.08,
+      "word": " Du",
+      "probability": 0.998046875
+    },
+    {
+      "start": 0.08,
+      "end": 0.6,
+      "word": " lyssnar",
+      "probability": 0.998209635416667
+    },
+    {
+      "start": 0.6,
+      "end": 0.74,
+      "word": " på",
+      "probability": 1
+    },
+    {
+      "start": 0.74,
+      "end": 0.92,
+      "word": " en",
+      "probability": 1
+    },
+    {
+      "start": 0.92,
+      "end": 1.32,
+      "word": " podd",
+      "probability": 0.99951171875
+    },
+    {
+      "start": 1.32,
+      "end": 1.46,
+      "word": " från",
+      "probability": 1
+    },
+    {
+      "start": 1.46,
+      "end": 1.92,
+      "word": " Acast.",
+      "probability": 0.77685546875
+    },
+    {
+      "start": 58.56,
+      "end": 59.96,
+      "word": " MUNSÅR",
+      "probability": 0.636088053385417
+    }
+  ],
+  "segments": [
+    {
+      "id": 1,
+      "seek": 0,
+      "start": 0,
+      "end": 1.92,
+      "text": " Du lyssnar på en podd från Acast.",
+      "tokens": [50365, 5153, 48670, 18860, 289, 4170, 465, 2497, 67, 18669, 316, 3734, 13, 50473],
+      "temperature": 0,
+      "avg_logprob": -0.0961588541666667,
+      "compression_ratio": 0.813953488372093,
+      "no_speech_prob": 0.0232696533203125,
+      "words": [
+        {
+          "start": 0,
+          "end": 0.08,
+          "word": " Du",
+          "probability": 0.998046875
+        },
+        {
+          "start": 0.08,
+          "end": 0.6,
+          "word": " lyssnar",
+          "probability": 0.998209635416667
+        },
+        {
+          "start": 0.6,
+          "end": 0.74,
+          "word": " på",
+          "probability": 1
+        },
+        {
+          "start": 0.74,
+          "end": 0.92,
+          "word": " en",
+          "probability": 1
+        },
+        {
+          "start": 0.92,
+          "end": 1.32,
+          "word": " podd",
+          "probability": 0.99951171875
+        },
+        {
+          "start": 1.32,
+          "end": 1.46,
+          "word": " från",
+          "probability": 1
+        },
+        {
+          "start": 1.46,
+          "end": 1.92,
+          "word": " Acast.",
+          "probability": 0.77685546875
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "seek": 3000,
+      "start": 58.56,
+      "end": 59.96,
+      "text": " MUNSÅR",
+      "tokens": [50365, 376, 3979, 50, 127, 227, 49, 50415],
+      "temperature": 0,
+      "avg_logprob": -0.549045138888889,
+      "compression_ratio": 0.466666666666667,
+      "no_speech_prob": 0.0189361572265625,
+      "words": [
+        {
+          "start": 58.56,
+          "end": 59.96,
+          "word": " MUNSÅR",
+          "probability": 0.636088053385417
+        }
+      ]
+    }
+  ]
+}
+
+*/
