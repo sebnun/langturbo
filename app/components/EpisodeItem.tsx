@@ -1,9 +1,8 @@
 import { View, Text, StyleSheet } from "react-native";
-import { useFocusEffect, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { colorSeparator, colorTextSubdued, sizeElementSpacing, sizeTextLarger } from "@/utils/theme";
 import BlockButton from "./button/BlockButton";
 import { Ionicons } from "@expo/vector-icons";
-
 
 export const EPISODE_ITEM_HEIGHT = 80;
 
@@ -19,13 +18,15 @@ export default function EpisodeItem({
   podcastImageUrl: string;
 }) {
   const router = useRouter();
+  const { lang } = useLocalSearchParams();
 
   return (
     <BlockButton
       onPress={() =>
         router.navigate({
-          pathname: `/player`,
+          pathname: `/[lang]/player`,
           params: {
+            lang: lang as string,
             id: episode.id,
             podcastId,
             title: episode.title,

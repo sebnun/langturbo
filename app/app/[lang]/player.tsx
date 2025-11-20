@@ -1,15 +1,19 @@
-// import { Stack, useRouter, useLocalSearchParams, useNavigation } from "expo-router";
+import { Stack, useRouter, useLocalSearchParams, useNavigation } from "expo-router";
 // import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
-// import React, { useEffect, useRef, useState } from "react";
-// import { SafeAreaView } from "react-native-safe-area-context";
-// import { sizeIconNavigation, sizeScreenPadding, themeStyles } from "@/utils/theme";
+import React, { useEffect, useRef, useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { sizeIconNavigation, sizeScreenPadding, themeStyles } from "@/utils/theme";
 // import { useAppStore, usePlayerStore } from "@/utils/store";
 // import Loading from "@/components/Loading";
 // import TimeCode from "@/components/TimeCode";
 // import Progress from "@/components/Progress";
-// import { StyleSheet, View, ScrollView, Platform, ActivityIndicator } from "react-native";
-// import { Ionicons } from "@expo/vector-icons";
-// import Button from "@/components/Button/Button";
+import { StyleSheet, View, ScrollView, Platform, ActivityIndicator } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import Button from "@/components/button/Button";
+import { usePlayerStore } from "@/utils/store";
+import { useTitle } from "@/utils";
+import TimeCode from "@/components/TimeCode";
+import AudioPlayer from "@/components/AudioPlayer";
 // import TrackPlayer from "react-native-track-player";
 // import Caption from "@/components/Caption";
 // import PressInstructions from "@/components/PressInstructions";
@@ -20,15 +24,16 @@
 // import { SEEK_FORWARD_SECONDS } from "@/utils/constants";
 
 export default function PlayerScreen() {
-  // const router = useRouter();
-  // const { id, podcastId, title, podcastTitle, podcastImageUrl } =
-  //   useLocalSearchParams() as {
-  //     id: string;
-  //     podcastId: string;
-  //     title: string;
-  //     podcastTitle: string;
-  //     podcastImageUrl: string;
-  //   };
+  const router = useRouter();
+  const { id, podcastId, title, podcastTitle, podcastImageUrl } =
+    useLocalSearchParams() as {
+      id: string;
+      podcastId: string;
+      title: string;
+      podcastTitle: string;
+      podcastImageUrl: string;
+    };
+  useTitle(title)
 
   // const navigation = useNavigation();
 
@@ -38,11 +43,12 @@ export default function PlayerScreen() {
   // const loadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   // const reset = usePlayerStore((state) => state.reset);
 
-  // const isPlaying = usePlayerStore((state) => state.isPlaying);
+  const playing = usePlayerStore((state) => state.playing);
+  const player = usePlayerStore(state => state.player)
   // const caption = usePlayerStore((state) => state.caption);
   // const nextStart = usePlayerStore((state) => state.nextStart);
   // const prevStart = usePlayerStore((state) => state.prevStart);
-  // const duration = usePlayerStore((state) => state.duration);
+  //const duration = usePlayerStore((state) => state.duration);
   // const error = usePlayerStore((state) => state.error);
   // const slower = useAppStore((state) => state.slower);
   // const queue = useAppStore((state) => state.queue);
@@ -182,15 +188,19 @@ export default function PlayerScreen() {
   //   }
   // };
 
-  // const handlePlayToogle = async () => {
-  //   usePlayerStore.setState({ isPlaying: !isPlaying });
-  // };
+  const handlePlayToogle = async () => {
+    if (player?.playing) {
+      player.pause()
+    } else {
+      player?.play()
+    }
+  };
 
   return (
     <>
-      {/* <Stack.Screen
+      <Stack.Screen
         options={{
-          headerShown: !showPlayerOnboarding,
+          //headerShown: !showPlayerOnboarding,
           contentStyle: {
             backgroundColor: "black",
           },
@@ -202,77 +212,78 @@ export default function PlayerScreen() {
           headerShadowVisible: false,
           headerBackButtonDisplayMode: "minimal",
           headerTitleAlign: "center",
-          headerRight: () => (
-            <View style={{ paddingRight: Platform.OS === "web" ? sizeScreenPadding : 0 }}>
-              <Button onPress={() => setShowSettings(true)}>
-                <Ionicons name="options-sharp" size={sizeIconNavigation} color="white" />
-              </Button>
-            </View>
-          ),
+          // headerRight: () => (
+          //   <View style={{ paddingRight: Platform.OS === "web" ? sizeScreenPadding : 0 }}>
+          //     <Button onPress={() => setShowSettings(true)}>
+          //       <Ionicons name="options-sharp" size={sizeIconNavigation} color="white" />
+          //     </Button>
+          //   </View>
+          // ),
         }}
       />
       <SafeAreaView style={themeStyles.screen}>
-        {showPlayerOnboarding ? <PressInstructions /> : null}
+        <AudioPlayer uri="https://storage.googleapis.com/turbo-9892e.firebasestorage.app/test/audio.mp3" />
+        {/* {showPlayerOnboarding ? <PressInstructions /> : null}
         <SettingsModal isVisible={showSettings} onClose={() => setShowSettings(false)} />
-        <WordModal onClose={() => setSelectedWord("")} word={selectedWord} />
-        {!duration ? (
+        <WordModal onClose={() => setSelectedWord("")} word={selectedWord} /> */}
+        {/* {!duration ? (
           <Loading />
         ) : (
           <ScrollView contentContainerStyle={styles.sentencesContainer}>
             <Caption onWordPress={setSelectedWord} />
             <Translation />
           </ScrollView>
-        )}
+        )} */}
         <View style={styles.playbackContainer}>
 
           <View style={styles.playbackCenterContainer}>
-            <Button disabled={!duration || prevStart === -1} onPress={handlePrevious}>
+            {/* <Button disabled={!duration || prevStart === -1} onPress={handlePrevious}>
               <Ionicons name="arrow-back-sharp" size={40} color="white" />
-            </Button>
+            </Button> */}
 
-            <Button onPress={handlePlayToogle} disabled={!duration}>
-              {isPlaying ? (
+            <Button onPress={handlePlayToogle} >
+              {playing ? (
                 <Ionicons name="pause-circle-sharp" size={60} color="white" />
               ) : (
                 <Ionicons name="play-circle-sharp" size={60} color="white" />
               )}
             </Button>
 
-            {duration && nextStart === -1 && caption && caption.start + SEEK_FORWARD_SECONDS < duration ? (
+            {/* {duration && nextStart === -1 && caption && caption.start + SEEK_FORWARD_SECONDS < duration ? (
               <ActivityIndicator color="white" size="large" />
             ) : (
               <Button disabled={!duration || nextStart === -1} onPress={handleNext}>
                 <Ionicons name="arrow-forward-sharp" size={40} color="white" />
               </Button>
-            )}
+            )} */}
           </View>
         </View>
-        <Progress />
-      </SafeAreaView> */}
+        {/* <Progress /> */}
+      </SafeAreaView>
     </>
   );
 }
 
-// const styles = StyleSheet.create({
-//   sentencesContainer: {
-//     // This breaks Safari
-//     //flex: 1,
-//     //justifyContent: "center",
-//     marginTop: "auto",
-//     marginBottom: "auto",
-//     padding: sizeScreenPadding,
-//     gap: sizeScreenPadding,
-//   },
-//   playbackContainer: {
-//     alignItems: "center",
-//     justifyContent: "space-between",
-//     padding: sizeScreenPadding,
-//     flexDirection: "row",
-//   },
-//   playbackCenterContainer: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     justifyContent: "center",
-//     gap: sizeScreenPadding,
-//   },
-// });
+const styles = StyleSheet.create({
+  sentencesContainer: {
+    // This breaks Safari
+    //flex: 1,
+    //justifyContent: "center",
+    marginTop: "auto",
+    marginBottom: "auto",
+    padding: sizeScreenPadding,
+    gap: sizeScreenPadding,
+  },
+  playbackContainer: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: sizeScreenPadding,
+    flexDirection: "row",
+  },
+  playbackCenterContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: sizeScreenPadding,
+  },
+});
