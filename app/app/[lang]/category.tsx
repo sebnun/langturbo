@@ -10,10 +10,13 @@ import * as Device from "expo-device";
 import { styles } from "./index";
 import TextButton from "@/components/button/TextButton";
 import React from "react";
+import { getLanguageNameById, languageIds } from "@/utils/languages";
+import { useTitle } from "@/utils";
 
 export default function CategoryScreen() {
-  const router = useRouter();
   const { lang, categoryId, categoryName, popular } = useLocalSearchParams();
+  useTitle(`${categoryName} ${getLanguageNameById(languageIds[lang as string])} podcasts`);
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<CategoryResponseItem[]>([]);
 

@@ -1,5 +1,5 @@
 import { StyleSheet, View, ScrollView } from "react-native";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { Redirect, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import {
   colorTextSubdued,
@@ -15,17 +15,23 @@ import Loading from "@/components/Loading";
 import * as Device from "expo-device";
 import TextButton from "@/components/button/TextButton";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import WebTitle from "@/components/WebTitle";
 import { getLanguageNameById, languageIds } from "@/utils/languages";
 import { getCategories } from "@/utils/api";
+import { useTitle } from "@/utils";
 
 export default function DiscoverScreen() {
   const { lang } = useLocalSearchParams<{ lang: string }>();
+  useTitle(`Discover ${getLanguageNameById(languageIds[lang])} podcasts`);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<CategoryResponseItem[]>([]);
 
   const insets = useSafeAreaInsets();
+
+  if (!languageIds[lang]) {
+    // Not found not reached
+    return <Redirect href={"/"} />;
+  }
 
   useEffect(() => {
     getCategories(0, lang)
@@ -35,7 +41,6 @@ export default function DiscoverScreen() {
 
   return (
     <>
-      <WebTitle title={`Discover ${getLanguageNameById(languageIds[lang])} podcasts`} />
       <Stack.Screen
         options={{
           headerShown: false,

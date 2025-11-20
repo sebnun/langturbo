@@ -20,6 +20,7 @@ import { getCountryNameForLocale } from "@/utils/languages";
 import IconButton from "@/components/button//IconButton";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native";
+import { useTitle } from "@/utils";
 
 // Can't use non strings as params in expo router
 const convertRouteParamsToPodcast = (params: any) => {
@@ -37,15 +38,13 @@ const convertRouteParamsToPodcast = (params: any) => {
 };
 
 export default function EpisodesScreen() {
-  const router = useRouter();
   const params = useLocalSearchParams();
+  useTitle(params.title as string);
+  const router = useRouter();
   const podcast = convertRouteParamsToPodcast(params);
   const [loading, setLoading] = useState(true);
   const [episodes, setEpisodes] = useState<PodcastEpisode[]>([]);
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
-
-
-  console.log(podcast)
 
   useEffect(() => {
     getEpisodes(podcast.feedUrl, podcast.id)

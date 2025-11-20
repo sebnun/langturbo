@@ -3,13 +3,13 @@ import { Link, Stack } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { getLanguageCodeByName, languagesDict } from "@/utils/languages";
-import { capitalizeFirstLetter } from "@/utils";
+import { capitalizeFirstLetter, useTitle } from "@/utils";
 import Button from "@/components/button/Button";
-import WebTitle from "@/components/WebTitle";
 import { Ionicons } from "@expo/vector-icons";
 import { useWindowDimensions } from "react-native";
 
 export default function Index() {
+  useTitle("What language do you want to learn?");
   const { width } = useWindowDimensions();
 
   const languagesListDict = Object.values(languagesDict)
@@ -18,7 +18,6 @@ export default function Index() {
 
   return (
     <>
-      <WebTitle title="What language do you want to learn?" />
       <Stack.Screen
         options={{
           title: "What language do you want to learn?",
@@ -64,7 +63,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginTop: 0,
     borderRadius: 50,
-    alignItems: 'center'
+    alignItems: "center",
   },
   itemText: {
     fontSize: sizeTextLarger,
