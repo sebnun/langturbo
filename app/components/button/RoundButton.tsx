@@ -5,7 +5,7 @@ import React from "react";
 
 // Use disabled as loading state
 
-export default function MainButton(props: {
+export default function RoundButton(props: {
   onPress: () => void;
   text: string;
   type?: "primary" | "secondary" | "destructive" | "ghost";
@@ -43,6 +43,7 @@ export default function MainButton(props: {
 }
 
 const buttonContainer = {
+  borderRadius: 50,
   padding: sizeElementSpacing * 2,
   backgroundColor: "white",
 };

@@ -63,6 +63,8 @@ const styles = StyleSheet.create({
     margin: sizeScreenPadding,
     marginBottom: 0,
     marginTop: 0,
+    borderRadius: 50,
+    alignItems: 'center'
   },
   itemText: {
     fontSize: sizeTextLarger,
