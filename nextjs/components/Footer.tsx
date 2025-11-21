@@ -104,19 +104,21 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
         <p className="font-bold mb-3"><code>SOCIAL</code></p>
         <div className="flex flex-col space-y-3">
           <Link
+            target="_blank"
             className="relative block w-fit mx-auto md:mx-0 py-1
              before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
              after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
-            href="/contact"
+            href="https://www.patreon.com/cw/sebnun"
           >
-            <Image src={PatreonImage} height={14} width={14} alt="TikTok" className="mr-2 inline align-baseline" />
+            <Image src={PatreonImage} height={14} width={14} alt="Patreon" className="mr-2 inline align-baseline" />
             Patreon
           </Link>
           <Link
+            target="_blank"
             className="relative block w-fit mx-auto md:mx-0 py-1
              before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
              after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
-            href="https://x.com/LangTurbo"
+            href="https://x.com/sebbenun"
           >
             <Image src={XImage} height={14} width={14} alt="X" className="mr-2 inline align-baseline" />X
           </Link>
@@ -134,6 +136,7 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
             TikTok
           </Link> */}
           <Link
+            target="_blank"
             className="relative block w-fit mx-auto md:mx-0 py-1
              before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
              after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"

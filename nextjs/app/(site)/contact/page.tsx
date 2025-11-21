@@ -12,8 +12,8 @@ export default async function Contact() {
         <p>Your feedback and questions are always welcome!</p>
         <div>
           Send an email to contact [at] langturbo [dot] com, or on X at{" "}
-          <Link className="underline" href="https://twitter.com/LangTurbo">
-            @LangTurbo
+          <Link className="underline" href="https://x.com/sebbenun">
+            @sebbenun
           </Link>
           .
         </div>

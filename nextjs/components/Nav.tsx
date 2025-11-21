@@ -15,7 +15,7 @@ export default async function Nav() {
       </Link>
 
       <Button size="lg" asChild>
-        <Link prefetch={false} href="/">
+        <Link target="_blank" href="https://www.patreon.com/cw/sebnun">
           <Image src={PatreonImage} height={14} width={14} alt="Patreon" /> Support me on Patreon
         </Link>
       </Button>
