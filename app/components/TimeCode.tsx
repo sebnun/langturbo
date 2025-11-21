@@ -1,11 +1,9 @@
 import { StyleSheet, Text } from "react-native";
 import { usePlayerStore } from "../utils/store";
 import { colorTextSubdued } from "@/utils/theme";
-import { convertSecondsDurationToHuman } from "@/utils";
 
 export default function TimeCode() {
-  const currentTime = usePlayerStore((state) => state.currentTime);
-  const positionLabel = convertSecondsDurationToHuman(currentTime);
+  const positionLabel = usePlayerStore(state => state.positionLabel);
 
   return <Text style={styles.titleNotMovingText}>{positionLabel}</Text>;
 }

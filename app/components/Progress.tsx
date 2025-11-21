@@ -3,9 +3,7 @@ import { usePlayerStore } from "../utils/store";
 import { colorPrimary, colorSeparator } from "@/utils/theme";
 
 const Progress = () => {
-  const currentTime = usePlayerStore((state) => state.currentTime);
-  const duration = usePlayerStore((state) => state.duration);
-  const progressPercentage = Math.min((currentTime / duration) * 100, 100);
+  const progressPercentage = usePlayerStore(state => state.progressPercentage)
 
   return (
     <View style={styles.container}>

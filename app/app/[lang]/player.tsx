@@ -1,28 +1,21 @@
 import { Stack, useRouter, useLocalSearchParams } from "expo-router";
-// import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
-import React from "react";
+import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
+import React, { useEffect, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { sizeIconNavigation, sizeScreenPadding, themeStyles } from "@/utils/theme";
-// import { useAppStore, usePlayerStore } from "@/utils/store";
+import { sizeScreenPadding, themeStyles } from "@/utils/theme";
 import Loading from "@/components/Loading";
 import Progress from "@/components/Progress";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "@/components/button/Button";
 import { usePlayerStore } from "@/utils/store";
 import TimeCode from "@/components/TimeCode";
 import Transcriber from "@/components/Transcriber";
-// import TrackPlayer from "react-native-track-player";
 import Caption from "@/components/Caption";
-// import PressInstructions from "@/components/PressInstructions";
-// import SettingsModal from "@/components/SettingsModal";
 import Translation from "@/components/Translation";
-// import WordModal from "@/components/WordModal";
 import { decodeUrl, useTitle } from "@/utils";
-// import { SEEK_FORWARD_SECONDS } from "@/utils/constants";
 
 export default function PlayerScreen() {
-  const router = useRouter();
   const { id, podcastId, title, podcastTitle, podcastImageUrl } = useLocalSearchParams() as {
     id: string;
     podcastId: string;
@@ -32,172 +25,86 @@ export default function PlayerScreen() {
   };
   useTitle(title);
 
-  // const navigation = useNavigation();
-
   //useLocalSearchParams decodes the params, but it breaks urls that have other encoded urls in them
   const decodedId = decodeUrl(id);
 
-  // const loadingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  // const reset = usePlayerStore((state) => state.reset);
+  const loadingIntervalRef = useRef<number | null>(null);
 
   const playing = usePlayerStore((state) => state.playing);
-  const player = usePlayerStore((state) => state.player);
-  // const caption = usePlayerStore((state) => state.caption);
-  // const nextStart = usePlayerStore((state) => state.nextStart);
-  // const prevStart = usePlayerStore((state) => state.prevStart);
+  const nextStart = usePlayerStore((state) => state.nextStart);
+  const prevStart = usePlayerStore((state) => state.prevStart);
   const duration = usePlayerStore((state) => state.duration);
-  // const error = usePlayerStore((state) => state.error);
-  // const slower = useAppStore((state) => state.slower);
-  // const queue = useAppStore((state) => state.queue);
-  // const showPlayerOnboarding = useAppStore((state) => state.showPlayerOnboarding);
-  // const updatePlayback = useAppStore((state) => state.updatePlayback);
+  const error = usePlayerStore((state) => state.error);
 
-  // const [showSettings, setShowSettings] = useState(false);
-  // const [selectedWord, setSelectedWord] = useState("");
+  const reset = usePlayerStore((state) => state.reset);
 
-  // // This runs before the useEffect return, need to explicitly pause due to issues on safari iOS
-  // navigation.addListener("beforeRemove", async (e) => {
-  //   if (isPlaying) {
-  //     e.preventDefault();
-  //     usePlayerStore.setState({ isPlaying: false });
-  //     await new Promise((resolve, reject) => setTimeout(resolve, 10));
-  //     navigation.dispatch(e.data.action);
-  //   }
-  // });
+  const resetPlayer = () => {
+    if (loadingIntervalRef.current) {
+      clearInterval(loadingIntervalRef.current);
+    }
 
-  // const resetPlayer = () => {
-  //   updatePlayback({ episodeId: decodedId, percentage: usePlayerStore.getState().progressPercentage });
-  //   if (loadingIntervalRef.current) {
-  //     clearInterval(loadingIntervalRef.current);
-  //   }
+    if (Platform.OS !== "web") {
+      deactivateKeepAwake();
+    }
 
-  //   if (Platform.OS !== "web") {
-  //     deactivateKeepAwake();
-  //   }
+    reset();
+  };
 
-  //   reset();
-  // };
+  useEffect(() => {
+    let elapsedTime = 0;
+    loadingIntervalRef.current = setInterval(() => {
+      const progress = Math.trunc((Math.atan(elapsedTime / 3e3) / (Math.PI / 2)) * 100);
+      elapsedTime += 100;
+      usePlayerStore.setState({ positionLabel: `Transcribing ${progress}%` });
+    }, 100);
 
-  // useEffect(() => {
-  //   usePlayerStore.setState({
-  //     track: {
-  //       id: decodedId,
-  //       podcastId,
-  //       title,
-  //       podcastTitle,
-  //       podcastImageUrl,
-  //       startPercentage: playbackPercentage ? parseFloat(playbackPercentage) : undefined,
-  //       startPosition: playbackStart ? parseFloat(playbackStart) : undefined,
-  //     },
-  //   });
+    if (Platform.OS !== "web") {
+      activateKeepAwakeAsync();
+    }
 
-  //   let elapsedTime = 0;
-  //   loadingIntervalRef.current = setInterval(() => {
-  //     const progress = Math.trunc((Math.atan(elapsedTime / 3e3) / (Math.PI / 2)) * 100);
-  //     elapsedTime += 100;
-  //     usePlayerStore.setState({ positionLabel: `Transcribing ${progress}%` });
-  //   }, 100);
+    return () => resetPlayer();
+  }, [id]);
 
-  //   if (Platform.OS !== "web") {
-  //     activateKeepAwakeAsync();
-  //   }
+  useEffect(() => {
+    if (duration) {
+      // Ready to play
+      if (loadingIntervalRef.current) {
+        clearInterval(loadingIntervalRef.current);
+      }
+    }
+  }, [duration]);
 
-  //   return () => resetPlayer();
-  // }, [id]);
+  useEffect(() => {
+    // TODO
+    if (error && error === "DOWNLOAD_ERROR") {
+      console.log("download error");
+      // Burnt.toast({
+      //   title: `This podcast is offline`,
+      //   preset: "error",
+      // });
 
-  // useEffect(() => {
-  //   if (duration) {
-  //     // Ready to play
-  //     if (loadingIntervalRef.current) {
-  //       clearInterval(loadingIntervalRef.current);
-  //     }
+      // // Need to reset here, track subscription not called?
+      // resetPlayer();
+      // router.back();
+    }
+  }, [error]);
 
-  //     if (queue) {
-  //       usePlayerStore.setState({ isPlaying: true });
-  //     }
-  //   }
-  // }, [duration]);
+  const handlePrevious = async () => {
+    usePlayerStore.setState({ seekToRequest: prevStart });
+  };
 
-  // useEffect(() => {
-  //   if (selectedWord) {
-  //     usePlayerStore.setState({ isPlaying: false });
-  //   }
-  // }, [selectedWord]);
-
-  // useEffect(() => {
-  //   if (error && error === "DOWNLOAD_ERROR") {
-  //     //console.log("download error");
-  //     Burnt.toast({
-  //       title: `This podcast is offline`,
-  //       preset: "error",
-  //     });
-
-  //     // Need to reset here, track subscription not called?
-  //     resetPlayer();
-  //     router.back();
-  //   }
-  // }, [error]);
-
-  // useEffect(() => {
-  //   if (slower) {
-  //     TrackPlayer.setRate(0.75);
-  //   } else {
-  //     TrackPlayer.setRate(1);
-  //   }
-  // }, [slower]);
-
-  // const handlePrevious = async () => {
-  //   const wasAutoPause = useAppStore.getState().autoPause;
-  //   if (wasAutoPause) {
-  //     useAppStore.setState({ autoPause: false });
-  //   }
-
-  //   await TrackPlayer.seekTo(prevStart);
-  //   usePlayerStore.setState({ isPlaying: true });
-
-  //   if (wasAutoPause) {
-  //     await new Promise((resolve, reject) =>
-  //       setTimeout(() => {
-  //         useAppStore.setState({ autoPause: true });
-  //         resolve(0);
-  //       }, 200)
-  //     );
-  //   }
-  // };
-
-  // const handleNext = async () => {
-
-  //   const wasAutoPause = useAppStore.getState().autoPause;
-  //   if (wasAutoPause) {
-  //     useAppStore.setState({ autoPause: false });
-  //   }
-
-  //   await TrackPlayer.seekTo(nextStart);
-  //   usePlayerStore.setState({ isPlaying: true });
-
-  //   if (wasAutoPause) {
-  //     await new Promise((resolve, reject) =>
-  //       setTimeout(() => {
-  //         useAppStore.setState({ autoPause: true });
-  //         resolve(0);
-  //       }, 200)
-  //     );
-  //   }
-  // };
+  const handleNext = async () => {
+    usePlayerStore.setState({ seekToRequest: nextStart });
+  };
 
   const handlePlayToogle = async () => {
-    if (player?.playing) {
-      player.pause();
-    } else {
-      player?.play();
-    }
+    usePlayerStore.setState({ playing: !playing });
   };
 
   return (
     <>
-       <Stack.Screen
+      <Stack.Screen
         options={{
-          //headerShown: !showPlayerOnboarding,
           contentStyle: {
             backgroundColor: "black",
           },
@@ -209,20 +116,10 @@ export default function PlayerScreen() {
           headerShadowVisible: false,
           headerBackButtonDisplayMode: "minimal",
           headerTitleAlign: "center",
-          // headerRight: () => (
-          //   <View style={{ paddingRight: Platform.OS === "web" ? sizeScreenPadding : 0 }}>
-          //     <Button onPress={() => setShowSettings(true)}>
-          //       <Ionicons name="options-sharp" size={sizeIconNavigation} color="white" />
-          //     </Button>
-          //   </View>
-          // ),
         }}
       />
       <SafeAreaView style={themeStyles.screen}>
-        <Transcriber id={decodedId} sourceId={podcastId} episodeTitle={title}  />
-        {/* {showPlayerOnboarding ? <PressInstructions /> : null}
-        <SettingsModal isVisible={showSettings} onClose={() => setShowSettings(false)} />
-        <WordModal onClose={() => setSelectedWord("")} word={selectedWord} /> */}
+        <Transcriber id={decodedId} sourceId={podcastId} episodeTitle={title} podcastImageUrl={podcastImageUrl} />
         {!duration ? (
           <Loading />
         ) : (
@@ -233,9 +130,9 @@ export default function PlayerScreen() {
         )}
         <View style={styles.playbackContainer}>
           <View style={styles.playbackCenterContainer}>
-            {/* <Button disabled={!duration || prevStart === -1} onPress={handlePrevious}>
+            <Button disabled={!duration || prevStart === -1} onPress={handlePrevious}>
               <Ionicons name="arrow-back-sharp" size={40} color="white" />
-            </Button> */}
+            </Button>
 
             <Button onPress={handlePlayToogle} disabled={!duration}>
               {playing ? (
@@ -245,18 +142,13 @@ export default function PlayerScreen() {
               )}
             </Button>
 
-            {/* {duration && nextStart === -1 && caption && caption.start + SEEK_FORWARD_SECONDS < duration ? (
-              <ActivityIndicator color="white" size="large" />
-            ) : (
-              <Button disabled={!duration || nextStart === -1} onPress={handleNext}>
-                <Ionicons name="arrow-forward-sharp" size={40} color="white" />
-              </Button>
-            )} */}
+            <Button disabled={!duration || nextStart === -1} onPress={handleNext}>
+              <Ionicons name="arrow-forward-sharp" size={40} color="white" />
+            </Button>
           </View>
         </View>
         <Progress />
-      </SafeAreaView> 
-      
+      </SafeAreaView>
     </>
   );
 }
@@ -282,6 +174,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: sizeScreenPadding,
-    flex: 1
+    flex: 1,
   },
 });

@@ -14,7 +14,7 @@ export default async function Nav() {
         </span>
       </Link>
 
-      <Button size="lg" asChild>
+      <Button size="lg" className="font-bold" asChild>
         <Link target="_blank" href="https://www.patreon.com/cw/sebnun">
           <Image src={PatreonImage} height={14} width={14} alt="Patreon" /> Support me on Patreon
         </Link>

@@ -26,7 +26,7 @@ export default function Home() {
               <LogoTextSpan />
             </div>
 
-            <Button size="lg" asChild>
+            <Button size="lg" className="font-bold text-md" asChild>
               <Link target="_blank" href="https://www.patreon.com/cw/sebnun">
                 <Image src={PatreonImage} height={14} width={14} alt="Patreon" /> Support me on Patreon
               </Link>
@@ -34,7 +34,7 @@ export default function Home() {
           </div>
 
           <div>
-            <h1 className="font-cormorant-garamond scroll-m-20 text-5xl font-extrabold md:leading-normal lg:text-6xl my-6">
+            <h1 className="scroll-m-20 text-5xl font-extrabold md:leading-normal lg:text-6xl my-6">
               Learn languages{" "}
               <a
                 href="#start"
@@ -43,42 +43,33 @@ export default function Home() {
                 faster
               </a>{" "}
             </h1>
-            <h2 className="font-cormorant-garamond scroll-m-20 text-3xl md:leading-normal lg:text-4xl my-6">
+            <h2 className="scroll-m-20 text-3xl md:leading-normal lg:text-4xl my-6">
               with podcasts and the latest research, 100% free.
             </h2>
           </div>
         </div>
         <LanguagesMarquee />
       </section>
-      <main className="bg-primary" id="start">
+      <main className="border-y bg-linear-to-b from-[#111111] to-[#080000]" id="start">
         <div className="max-w-6xl mx-auto p-6">
-          <h1 className="font-cormorant-garamond scroll-m-20 text-5xl font-extrabold md:leading-normal lg:text-6xl my-6 text-center">
+          <h3 className="scroll-m-20 text-4xl font-extrabold md:leading-normal lg:text-5xl my-6 text-center">
             What language do you want to learn?
-          </h1>
+          </h3>
           <article className="py-12">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {Array.from(new Set(Object.values(languageIds)))
                 .map((id) => getLanguageNameById(id))
                 .sort()
                 .map((language) => (
-                  // <Button size="lg" variant='outline' className="bg-white" asChild key={language}>
+                  <Button size="lg" className="font-bold text-md" asChild key={language}>
                     <Link
                       prefetch={false}
                       key={language}
-                      className={
-                        "bg-white font-bold hover:opacity-90 p-3 px-6 flex justify-between items-center text-primary rounded-md"
-                      }
-                      href={`/${getLanguageCodeByName(language)}`}
+                      href={`https://app.langturbo.com/${getLanguageCodeByName(language)}`}
                     >
                       {`${language.charAt(0).toUpperCase() + language.slice(1)}`}
-                      <Image
-                        src={ChevronImage}
-                        height={8}
-                        width={8}
-                        alt={`Start learning ${language.charAt(0).toUpperCase() + language.slice(1)}`}
-                      />
                     </Link>
-                  // </Button>
+                  </Button>
                 ))}
             </div>
           </article>

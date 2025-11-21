@@ -49,7 +49,7 @@ export default async function BlogList({ params }: { params: Promise<{ category:
                     <code className="flex justify-center">
                       <Link
                         href={`/blog/${post.metadata.category.toLowerCase()}`}
-                        className="bg-primary text-sm px-2 tabular-nums"
+                        className="bg-primary text-sm px-2 tabular-nums rounded-full"
                       >
                         {post.metadata.category}
                       </Link>

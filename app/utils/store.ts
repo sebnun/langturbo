@@ -39,8 +39,13 @@ type PlayerStoreState = {
   playing: boolean;
   currentTime: number;
   duration: number;
-  player: null | AudioPlayer;
+  positionLabel: string;
+  progressPercentage: number;
   caption: Caption | null;
+  seekToRequest: number;
+  nextStart: number;
+  prevStart: number;
+  error: string | null;
 };
 
 type PlayerStoreActions = {
@@ -51,8 +56,13 @@ const initialPlayerState: PlayerStoreState = {
   playing: false,
   currentTime: 0,
   duration: 0,
-  player: null,
+  positionLabel: "Transcribing 0%",
+  progressPercentage: 0,
   caption: null,
+  seekToRequest: 0,
+  nextStart: -1,
+  prevStart: -1,
+  error: null,
 };
 
 export const usePlayerStore = create<PlayerStoreState & PlayerStoreActions>()((set) => ({
