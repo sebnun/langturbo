@@ -6,7 +6,6 @@ import PatreonImage from "../public/images/patreon.svg";
 import GithubImage from "../public/images/github.svg";
 import RSSImage from "../public/images/rss.svg";
 import Image from "next/image";
-import { getLanguageCodeByName, getLanguageNameById, languageIds } from "@/lib/languages-legacy";
 import { cn } from "@/lib/utils";
 import Surprise from "./Surprise";
 import { Button } from "./ui/button";
@@ -59,7 +58,6 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
             >
               Terms
             </Link>
-            {/* <code className="text-muted-foreground text-sm pt-3">MMXXV LangTurbo</code> */}
           </div>
         </div>
 
@@ -80,7 +78,7 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <p className="font-bold mb-3">GET THE APP</p>
           <div className="flex flex-col space-y-3">
             <Link href="">
@@ -90,7 +88,7 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
               <Image src={AndroidImage} alt="Download Android app" className="inline" />
             </Link>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="flex items-center justify-center space-x-3 m-6">
         <p className="text-muted-foreground text-xl font-handjet hidden sm:inline-block">LangTurbo MMXXV</p>

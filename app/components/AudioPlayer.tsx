@@ -1,4 +1,3 @@
-import { convertSecondsDurationToHuman } from "@/utils";
 import { usePlayerStore } from "@/utils/store";
 import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
 import { useEffect } from "react";
@@ -15,20 +14,27 @@ export default function AudioPlayer({
   const player = useAudioPlayer(uri, { updateInterval: 100 });
   const status = useAudioPlayerStatus(player);
 
+
   const playing = usePlayerStore((state) => state.playing);
   const seekToRequest = usePlayerStore((state) => state.seekToRequest);
 
-  // useEffect(() => {
-  //   // TODO
-  //   player.setActiveForLockScreen
-  // }, []);
+  useEffect(() => {
+    // TODO
+    //player.setActiveForLockScreen
+    console.log('audioplayer', player.id)
+    return () => {
+      // TODO check memory usage
+      console.log('release', player.id)
+      player.pause()
+      player.release()
+    }
+  }, []);
 
   useEffect(() => {
     usePlayerStore.setState({
       duration: status.duration,
       playing: status.playing,
-      progressPercentage: Math.min((status.currentTime / status.duration) * 100, 100),
-      positionLabel: convertSecondsDurationToHuman(status.currentTime),
+      currentTime: status.currentTime
     });
 
     if (status.didJustFinish) {

@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Platform } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
@@ -14,7 +14,7 @@ import {
   themeStyles,
 } from "@/utils/theme";
 import { getEpisodes } from "@/utils/api";
-import EpisodeItem, { EPISODE_ITEM_HEIGHT, EpisodeItemSeparator } from "@/components/EpisodeItem";
+import EpisodeItem, { EpisodeItemSeparator } from "@/components/EpisodeItem";
 import React from "react";
 import { getCountryNameForLocale } from "@/utils/languages";
 import IconButton from "@/components/button//IconButton";

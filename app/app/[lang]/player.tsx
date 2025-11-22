@@ -1,4 +1,4 @@
-import { Stack, useRouter, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
 import React, { useEffect, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";

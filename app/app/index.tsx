@@ -1,11 +1,10 @@
-import { colorPrimary, sizeIconCategory, sizeScreenPadding, sizeTextLarger, themeStyles } from "@/utils/theme";
+import { colorPrimary, sizeScreenPadding, sizeTextLarger, themeStyles } from "@/utils/theme";
 import { Link, Stack } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { getLanguageCodeByName, languagesDict } from "@/utils/languages";
 import { capitalizeFirstLetter, useTitle } from "@/utils";
 import Button from "@/components/button/Button";
-import { Ionicons } from "@expo/vector-icons";
 import { useWindowDimensions } from "react-native";
 
 export default function Index() {
@@ -33,12 +32,7 @@ export default function Index() {
             renderItem={({ item }) => (
               <Link href={`/${item.value}`} asChild>
                 <Button style={styles.mainButton}>
-                  <View>
-                    <Text style={styles.itemText}>{item.label}</Text>
-                  </View>
-                  <View>
-                    <Ionicons name="arrow-forward-sharp" size={sizeIconCategory} color="white" />
-                  </View>
+                  <Text style={styles.itemText}>{item.label}</Text>
                 </Button>
               </Link>
             )}
@@ -57,17 +51,15 @@ const styles = StyleSheet.create({
   mainButton: {
     backgroundColor: colorPrimary,
     padding: sizeScreenPadding,
-    flexDirection: "row",
-    justifyContent: "space-between",
     margin: sizeScreenPadding,
     marginBottom: 0,
     marginTop: 0,
     borderRadius: 50,
-    alignItems: "center",
   },
   itemText: {
     fontSize: sizeTextLarger,
     color: "white",
+    textAlign: 'center'
   },
   itemSeparator: { height: sizeScreenPadding },
 });
