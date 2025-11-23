@@ -69,6 +69,7 @@ export const episodesTable = pgTable(
   (table) => [
     index("episodes_language_code_idx").on(table.language_code),
     index("episodes_last_played_at_idx").on(table.last_played_at),
+    index("episodes_show_id_idx").on(table.show_id),
   ]
 );
 
@@ -86,7 +87,10 @@ export const segmentsTable = pgTable(
       .references(() => episodesTable.id, { onDelete: "cascade" })
       .notNull(),
   },
-  (table) => [index("segments_language_code_idx").on(table.language_code)]
+  (table) => [
+    index("segments_language_code_idx").on(table.language_code),
+    index("segments_episode_id_idx").on(table.episode_id),
+  ]
 );
 
 export const translationsTable = pgTable(
@@ -100,7 +104,10 @@ export const translationsTable = pgTable(
       .references(() => segmentsTable.id, { onDelete: "cascade" })
       .notNull(),
   },
-  (table) => [index("translations_language_code_idx").on(table.language_code)]
+  (table) => [
+    index("translations_language_code_idx").on(table.language_code),
+    index("translations_segment_id_idx").on(table.segment_id),
+  ]
 );
 
 export const listsTable = pgTable(

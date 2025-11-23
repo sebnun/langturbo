@@ -88,7 +88,6 @@ export const POST = async (req: NextRequest) => {
       : { fileName: requestFileName, extension: requestFileName.split(".").pop()!, mime: "" };
 
   // HTTP not ok
-  // TODO handle in client
   if (!fileData) {
     await db.delete(episodesTable).where(eq(episodesTable.id, id));
     return Response.json({
