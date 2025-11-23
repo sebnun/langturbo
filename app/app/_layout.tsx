@@ -1,10 +1,9 @@
 import { Stack } from "expo-router";
 import "../assets/css/body.css";
 import { SourceCodePro_400Regular, useFonts } from "@expo-google-fonts/source-code-pro";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-
-SplashScreen.preventAutoHideAsync();
+import { StatusBar } from "expo-status-bar";
+import Loading from "@/components/Loading";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -19,29 +18,20 @@ export default function RootLayout() {
   //   }
   // }, []);
 
-  useEffect(() => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded, error]);
-
-  if (!loaded && !error) {
-    return null;
-  }
-
   return (
-    <Stack
-      screenOptions={{
-        contentStyle: {
-          backgroundColor: "black",
-        },
-        headerTintColor: "white",
-        headerStyle: {
-          backgroundColor: "black",
-        },
-        headerShadowVisible: false,
-        headerBackButtonDisplayMode: "minimal",
-      }}
-    />
+    <>
+      <SafeAreaProvider>
+        {loaded ? (
+          <Stack>
+            <Stack.Screen name="[lang]/(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="[lang]/player" />
+            <Stack.Screen name="index" />
+          </Stack>
+        ) : (
+          <Loading />
+        )}
+      </SafeAreaProvider>
+      <StatusBar style="light" />
+    </>
   );
 }

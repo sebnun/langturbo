@@ -6,10 +6,12 @@ import { getLanguageCodeByName, languagesDict } from "@/utils/languages";
 import { capitalizeFirstLetter, useTitle } from "@/utils";
 import Button from "@/components/button/Button";
 import { useWindowDimensions } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Index() {
   useTitle("What language do you want to learn?");
   const { width } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
 
   const languagesListDict = Object.values(languagesDict)
     .map((language) => ({ label: capitalizeFirstLetter(language), value: getLanguageCodeByName(language) }))
@@ -20,17 +22,26 @@ export default function Index() {
       <Stack.Screen
         options={{
           title: "What language do you want to learn?",
+          contentStyle: {
+            backgroundColor: "black",
+          },
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "black",
+          },
+          headerShadowVisible: false,
+          headerBackButtonDisplayMode: "minimal",
         }}
       />
-      <View style={themeStyles.screen}>
-        <View style={styles.flashContainer}>
+      <SafeAreaView style={themeStyles.screen}>
+        <View style={[styles.flashContainer, { marginTop: -insets.top }]}>
           <FlashList
             numColumns={width < 481 ? 1 : width < 769 ? 2 : 3}
             data={languagesListDict}
             keyExtractor={(item) => item.value}
             ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
             renderItem={({ item }) => (
-              <Link href={`/${item.value}`} asChild>
+              <Link href={`/${item.value}`} asChild replace>
                 <Button style={styles.mainButton}>
                   <Text style={styles.itemText}>{item.label}</Text>
                 </Button>
@@ -38,7 +49,7 @@ export default function Index() {
             )}
           />
         </View>
-      </View>
+      </SafeAreaView>
     </>
   );
 }
@@ -59,7 +70,7 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: sizeTextLarger,
     color: "white",
-    textAlign: 'center'
+    textAlign: "center",
   },
   itemSeparator: { height: sizeScreenPadding },
 });
