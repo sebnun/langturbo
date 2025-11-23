@@ -1,4 +1,4 @@
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
 import React, { useEffect, useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,6 +14,7 @@ import Transcriber from "@/components/Transcriber";
 import Caption from "@/components/Caption";
 import Translation from "@/components/Translation";
 import { decodeUrl, useTitle } from "@/utils";
+import * as Burnt from "burnt";
 
 export default function PlayerScreen() {
   const { id, podcastId, title, podcastTitle, podcastImageUrl } = useLocalSearchParams() as {
@@ -24,6 +25,7 @@ export default function PlayerScreen() {
     podcastImageUrl: string;
   };
   useTitle(title);
+  const router = useRouter();
 
   //useLocalSearchParams decodes the params, but it breaks urls that have other encoded urls in them
   const decodedId = decodeUrl(id);
@@ -75,17 +77,14 @@ export default function PlayerScreen() {
   }, [duration]);
 
   useEffect(() => {
-    // TODO
     if (error && error === "DOWNLOAD_ERROR") {
-      console.log("download error");
-      // Burnt.toast({
-      //   title: `This podcast is offline`,
-      //   preset: "error",
-      // });
+      Burnt.toast({
+        title: `This podcast is offline`,
+        preset: "error",
+      });
 
-      // // Need to reset here, track subscription not called?
-      // resetPlayer();
-      // router.back();
+      resetPlayer();
+      router.back();
     }
   }, [error]);
 

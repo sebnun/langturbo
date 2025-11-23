@@ -4,19 +4,17 @@ import { SourceCodePro_400Regular, useFonts } from "@expo-google-fonts/source-co
 import { StatusBar } from "expo-status-bar";
 import Loading from "@/components/Loading";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Toaster } from "burnt/web";
+
+export const unstable_settings = {
+  // Ensure any route can link back to `/`on full refresh
+  initialRouteName: "index",
+};
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SourceCodePro_400Regular,
   });
-
-  // TODO Breaks forward button
-  // useEffect(() => {
-  //   // Full page refresh, to have usable navigation
-  //   if (Platform.OS === "web" && window.location.pathname !== "/") {
-  //     window.location.href = "/";
-  //   }
-  // }, []);
 
   return (
     <>
@@ -32,6 +30,7 @@ export default function RootLayout() {
         )}
       </SafeAreaProvider>
       <StatusBar style="light" />
+      <Toaster position="bottom-right" />
     </>
   );
 }

@@ -1,26 +1,22 @@
-import { useAppStore } from "@/utils/store";
 import {
-  colorCardBackground,
-  colorTextSubdued,
-  msImageTransition,
-  radiusBorder,
-  sizeIconNavigation,
   sizeScreenPadding,
-  sizeTextLarger,
   sizeWidthProfile,
   themeStyles,
 } from "@/utils/theme";
-import { Link, Stack, useGlobalSearchParams, useLocalSearchParams, useRouter } from "expo-router";
-import { View, StyleSheet, ScrollView, Platform, Text } from "react-native";
+import { Link, Stack, useGlobalSearchParams, useRouter } from "expo-router";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { getLanguageNameById, languageIds } from "@/utils/languages";
 import { capitalizeFirstLetter, useTitle } from "@/utils";
 
-import React from "react";
+import React, { useState } from "react";
 import RoundButton from "@/components/button/RoundButton";
 
 export default function ProfileScreen() {
-  const { lang } = useGlobalSearchParams();
-  useTitle(`Learning ${capitalizeFirstLetter(getLanguageNameById(languageIds[(lang as string) || "en"]))}`);
+  // When navigating to / global params change to empty, causing an error
+  // So use only the first value
+  const [globalParams, _] = useState(useGlobalSearchParams());
+  const { lang } = globalParams;
+  useTitle(`Learning ${capitalizeFirstLetter(getLanguageNameById(languageIds[lang as string]))}`);
 
   const router = useRouter();
 
@@ -28,7 +24,7 @@ export default function ProfileScreen() {
     <>
       <Stack.Screen
         options={{
-          title: `Learning ${capitalizeFirstLetter(getLanguageNameById(languageIds[(lang as string) || "en"]))}`,
+          title: `Learning ${capitalizeFirstLetter(getLanguageNameById(languageIds[lang as string]))}`,
         }}
       />
       <View style={themeStyles.screen}>

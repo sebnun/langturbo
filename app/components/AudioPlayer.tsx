@@ -21,10 +21,10 @@ export default function AudioPlayer({
   useEffect(() => {
     // TODO
     //player.setActiveForLockScreen
-    console.log('audioplayer', player.id)
+    //console.log('audioplayer', player.id)
     return () => {
       // TODO check memory usage
-      console.log('release', player.id)
+      //console.log('release', player.id)
       player.pause()
       player.release()
     }
