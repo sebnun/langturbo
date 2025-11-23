@@ -7,7 +7,6 @@ import { Link, Stack, useGlobalSearchParams, useRouter } from "expo-router";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { getLanguageNameById, languageIds } from "@/utils/languages";
 import { capitalizeFirstLetter, useTitle } from "@/utils";
-
 import React, { useState } from "react";
 import RoundButton from "@/components/button/RoundButton";
 

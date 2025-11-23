@@ -54,6 +54,14 @@
           "microphonePermission": "$(PRODUCT_NAME) needs access to your microphone for pronunciation feedback.",
           "recordAudioAndroid": true
         }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "expo",
+          "organization": "langturbo"
+        }
       ]
     ],
     "experiments": {
