@@ -7,7 +7,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        popToTopOnBlur: true, // So that when language is changed, the stack is reset
+        popToTopOnBlur: true, 
         headerShown: false,
         tabBarActiveTintColor: "white",
         tabBarStyle: {
@@ -18,7 +18,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="discover"
+        name="(discover)"
         options={{
           title: "Discover",
           tabBarIcon: ({ color, focused, size }) =>
@@ -39,12 +39,6 @@ export default function TabLayout() {
             ) : (
               <Ionicons size={size} name="person-outline" color={color} />
             ),
-        }}
-      />
-      <Tabs.Screen
-        name="index"
-        options={{
-          href: null,
         }}
       />
     </Tabs>

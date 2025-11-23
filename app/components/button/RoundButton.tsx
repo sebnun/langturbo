@@ -6,7 +6,7 @@ import React from "react";
 // Use disabled as loading state
 
 export default function RoundButton(props: {
-  onPress: () => void;
+  onPress?: () => void;
   text: string;
   type?: "primary" | "secondary" | "destructive" | "ghost";
   disabled?: boolean;
