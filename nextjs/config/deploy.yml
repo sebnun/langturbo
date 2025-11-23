@@ -58,6 +58,7 @@ env:
     - GOOGLE_STORAGE_KEY_FILE
     - BETTER_AUTH_SECRET
     - USER_AGENT
+    - SENTRY_AUTH_TOKEN
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal app logs -r job" will tail logs from the first server in the job section.

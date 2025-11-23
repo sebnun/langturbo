@@ -29,3 +29,7 @@ Kamal sets limit `"max-size": "10m"` to `json-file` driver by default
 1) Provision VM with ubuntu "accelerated" OS (has GPU driver installed), copy config from current VM
 2) Prepare for kamal with infra scripts, Install NVIDIA container toolkit for docker
 3) ```curl -s "http://34.26.13.75/v1/audio/transcriptions" -F "file=@/Users/pablo/Desktop/1min.mp3" -F "model=Systran/faster-whisper-large-v3" -F "timestamp_granularities[]=word" -F "response_format=verbose_json"```
+
+# TODO
+
+https://docs.expo.dev/guides/using-sentry/#usage-with-eas-update
