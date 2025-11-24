@@ -32,6 +32,11 @@ export default function Transcriber({
 
       postTranscription(id, lang as string, sourceId, episodeTitle, 0)
         .then((from0Response) => {
+          if (from0Response.error) {
+            usePlayerStore.setState({ error: from0Response.error });
+            return;
+          }
+
           setCaptions(fillCaptionsStart(from0Response.captions));
           setProcessedSeconds(from0Response.processedSeconds);
           setFileName(from0Response.fileName);
@@ -39,7 +44,6 @@ export default function Transcriber({
           usePlayerStore.setState({
             caption: from0Response.captions[0],
             nextStart: from0Response.captions.length > 1 ? from0Response.captions[1].captionStart : -1,
-            error: from0Response.error,
             positionLabel: "00:00",
           });
         })

@@ -46,12 +46,10 @@ export const POST = async (req: NextRequest) => {
         episodeRows = await db.select().from(episodesTable).where(eq(episodesTable.id, id)).limit(1);
       }
 
-      console.log("Already transcribed and translated " + id);
-
-      // TODO test english
       const segmentsRows = await db
         .select()
         .from(segmentsTable)
+        .where(eq(segmentsTable.episode_id, id))
         .leftJoin(translationsTable, eq(segmentsTable.id, translationsTable.segment_id));
 
       return Response.json({
