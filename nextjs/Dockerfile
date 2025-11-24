@@ -53,9 +53,9 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-RUN apk add --no-cache ffmpeg libc6-compat \
-    && mkdir -p /app/tmp \
-    && chown nextjs:nodejs /app/tmp
+RUN apk add --no-cache ffmpeg \
+    && mkdir -p /tmp \
+    && chown nextjs:nodejs /tmp
 
 USER nextjs
 
