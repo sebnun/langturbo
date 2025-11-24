@@ -17,7 +17,6 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
@@ -59,6 +58,9 @@ USER nextjs
 EXPOSE 3000
 
 ENV PORT=3000
+
+# Create /tmp directory for temporary files
+RUN mkdir -p /tmp && chmod 1777 /tmp
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/config/next-config-js/output

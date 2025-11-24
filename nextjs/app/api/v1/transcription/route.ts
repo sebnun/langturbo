@@ -106,14 +106,14 @@ export const POST = async (req: NextRequest) => {
 
   const fileName = from === 0 ? fileData.fileName : requestFileName;
   const end = from + SEEK_FORWARD_SECONDS;
-  const outputPath = `/app/tmp/${from}-${end}.${fileData.extension}`;
+  const outputPath = `/tmp/${from}-${end}.${fileData.extension}`;
 
   console.time("trimAudioToFile");
   spawnSync("ffmpeg", [
     "-i",
     from > 0
       ? `https://storage.googleapis.com/turbo-9892e.firebasestorage.app/${requestFileName}`
-      : "/app/tmp/" + fileData.fileName,
+      : "/tmp/" + fileData.fileName,
     "-y",
     "-vn",
     "-ss",
@@ -296,7 +296,7 @@ const downloadPodcastData = async (audioUrl: string) => {
   const fileName = `${randomUUID()}.${extension}`;
   const audioData = Buffer.from(audioDataArrayBuffer);
 
-  writeFileSync("/app/tmp/" + fileName, audioData);
+  writeFileSync("/tmp/" + fileName, audioData);
 
   // VBR breaks seeking in players, it looks like the problems happens only in mp3s? https://terrillthompson.com/624
   let isVBR = false;
@@ -319,13 +319,13 @@ const downloadPodcastData = async (audioUrl: string) => {
 
       spawnSync("ffmpeg", [
         "-i",
-        "/app/tmp/" + fileName,
+        "/tmp/" + fileName,
         "-y",
         "-acodec",
         "copy",
         "-b:a",
         "128k",
-        "/app/tmp/" + "cbr" + fileName,
+        "/tmp/" + "cbr" + fileName,
       ]);
     }
   }
@@ -381,7 +381,7 @@ const getExtensionForMime = (mime: string | null, audioUrl: string) => {
 };
 
 const persistPodcastPromise = async (fileName: string, mime: string | null) => {
-  return storage.bucket("turbo-9892e.firebasestorage.app").upload("/app/tmp/" + fileName, {
+  return storage.bucket("turbo-9892e.firebasestorage.app").upload("/tmp/" + fileName, {
     destination: fileName,
     metadata: {
       contentType: mime ? mime : undefined,
