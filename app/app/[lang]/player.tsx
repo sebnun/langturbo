@@ -5,12 +5,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { sizeScreenPadding, themeStyles } from "@/utils/theme";
 import Loading from "@/components/Loading";
 import Progress from "@/components/Progress";
-import { StyleSheet, View, ScrollView, Platform } from "react-native";
+import { StyleSheet, View, ScrollView, Platform, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "@/components/button/Button";
 import { usePlayerStore } from "@/utils/store";
 import TimeCode from "@/components/TimeCode";
-import Transcriber from "@/components/Transcriber";
+import Transcriber, { SEEK_FORWARD_SECONDS } from "@/components/Transcriber";
 import Caption from "@/components/Caption";
 import Translation from "@/components/Translation";
 import { decodeUrl, useTitle } from "@/utils";
@@ -32,6 +32,7 @@ export default function PlayerScreen() {
 
   const loadingIntervalRef = useRef<number | null>(null);
 
+  const caption = usePlayerStore((state) => state.caption);
   const playing = usePlayerStore((state) => state.playing);
   const nextStart = usePlayerStore((state) => state.nextStart);
   const prevStart = usePlayerStore((state) => state.prevStart);
@@ -72,6 +73,7 @@ export default function PlayerScreen() {
       // Ready to play
       if (loadingIntervalRef.current) {
         clearInterval(loadingIntervalRef.current);
+        usePlayerStore.setState({ positionLabel: `00:00` });
       }
     }
   }, [duration]);
@@ -97,7 +99,7 @@ export default function PlayerScreen() {
   };
 
   const handlePlayToogle = async () => {
-    usePlayerStore.setState({ playing: !playing });
+    usePlayerStore.setState({ playbackRequest: playing ? "pause" : "play" });
   };
 
   return (
@@ -140,10 +142,14 @@ export default function PlayerScreen() {
                 <Ionicons name="play-circle-sharp" size={60} color="white" />
               )}
             </Button>
-
-            <Button disabled={!duration || nextStart === -1} onPress={handleNext}>
-              <Ionicons name="arrow-forward-sharp" size={40} color="white" />
-            </Button>
+            
+            {duration && nextStart === -1 && caption && caption.start + SEEK_FORWARD_SECONDS < duration ? (
+              <ActivityIndicator color="white" size="large" />
+            ) : (
+              <Button disabled={!duration || nextStart === -1} onPress={handleNext}>
+                <Ionicons name="arrow-forward-sharp" size={40} color="white" />
+              </Button>
+            )}
           </View>
         </View>
         <Progress />

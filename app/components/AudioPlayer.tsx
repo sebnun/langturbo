@@ -1,6 +1,7 @@
 import { usePlayerStore } from "@/utils/store";
 import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
-import { useEffect } from "react";
+import { use, useEffect, useRef } from "react";
+import { Platform } from "react-native";
 
 export default function AudioPlayer({
   uri,
@@ -14,9 +15,8 @@ export default function AudioPlayer({
   const player = useAudioPlayer(uri, { updateInterval: 100 });
   const status = useAudioPlayerStatus(player);
 
-
-  const playing = usePlayerStore((state) => state.playing);
   const seekToRequest = usePlayerStore((state) => state.seekToRequest);
+  const playbackRequest = usePlayerStore((state) => state.playbackRequest);
 
   useEffect(() => {
     // TODO
@@ -24,17 +24,18 @@ export default function AudioPlayer({
     //console.log('audioplayer', player.id)
     return () => {
       // TODO check memory usage
-      //console.log('release', player.id)
-      player.pause()
-      player.release()
-    }
+      if (Platform.OS === "web") {
+        player.pause();
+        player.release();
+      }
+    };
   }, []);
 
   useEffect(() => {
     usePlayerStore.setState({
       duration: status.duration,
       playing: status.playing,
-      currentTime: status.currentTime
+      currentTime: status.currentTime,
     });
 
     if (status.didJustFinish) {
@@ -42,17 +43,31 @@ export default function AudioPlayer({
     }
   }, [status]);
 
-  useEffect(() => {
-    if (playing && !player.playing) {
-      player.play();
-    } else if (!playing && player.playing) {
-      player.pause();
-    }
-  }, [playing]);
+  // useEffect(() => {
+  //   console.log("AudioPlayer playing changed:", playing, player.playing, player.isBuffering);
+  //   if (playing && !player.playing) {
+  //     console.log("playing audio");
+  //     player.play();
+  //   } else if (!playing && player.playing) {
+  //     console.log("pausing audio");
+  //     player.pause();
+  //   }
+  // }, [playing]);
 
   useEffect(() => {
-    player.seekTo(seekToRequest);
-    player.play();
+    if (playbackRequest === "play") {
+      player.play();
+    } else {
+      player.pause();
+    }
+  }, [playbackRequest]);
+
+  useEffect(() => {
+    // Avoid seeking on first load when duration is 0
+    if (usePlayerStore.getState().duration) {
+      player.seekTo(seekToRequest);
+      usePlayerStore.setState({ playbackRequest: 'play' }); 
+    }
   }, [seekToRequest]);
 
   return null;

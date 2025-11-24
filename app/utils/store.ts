@@ -43,6 +43,7 @@ type PlayerStoreState = {
   progressPercentage: number;
   caption: Caption | null;
   seekToRequest: number;
+  playbackRequest: 'play' | 'pause' 
   nextStart: number;
   prevStart: number;
   error: string | null;
@@ -60,6 +61,7 @@ const initialPlayerState: PlayerStoreState = {
   progressPercentage: 0,
   caption: null,
   seekToRequest: 0,
+  playbackRequest: 'pause',
   nextStart: -1,
   prevStart: -1,
   error: null,

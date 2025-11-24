@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import AudioPlayer from "./AudioPlayer";
 import { convertSecondsDurationToHuman, fillCaptionsStart } from "@/utils";
 
-const SEEK_FORWARD_SECONDS = 30;
+export const SEEK_FORWARD_SECONDS = 30;
 
 export default function Transcriber({
   id,
@@ -44,7 +44,6 @@ export default function Transcriber({
           usePlayerStore.setState({
             caption: from0Response.captions[0],
             nextStart: from0Response.captions.length > 1 ? from0Response.captions[1].captionStart : -1,
-            positionLabel: "00:00",
           });
         })
         .finally(() => {
