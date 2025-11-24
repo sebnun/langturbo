@@ -53,8 +53,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Create /tmp directory for temporary files
-RUN mkdir -p /tmp && chmod 1177 /tmp
+RUN mkdir -p /app/tmp && chown nextjs:nodejs /app/tmp
 
 USER nextjs
 
