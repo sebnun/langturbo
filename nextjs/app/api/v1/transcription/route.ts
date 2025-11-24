@@ -23,7 +23,7 @@ const storage = new Storage({
 const ai = new GoogleGenAI({
   vertexai: true,
   project: process.env.GOOGLE_CLOUD_PROJECT,
-  location: process.env.GOOGLE_CLOUD_LOCATION,
+  location: "global",
   googleAuthOptions: {
     credentials: serviceAccountVertex,
   },
@@ -158,6 +158,7 @@ export const POST = async (req: NextRequest) => {
       language_code: languageCode,
       words: fakeCaption.words,
     });
+
     if (languageCode != "en") {
       await db.insert(translationsTable).values({ segment_id: fakeCaption.id, translation: "", language_code: "en" });
     }
@@ -188,12 +189,12 @@ export const POST = async (req: NextRequest) => {
   }
   actualSegments = uniqueSegments;
 
-  console.time("chatpromises");
+  console.time("translation");
   const translatedSentences = await translateSentencePromises(
     actualSegments!.map((sd) => sd.text),
     languageCode
   );
-  console.timeEnd("chatpromises");
+  console.timeEnd("translation");
 
   const captions: Caption[] = [];
 
@@ -407,44 +408,37 @@ const transcribePromise = async (audioPath: string, languageCode: string) => {
   });
 };
 
-// TODO optimize to translate as a single text
 const translateSentencePromises = async (sentences: string[], languageCode: string) => {
-  const regex = new RegExp("[\\p{Letter}]+", "u");
+  if (languageCode === "en") {
+    return sentences.map(() => "");
+  }
 
-  return Promise.all(
-    sentences.map((s) => {
-      // Dont translate if at least not a word character or the audio language is the same as the user language
-      if (!regex.test(s) || languageCode === "en") {
-        return Promise.resolve("");
-      }
+  const text = sentences.join("\n");
 
-      return ai.models
-        .generateContent({
-          model: "gemini-2.5-flash",
-          contents: [
-            {
-              text: `Translate from ${capitalizeFirstLetter(
-                getLanguageNameById(languageIds[languageCode])
-              )} to English and respond only with the translation:\n${s}`,
-            },
-          ],
-          // config: {
-          //   thinkingConfig: {
-          //     includeThoughts: false,
-          //     thinkingLevel: ThinkingLevel.LOW,
-          //   },
-          // },
-        })
-        .then((response) => response?.candidates?.[0]?.content?.parts?.[0]?.text ?? "")
-        .catch((e) => {
-          console.error("from catch", e);
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-3-pro-preview",
+      contents: [
+        {
+          text: `Translate from ${capitalizeFirstLetter(
+            getLanguageNameById(languageIds[languageCode])
+          )} to English. Respond only with the translation line by line:\n${text}`,
+        },
+      ],
+      config: {
+        thinkingConfig: {
+          includeThoughts: false,
+          thinkingLevel: ThinkingLevel.LOW,
+        },
+      },
+    });
 
-          // This is needed to fail gracefully
-          // TODO see shape
-          return "";
-        });
-    })
-  );
+    const fullTranslation = response?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+    return fullTranslation.split("\n");
+  } catch (e) {
+    console.error("from catch", e);
+    return sentences.map(() => "");
+  }
 };
 
 /*
