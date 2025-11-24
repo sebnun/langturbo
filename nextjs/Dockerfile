@@ -53,14 +53,15 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Create /tmp directory for temporary files
+RUN mkdir -p /tmp && chmod 1177 /tmp
+
 USER nextjs
 
 EXPOSE 3000
 
 ENV PORT=3000
 
-# Create /tmp directory for temporary files
-RUN mkdir -p /tmp && chmod 1777 /tmp
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/config/next-config-js/output
