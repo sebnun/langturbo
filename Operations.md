@@ -30,6 +30,12 @@ Kamal sets limit `"max-size": "10m"` to `json-file` driver by default
 2) Prepare for kamal with infra scripts, Install NVIDIA container toolkit for docker
 3) ```curl -s "http://34.26.13.75/v1/audio/transcriptions" -F "file=@/Users/pablo/Desktop/1min.mp3" -F "model=Systran/faster-whisper-large-v3" -F "timestamp_granularities[]=word" -F "response_format=verbose_json"```
 
+# Expo web hosting
+
+1) ```npx expo export --platform web```
+2) ```eas deploy --prod```
+
+
 # TODO
 
 https://docs.expo.dev/guides/using-sentry/#usage-with-eas-update

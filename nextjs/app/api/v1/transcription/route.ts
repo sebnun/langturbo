@@ -12,26 +12,37 @@ import CodecParser from "codec-parser";
 import { Storage } from "@google-cloud/storage";
 import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 
-const serviceAccountStorage = JSON.parse(Buffer.from(process.env.GOOGLE_STORAGE_KEY_FILE!, "base64").toString("utf-8"));
-const serviceAccountVertex = JSON.parse(Buffer.from(process.env.GOOGLE_KEY_FILE!, "base64").toString("utf-8"));
+// Lazy initialization to avoid executing at build time
+let storage: Storage;
+let ai: GoogleGenAI;
 
-const storage = new Storage({
-  projectId: process.env.GOOGLE_CLOUD_PROJECT,
-  credentials: serviceAccountStorage,
-});
-
-const ai = new GoogleGenAI({
-  vertexai: true,
-  project: process.env.GOOGLE_CLOUD_PROJECT,
-  location: "global",
-  googleAuthOptions: {
-    credentials: serviceAccountVertex,
-  },
-});
+const initializeClients = () => {
+  if (!storage) {
+    const serviceAccountStorage = JSON.parse(Buffer.from(process.env.GOOGLE_STORAGE_KEY_FILE!, "base64").toString("utf-8"));
+    storage = new Storage({
+      projectId: process.env.GOOGLE_CLOUD_PROJECT,
+      credentials: serviceAccountStorage,
+    });
+  }
+  
+  if (!ai) {
+    const serviceAccountVertex = JSON.parse(Buffer.from(process.env.GOOGLE_KEY_FILE!, "base64").toString("utf-8"));
+    ai = new GoogleGenAI({
+      vertexai: true,
+      project: process.env.GOOGLE_CLOUD_PROJECT,
+      location: "global",
+      googleAuthOptions: {
+        credentials: serviceAccountVertex,
+      },
+    });
+  }
+};
 
 const SEEK_FORWARD_SECONDS = 30;
 
 export const POST = async (req: NextRequest) => {
+  initializeClients();
+  
   const { id, languageCode, itunesId, requestFileName, episodeTitle, from } = await req.json();
 
   // Client will always request from 0 first
