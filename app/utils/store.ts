@@ -1,4 +1,3 @@
-import { type AudioPlayer } from "expo-audio";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -8,6 +7,7 @@ type AppStoreState = {
   fontSize: number;
   slower: boolean;
   showTranslation: boolean;
+  tapTranslation: boolean
 };
 
 const initialAppState: AppStoreState = {
@@ -15,6 +15,7 @@ const initialAppState: AppStoreState = {
   fontSize: 25,
   slower: false,
   showTranslation: true,
+  tapTranslation: false
 };
 
 export const useAppStore = create<AppStoreState>()(
@@ -29,6 +30,7 @@ export const useAppStore = create<AppStoreState>()(
         fontSize: state.fontSize,
         slower: state.slower,
         showTranslation: state.showTranslation,
+        tapTranslation: state.tapTranslation
       }),
       storage: createJSONStorage(() => AsyncStorage),
     }

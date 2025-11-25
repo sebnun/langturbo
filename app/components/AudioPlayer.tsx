@@ -1,4 +1,4 @@
-import { usePlayerStore } from "@/utils/store";
+import { useAppStore, usePlayerStore } from "@/utils/store";
 import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
 import { use, useEffect, useRef } from "react";
 import { Platform } from "react-native";
@@ -17,6 +17,7 @@ export default function AudioPlayer({
 
   const seekToRequest = usePlayerStore((state) => state.seekToRequest);
   const playbackRequest = usePlayerStore((state) => state.playbackRequest);
+  const slower = useAppStore((state) => state.slower);
 
   useEffect(() => {
     // TODO
@@ -63,10 +64,18 @@ export default function AudioPlayer({
   }, [playbackRequest]);
 
   useEffect(() => {
+    if (slower) {
+      player.setPlaybackRate(0.75);
+    } else {
+      player.setPlaybackRate(1);
+    }
+  }, [slower]);
+
+  useEffect(() => {
     // Avoid seeking on first load when duration is 0
     if (usePlayerStore.getState().duration) {
       player.seekTo(seekToRequest);
-      usePlayerStore.setState({ playbackRequest: 'play' }); 
+      usePlayerStore.setState({ playbackRequest: "play" });
     }
   }, [seekToRequest]);
 

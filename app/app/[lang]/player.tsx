@@ -1,8 +1,8 @@
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { sizeScreenPadding, themeStyles } from "@/utils/theme";
+import { sizeIconNavigation, sizeScreenPadding, themeStyles } from "@/utils/theme";
 import Loading from "@/components/Loading";
 import Progress from "@/components/Progress";
 import { StyleSheet, View, ScrollView, Platform, ActivityIndicator } from "react-native";
@@ -17,6 +17,7 @@ import { decodeUrl } from "@/utils";
 import * as Burnt from "burnt";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTitle } from "@/utils/hooks";
+import SettingsModal from "@/components/SettingsModal";
 
 export default function PlayerScreen() {
   const { id, podcastId, title, podcastTitle, podcastImageUrl } = useLocalSearchParams() as {
@@ -40,8 +41,9 @@ export default function PlayerScreen() {
   const prevStart = usePlayerStore((state) => state.prevStart);
   const duration = usePlayerStore((state) => state.duration);
   const error = usePlayerStore((state) => state.error);
-
   const reset = usePlayerStore((state) => state.reset);
+
+  const [showSettings, setShowSettings] = useState(false);
 
   const resetPlayer = () => {
     if (loadingIntervalRef.current) {
@@ -119,10 +121,23 @@ export default function PlayerScreen() {
           headerShadowVisible: false,
           headerBackButtonDisplayMode: "minimal",
           headerTitleAlign: "center",
+          headerRight: () => (
+            <View
+              style={{
+                paddingRight: Platform.OS === "web" ? sizeScreenPadding : undefined,
+                paddingLeft: Platform.OS === "ios" ? 6 : undefined, // With the new glass buttons
+              }}
+            >
+              <Button onPress={() => setShowSettings(true)}>
+                <Ionicons name="options-sharp" size={sizeIconNavigation} color="white" />
+              </Button>
+            </View>
+          ),
         }}
       />
       <SafeAreaView style={themeStyles.screen}>
         <LinearGradient colors={["black", "#050505"]} style={styles.gradient} />
+        <SettingsModal isVisible={showSettings} onClose={() => setShowSettings(false)} />
         <Transcriber id={decodedId} sourceId={podcastId} episodeTitle={title} podcastImageUrl={podcastImageUrl} />
         {!duration ? (
           <Loading />
