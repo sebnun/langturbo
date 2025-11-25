@@ -28,7 +28,7 @@ type Caption = {
   start: number;
   end: number;
   captionStart?: number;
-  words: Word[];
+  words: (Word | Token)[];
   translation?: string;
 };
 
@@ -36,4 +36,11 @@ type Word = {
   word: string;
   start: number;
   end: number;
+};
+
+type Token = {
+  text: string;
+  is_punct: boolean;
+  idx: number;
+  pos: string;
 };
