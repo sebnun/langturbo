@@ -3,7 +3,8 @@ import { useAppStore, usePlayerStore } from "../utils/store";
 import { getLanguageNameById, languageIds, rtlLanguages } from "../utils/languages";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { colorPrimary } from "@/utils/theme";
+import { colorPrimary, colorTextSubdued } from "@/utils/theme";
+import UtterableText from "./UtterableText";
 
 /*
 legacy word data format:
@@ -85,10 +86,9 @@ export default function Caption() {
           );
         }
 
-        const matched = usableText.substring(wordIdx, wordIdx + searchWord.length);
         nodes.push(
-          <Text key={`token-${(w as Word).start}`} style={styles.captionHighlighted}>
-            {matched}
+          <Text key={`token-${(w as Word).start}-${nodes.length}`} style={styles.captionHighlighted}>
+            <UtterableText start={(w as Word).start} word={w.word} />
           </Text>
         );
 
@@ -123,6 +123,6 @@ const styles = StyleSheet.create({
     textDecorationColor: colorPrimary, // This is not supported on Android
   },
   captionNormal: {
-    color: "white",
+    color: colorTextSubdued,
   },
 });
