@@ -1,7 +1,5 @@
 import { Platform } from "react-native";
 import * as Device from "expo-device";
-import { useFocusEffect } from "expo-router";
-import { useCallback } from "react";
 import { Buffer } from "buffer/";
 
 export function capitalizeFirstLetter(string: string) {
@@ -16,16 +14,6 @@ export const getApiEndpoint = () => {
   } else {
     return "https://www.langturbo.com/api/v1/";
   }
-};
-
-export const useTitle = (title: string) => {
-  useFocusEffect(
-    useCallback(() => {
-      if (Platform.OS === "web") {
-        document.title = `${title} | LangTurbo`;
-      }
-    }, [title])
-  );
 };
 
 export function convertSecondsDurationToHuman(seconds?: number) {

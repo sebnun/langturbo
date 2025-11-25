@@ -30,3 +30,9 @@ export const postTranscription = async (
     body: JSON.stringify({ id, languageCode, itunesId, requestFileName, episodeTitle, from }),
   }).then((response) => response.json());
 };
+
+export const getSearch = async (query: string, languageCode: string) => {
+  return fetch(`${getApiEndpoint()}search?query=${query}&languageCode=${languageCode}`)
+    .then((response) => response.json())
+    .then((json) => json.results as Podcast[]);
+};

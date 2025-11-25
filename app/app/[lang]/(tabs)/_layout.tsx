@@ -7,7 +7,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        popToTopOnBlur: true, 
+        popToTopOnBlur: true,
         headerShown: false,
         tabBarActiveTintColor: "white",
         tabBarStyle: {
@@ -26,6 +26,18 @@ export default function TabLayout() {
               <Ionicons name="sparkles-sharp" size={size} color={color} />
             ) : (
               <Ionicons size={size} name="sparkles-outline" color={color} />
+            ),
+        }}
+      />
+      <Tabs.Screen
+        name="search"
+        options={{
+          title: "Search",
+          tabBarIcon: ({ color, focused, size }) =>
+            focused ? (
+              <Ionicons name="search-sharp" size={size} color={color} />
+            ) : (
+              <Ionicons size={size} name="search-outline" color={color} />
             ),
         }}
       />

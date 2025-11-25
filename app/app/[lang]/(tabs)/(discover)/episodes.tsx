@@ -2,7 +2,7 @@ import IconButton from "@/components/button//IconButton";
 import EpisodeItem, { EpisodeItemSeparator } from "@/components/EpisodeItem";
 import Loading from "@/components/Loading";
 import { NoContent, PODCAST_SMALL_IMAGE_SIZE } from "@/components/PodcastItem";
-import { useTitle } from "@/utils";
+import { useTitle } from "@/utils/hooks";
 import { getEpisodes } from "@/utils/api";
 import { getCountryNameForLocale } from "@/utils/languages";
 import {

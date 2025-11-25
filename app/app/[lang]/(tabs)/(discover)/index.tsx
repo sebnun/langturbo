@@ -1,7 +1,7 @@
 import TextButton from "@/components/button/TextButton";
 import Loading from "@/components/Loading";
 import PodcastItem from "@/components/PodcastItem";
-import { useTitle } from "@/utils";
+import { useTitle } from "@/utils/hooks";
 import { getCategories } from "@/utils/api";
 import { getLanguageNameById, languageIds } from "@/utils/languages";
 import {
@@ -89,7 +89,7 @@ export default function DiscoverScreen() {
                     horizontal
                     contentContainerStyle={{ padding: sizeElementSpacing }}
                     data={category.podcasts}
-                    renderItem={({ item, index }) => <PodcastItem podcast={item} segment="discover" />}
+                    renderItem={({ item, index }) => <PodcastItem podcast={item} />}
                     showsHorizontalScrollIndicator={!Device.DeviceType.DESKTOP} // On desktop horizontal scrollbars have bad UX and there is a bug with the FlashList component
                   />
                 </View>

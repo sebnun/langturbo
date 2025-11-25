@@ -13,9 +13,10 @@ import TimeCode from "@/components/TimeCode";
 import Transcriber, { SEEK_FORWARD_SECONDS } from "@/components/Transcriber";
 import Caption from "@/components/Caption";
 import Translation from "@/components/Translation";
-import { decodeUrl, useTitle } from "@/utils";
+import { decodeUrl } from "@/utils";
 import * as Burnt from "burnt";
 import { LinearGradient } from "expo-linear-gradient";
+import { useTitle } from "@/utils/hooks";
 
 export default function PlayerScreen() {
   const { id, podcastId, title, podcastTitle, podcastImageUrl } = useLocalSearchParams() as {

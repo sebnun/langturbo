@@ -3,10 +3,11 @@ import { Link, Stack } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { getLanguageCodeByName, languagesDict } from "@/utils/languages";
-import { capitalizeFirstLetter, useTitle } from "@/utils";
+import { capitalizeFirstLetter } from "@/utils";
 import Button from "@/components/button/Button";
 import { useWindowDimensions } from "react-native";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTitle } from "@/utils/hooks";
 
 export default function Index() {
   useTitle("What language do you want to learn?");

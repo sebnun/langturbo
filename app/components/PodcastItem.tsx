@@ -10,30 +10,23 @@ import {
 } from "@/utils/theme";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
-import { useLocalSearchParams } from "expo-router/build/hooks";
+import { useLocalSearchParams, useSegments } from "expo-router/build/hooks";
 import { StyleSheet, Text, View } from "react-native";
 import BlockButton from "./button/BlockButton";
 
 export const PODCAST_LARGE_IMAGE_SIZE = 180;
 export const PODCAST_SMALL_IMAGE_SIZE = 120;
 
-export default function PodcastItem({
-  podcast,
-  segment,
-  full,
-}: {
-  podcast: Podcast;
-  segment: "saved" | "discover";
-  full?: boolean;
-}) {
+export default function PodcastItem({ podcast, full }: { podcast: Podcast; full?: boolean }) {
   const router = useRouter();
-  const { lang } = useLocalSearchParams()
+  const { lang } = useLocalSearchParams();
+  const [first, second, third] = useSegments();
 
   return (
     <BlockButton
       onPress={() =>
         router.navigate({
-          pathname: `/[lang]/episodes`,
+          pathname: third === "search" ? "../[lang]/episodes" : "/[lang]/episodes",
           params: {
             lang: lang as string,
             id: podcast.id,
