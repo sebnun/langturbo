@@ -119,8 +119,8 @@ export default function Caption() {
 // Can't make multline text to have a gap between lines
 const styles = StyleSheet.create({
   captionHighlighted: {
-    textDecorationLine: "underline",
-    textDecorationColor: colorPrimary, // This is not supported on Android
+    // textDecorationLine: "underline",
+    // textDecorationColor: colorPrimary, // This is not supported on Android
   },
   captionNormal: {
     color: colorTextSubdued,
