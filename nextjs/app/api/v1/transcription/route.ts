@@ -18,13 +18,15 @@ let ai: GoogleGenAI;
 
 const initializeClients = () => {
   if (!storage) {
-    const serviceAccountStorage = JSON.parse(Buffer.from(process.env.GOOGLE_STORAGE_KEY_FILE!, "base64").toString("utf-8"));
+    const serviceAccountStorage = JSON.parse(
+      Buffer.from(process.env.GOOGLE_STORAGE_KEY_FILE!, "base64").toString("utf-8")
+    );
     storage = new Storage({
       projectId: process.env.GOOGLE_CLOUD_PROJECT,
       credentials: serviceAccountStorage,
     });
   }
-  
+
   if (!ai) {
     const serviceAccountVertex = JSON.parse(Buffer.from(process.env.GOOGLE_KEY_FILE!, "base64").toString("utf-8"));
     ai = new GoogleGenAI({
@@ -42,7 +44,7 @@ const SEEK_FORWARD_SECONDS = 30;
 
 export const POST = async (req: NextRequest) => {
   initializeClients();
-  
+
   const { id, languageCode, itunesId, requestFileName, episodeTitle, from } = await req.json();
 
   // Client will always request from 0 first
@@ -215,7 +217,7 @@ export const POST = async (req: NextRequest) => {
       text: segment.text.trim(),
       start: segment.start + from,
       end: segment.end + from,
-      words: segment.words!,
+      words: segment.words!.map((w) => ({ ...w, start: w.start + from, end: w.end + from })),
       translation: translatedSentences[i],
     });
   }
