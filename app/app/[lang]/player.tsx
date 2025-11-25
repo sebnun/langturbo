@@ -15,6 +15,7 @@ import Caption from "@/components/Caption";
 import Translation from "@/components/Translation";
 import { decodeUrl, useTitle } from "@/utils";
 import * as Burnt from "burnt";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function PlayerScreen() {
   const { id, podcastId, title, podcastTitle, podcastImageUrl } = useLocalSearchParams() as {
@@ -120,6 +121,7 @@ export default function PlayerScreen() {
         }}
       />
       <SafeAreaView style={themeStyles.screen}>
+        <LinearGradient colors={["black", "#050505"]} style={styles.gradient} />
         <Transcriber id={decodedId} sourceId={podcastId} episodeTitle={title} podcastImageUrl={podcastImageUrl} />
         {!duration ? (
           <Loading />
@@ -142,7 +144,7 @@ export default function PlayerScreen() {
                 <Ionicons name="play-circle-sharp" size={60} color="white" />
               )}
             </Button>
-            
+
             {duration && nextStart === -1 && caption && caption.start + SEEK_FORWARD_SECONDS < duration ? (
               <ActivityIndicator color="white" size="large" />
             ) : (
@@ -167,6 +169,13 @@ const styles = StyleSheet.create({
     marginBottom: "auto",
     padding: sizeScreenPadding,
     gap: sizeScreenPadding,
+  },
+  gradient: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
   },
   playbackContainer: {
     alignItems: "center",
