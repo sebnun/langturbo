@@ -1,5 +1,5 @@
 import { postTranscription } from "@/utils/api";
-import { usePlayerStore } from "@/utils/store";
+import { useAppStore, usePlayerStore } from "@/utils/store";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import AudioPlayer from "./AudioPlayer";
@@ -21,7 +21,9 @@ export default function Transcriber({
   const [captions, setCaptions] = useState<Caption[]>([]);
   const [processedSeconds, setProcessedSeconds] = useState(0);
   const [fileName, setFileName] = useState("");
+  const [realCaptionIndex, setRealCaptionIndex] = useState(0);
   const currentTime = usePlayerStore((state) => state.currentTime);
+  const playing = usePlayerStore((state) => state.playing);
   const isTranscribing = useRef(false);
 
   const { lang } = useLocalSearchParams();
@@ -53,14 +55,15 @@ export default function Transcriber({
   }, []);
 
   useEffect(() => {
-    const realCaptionIndex = captions.findLastIndex((caption) => caption.captionStart! <= currentTime);
+    const localRealCaptionIndex = captions.findLastIndex((caption) => caption.captionStart! <= currentTime);
+
+    if (localRealCaptionIndex !== -1) {
+      setRealCaptionIndex(localRealCaptionIndex);
+    }
 
     usePlayerStore.setState({
-      caption: captions[realCaptionIndex],
       positionLabel: convertSecondsDurationToHuman(currentTime),
       progressPercentage: Math.min((currentTime / usePlayerStore.getState().duration) * 100, 100),
-      nextStart: captions.length > realCaptionIndex + 1 ? captions[realCaptionIndex + 1].captionStart : -1,
-      prevStart: realCaptionIndex > 0 ? captions[realCaptionIndex - 1].captionStart : -1,
     });
 
     if (
@@ -81,9 +84,12 @@ export default function Transcriber({
           // To trigger nextButton disabled update when paused
           // ATTN This can cause issues when seeking fast, it sets an incorrect caption
           if (!usePlayerStore.getState().playing) {
-            const realCaptionIndex = captions.findLastIndex((caption) => caption.captionStart! <= currentTime);
+            const realCaptionIndex = newCaptions.findLastIndex(
+              (caption) => caption.captionStart! <= usePlayerStore.getState().currentTime
+            );
             usePlayerStore.setState({
-              nextStart: captions.length > realCaptionIndex + 1 ? captions[realCaptionIndex + 1].captionStart : -1,
+              nextStart:
+                newCaptions.length > realCaptionIndex + 1 ? newCaptions[realCaptionIndex + 1].captionStart : -1,
             });
           }
         })
@@ -92,6 +98,29 @@ export default function Transcriber({
         });
     }
   }, [currentTime]);
+
+  useEffect(() => {
+    console.log(realCaptionIndex);
+    if (useAppStore.getState().autoPause) {
+      usePlayerStore.setState({ playbackRequest: "pause" });
+    } else {
+      usePlayerStore.setState({
+        caption: captions[realCaptionIndex],
+        nextStart: captions.length > realCaptionIndex + 1 ? captions[realCaptionIndex + 1].captionStart : -1,
+        prevStart: realCaptionIndex > 0 ? captions[realCaptionIndex - 1].captionStart : -1,
+      });
+    }
+  }, [realCaptionIndex]);
+
+  useEffect(() => {
+    if (playing) {
+      usePlayerStore.setState({
+        caption: captions[realCaptionIndex],
+        nextStart: captions.length > realCaptionIndex + 1 ? captions[realCaptionIndex + 1].captionStart : -1,
+        prevStart: realCaptionIndex > 0 ? captions[realCaptionIndex - 1].captionStart : -1,
+      });
+    }
+  }, [playing]);
 
   if (!fileName) {
     return null;

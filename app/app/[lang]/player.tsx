@@ -8,7 +8,7 @@ import Progress from "@/components/Progress";
 import { StyleSheet, View, ScrollView, Platform, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "@/components/button/Button";
-import { usePlayerStore } from "@/utils/store";
+import { useAppStore, usePlayerStore } from "@/utils/store";
 import TimeCode from "@/components/TimeCode";
 import Transcriber, { SEEK_FORWARD_SECONDS } from "@/components/Transcriber";
 import Caption from "@/components/Caption";
@@ -95,11 +95,39 @@ export default function PlayerScreen() {
   }, [error]);
 
   const handlePrevious = async () => {
+    const prevAutoPause = useAppStore.getState().autoPause;
+    if (prevAutoPause) {
+      useAppStore.setState({ autoPause: false });
+    }
+
     usePlayerStore.setState({ seekToRequest: prevStart });
+
+    if (prevAutoPause) {
+      await new Promise((resolve, reject) =>
+        setTimeout(() => {
+          useAppStore.setState({ autoPause: true });
+          resolve(0);
+        }, 300)
+      );
+    }
   };
 
   const handleNext = async () => {
+    const prevAutoPause = useAppStore.getState().autoPause;
+    if (prevAutoPause) {
+      useAppStore.setState({ autoPause: false });
+    }
+
     usePlayerStore.setState({ seekToRequest: nextStart });
+
+    if (prevAutoPause) {
+      await new Promise((resolve, reject) =>
+        setTimeout(() => {
+          useAppStore.setState({ autoPause: true });
+          resolve(0);
+        }, 300)
+      );
+    }
   };
 
   const handlePlayToogle = async () => {
