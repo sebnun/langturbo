@@ -351,15 +351,56 @@ const migrateSegments = async () => {
       });
 
       translationRowsToInsert.push({
-        translation: rows[i].en_translation || '',
+        translation: rows[i].en_translation || "",
         language_code: "en",
         segment_id: rows[i].id,
       });
     }
 
     //console.log(segmentsRowsToInsert)
-    await db.insert(segmentsTable).values(segmentsRowsToInsert).onConflictDoNothing()
-    await db.insert(translationsTable).values(translationRowsToInsert)
+    await db.insert(segmentsTable).values(segmentsRowsToInsert).onConflictDoNothing();
+    await db.insert(translationsTable).values(translationRowsToInsert);
+
+    if (rows.length < batchSize) {
+      hasMore = false; // No more rows left
+    } else {
+      offset += batchSize;
+    }
+  }
+
+  console.log("done");
+
+  await client.end();
+};
+
+const updateContent = async () => {
+  await client.connect();
+
+  const batchSize = 2000;
+  let offset = 0;
+  let hasMore = true;
+
+  while (hasMore) {
+    const query = `
+        SELECT *
+        FROM content
+        where popular_count > 0
+        ORDER BY id
+        LIMIT $1 OFFSET $2
+      `;
+    const values = [batchSize, offset];
+
+    console.log(offset);
+
+    const res = await client.query(query, values);
+    const rows = res.rows;
+
+    for (const row of rows) {
+      const source_id = row.id;
+      const popularity = row.popular_count;
+
+      await db.update(showsTable).set({ popularity }).where(eq(showsTable.source_id, source_id));
+    }
 
     if (rows.length < batchSize) {
       hasMore = false; // No more rows left
@@ -376,4 +417,5 @@ const migrateSegments = async () => {
 //migrateContent();
 //migrateLists();
 //migrateEpisodes()
-migrateSegments();
+//migrateSegments();
+updateContent();
