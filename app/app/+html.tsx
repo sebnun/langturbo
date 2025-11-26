@@ -33,8 +33,8 @@ export default function Root({ children }: PropsWithChildren) {
         <meta name="twitter:image:height" content="1024" />
         <meta name="twitter:image" content="/twitter-image.png" />
         <link rel="icon" href="/icon.png" type="image/png" sizes="1024x1024" />
-        <link rel="apple-touch-icon" href="/apple-icon.png" type="image/png" sizes="1024x1024" />
-        <meta name="apple-itunes-app" content="app-id=6470313589" />
+        {/* <link rel="apple-touch-icon" href="/apple-icon.png" type="image/png" sizes="1024x1024" /> */}
+        {/* <meta name="apple-itunes-app" content="app-id=6470313589" /> */}
 
         {/*
           Disable body scrolling on web. This makes ScrollView components work closer to how they do on native.

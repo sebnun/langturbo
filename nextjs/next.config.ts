@@ -1,4 +1,4 @@
-import {withSentryConfig} from "@sentry/nextjs";
+import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: process.env.NODE_ENV === "development" ? "*" : "https://app.langturbo.com",
+            value: process.env.NODE_ENV === "development" ? "http://localhost:8081" : "https://app.langturbo.com",
           },
           {
             key: "Access-Control-Allow-Methods",
@@ -19,7 +19,11 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Access-Control-Allow-Headers",
-            value: "*",
+            value: "content-type",
+          },
+          {
+            key: "Access-Control-Allow-Credentials",
+            value: "true",
           },
         ],
       },

@@ -6,7 +6,7 @@ const config = getSentryExpoConfig(__dirname, {
 });
 
 // https://github.com/expo/expo/issues/36384
-
+// And better auth
 config.resolver.unstable_enablePackageExports = true;
 
 config.resolver.resolveRequest = (context, moduleName, platform) => {

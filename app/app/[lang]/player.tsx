@@ -18,6 +18,8 @@ import * as Burnt from "burnt";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTitle } from "@/utils/hooks";
 import SettingsModal from "@/components/SettingsModal";
+import { authClient } from "@/utils/auth";
+import AuthModal from "@/components/AuthModal";
 
 export default function PlayerScreen() {
   const { id, podcastId, title, podcastTitle, podcastImageUrl } = useLocalSearchParams() as {
@@ -29,6 +31,7 @@ export default function PlayerScreen() {
   };
   useTitle(title);
   const router = useRouter();
+  const { data: session } = authClient.useSession();
 
   //useLocalSearchParams decodes the params, but it breaks urls that have other encoded urls in them
   const decodedId = decodeUrl(id);
@@ -44,6 +47,7 @@ export default function PlayerScreen() {
   const reset = usePlayerStore((state) => state.reset);
 
   const [showSettings, setShowSettings] = useState(false);
+  const [selectedWord, setSelectedWord] = useState("");
 
   const resetPlayer = () => {
     if (loadingIntervalRef.current) {
@@ -71,6 +75,12 @@ export default function PlayerScreen() {
 
     return () => resetPlayer();
   }, [id]);
+
+   useEffect(() => {
+    if (selectedWord) {
+      usePlayerStore.setState({ playbackRequest: 'pause' });
+    }
+  }, [selectedWord]);
 
   useEffect(() => {
     if (duration) {
@@ -166,12 +176,13 @@ export default function PlayerScreen() {
       <SafeAreaView style={themeStyles.screen}>
         <LinearGradient colors={["black", "#050505"]} style={styles.gradient} />
         <SettingsModal isVisible={showSettings} onClose={() => setShowSettings(false)} />
+        <AuthModal onClose={() => setSelectedWord("")} isVisible={!!selectedWord && !session} />
         <Transcriber id={decodedId} sourceId={podcastId} episodeTitle={title} podcastImageUrl={podcastImageUrl} />
         {!duration ? (
           <Loading />
         ) : (
           <ScrollView contentContainerStyle={styles.sentencesContainer}>
-            <Caption />
+            <Caption onWordPress={setSelectedWord}/>
             <Translation />
           </ScrollView>
         )}

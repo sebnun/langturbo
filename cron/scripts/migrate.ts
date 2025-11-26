@@ -380,17 +380,21 @@ const updateContent = async () => {
   let offset = 0;
   let hasMore = true;
 
+
+  // 1209609
+  // stop when sum is 1209609
+
   while (hasMore) {
     const query = `
         SELECT *
         FROM content
         where popular_count > 0
-        ORDER BY id
+        ORDER BY id desc
         LIMIT $1 OFFSET $2
       `;
     const values = [batchSize, offset];
 
-    console.log(offset);
+    console.log(offset, 'desc');
 
     const res = await client.query(query, values);
     const rows = res.rows;
