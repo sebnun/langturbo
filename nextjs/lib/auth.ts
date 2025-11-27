@@ -4,6 +4,17 @@ import { expo } from "@better-auth/expo";
 import { emailOTP } from "better-auth/plugins";
 import { db } from "@/db";
 import * as schema from "../db/auth-schema";
+import { getHtml } from "@/components/OTPEmail";
+import type { SendEmailCommandInput } from "@aws-sdk/client-ses";
+import { SES } from "@aws-sdk/client-ses";
+
+const ses = new SES({
+  region: "eu-north-1",
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
 
 export const auth = betterAuth({
   trustedOrigins: [
@@ -29,7 +40,29 @@ export const auth = betterAuth({
       async sendVerificationOTP({ email, otp, type }) {
         if (type === "sign-in") {
           // Send the OTP for sign in
-          console.log(email, otp, type);
+
+          const emailHtml = await getHtml(otp);
+
+          const params: SendEmailCommandInput = {
+            Source: "contact@langturbo.com",
+            Destination: {
+              ToAddresses: [email],
+            },
+            Message: {
+              Body: {
+                Html: {
+                  Charset: "UTF-8",
+                  Data: emailHtml,
+                },
+              },
+              Subject: {
+                Charset: "UTF-8",
+                Data: "Langturbo Verification Code",
+              },
+            },
+          };
+
+          await ses.sendEmail(params);
         } else if (type === "email-verification") {
           // Send the OTP for email verification
         } else {
