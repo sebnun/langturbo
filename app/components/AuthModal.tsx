@@ -9,9 +9,7 @@ import {
   Keyboard,
   Modal,
 } from "react-native";
-import { useAppStore } from "../utils/store";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
 import { Directions, GestureHandlerRootView } from "react-native-gesture-handler";
 import { GestureDetector, Gesture } from "react-native-gesture-handler";
@@ -22,22 +20,19 @@ import {
   colorScreenBackground,
   colorTextSubdued,
   radiusBorder,
-  sizeElementSpacing,
   sizeIconNavigation,
   sizeScreenPadding,
   sizeTextLarger,
-  sizeTextSmall,
   sizeWidthProfile,
   themeStyles,
 } from "@/utils/theme";
 import { EpisodeItemSeparator } from "./EpisodeItem";
-import { useLocalSearchParams } from "expo-router";
 import RoundButton from "./button/RoundButton";
 import { authClient } from "@/utils/auth";
 import Loading from "./Loading";
+import * as Burnt from "burnt";
 
 export default function AuthModal({ isVisible, onClose }: { isVisible: boolean; onClose: () => void }) {
-  const { lang } = useLocalSearchParams();
   const [screen, setScreen] = useState<"signIn" | "verification">("signIn");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
@@ -62,22 +57,24 @@ export default function AuthModal({ isVisible, onClose }: { isVisible: boolean; 
       return;
     }
 
-    setLoading(true)
+    setLoading(true);
     const { data, error } = await authClient.emailOtp.sendVerificationOtp({
       email,
       type: "sign-in",
     });
 
     if (error) {
-      // TODO
+      Burnt.toast({
+        title: "Error sending code",
+        preset: "error",
+      });
       console.error(error);
+      setLoading(false);
       return;
     }
 
-    console.log(data);
-
     setScreen("verification");
-    setLoading(false)
+    setLoading(false);
   };
 
   const handleVerification = async () => {
@@ -85,19 +82,21 @@ export default function AuthModal({ isVisible, onClose }: { isVisible: boolean; 
       return;
     }
 
-    setLoading(true)
+    setLoading(true);
     const { data, error } = await authClient.signIn.emailOtp({
       email,
       otp: code,
     });
 
     if (error) {
-      // TODO
+      Burnt.toast({
+        title: "Error verifiyng code",
+        preset: "error",
+      });
       console.error(error);
+      setLoading(false);
       return;
     }
-
-    console.log(data);
 
     onClose();
   };
