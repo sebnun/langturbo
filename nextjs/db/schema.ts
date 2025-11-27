@@ -15,6 +15,7 @@ import {
   jsonb,
   doublePrecision,
 } from "drizzle-orm/pg-core";
+import { user } from "./auth-schema";
 
 const isoLanguageCodes = Object.keys(LANGUAGES_LIST);
 
@@ -145,3 +146,76 @@ export const itunesTable = pgTable("itunes", {
   id: numeric().primaryKey(),
   created_at: timestamp().defaultNow().notNull(),
 });
+
+export const eventsTable = pgTable(
+  "events",
+  {
+    id: uuid().notNull().primaryKey().defaultRandom(),
+    created_at: timestamp().defaultNow().notNull(),
+    type: text().notNull(),
+    language_code: languageCodeEnum().notNull(),
+    user_id: text()
+      .references(() => user.id, { onDelete: "cascade" })
+      .notNull(),
+  },
+  (table) => [
+    index("events_language_code_idx").on(table.language_code),
+    index("events_created_at_idx").on(table.created_at),
+    index("events_type_idx").on(table.type),
+    index("events_user_id_idx").on(table.user_id),
+  ]
+);
+
+export const playbackTable = pgTable(
+  "playback",
+  {
+    id: uuid().notNull().primaryKey().defaultRandom(),
+    created_at: timestamp().defaultNow().notNull(),
+    percentage: doublePrecision().notNull(),
+    language_code: languageCodeEnum().notNull(),
+    episode_id: text()
+      .references(() => episodesTable.id, { onDelete: "cascade" })
+      .notNull(),
+    user_id: text()
+      .references(() => user.id, { onDelete: "cascade" })
+      .notNull(),
+  },
+  (table) => [
+    index("playback_language_code_idx").on(table.language_code),
+    index("playback_episode_id_idx").on(table.episode_id),
+    index("playback_user_id_idx").on(table.user_id),
+  ]
+);
+
+export const savedTable = pgTable(
+  "saved",
+  {
+    id: uuid().notNull().primaryKey().defaultRandom(),
+    created_at: timestamp().defaultNow().notNull(),
+    show_id: uuid()
+      .references(() => showsTable.id, { onDelete: "cascade" })
+      .notNull(),
+    user_id: text()
+      .references(() => user.id, { onDelete: "cascade" })
+      .notNull(),
+  },
+  (table) => [index("saved_show_id_idx").on(table.show_id), index("saved_user_id_idx").on(table.user_id)]
+);
+
+export const wordsTable = pgTable(
+  "words",
+  {
+    id: uuid().notNull().primaryKey().defaultRandom(),
+    created_at: timestamp().defaultNow().notNull(),
+    word: text().notNull(),
+    language_code: languageCodeEnum().notNull(),
+    user_id: text()
+      .references(() => user.id, { onDelete: "cascade" })
+      .notNull(),
+  },
+  (table) => [
+    index("words_language_code_idx").on(table.language_code),
+    index("words_word_idx").on(table.word),
+    index("words_user_id_idx").on(table.user_id),
+  ]
+);

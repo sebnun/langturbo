@@ -39,12 +39,13 @@ export const auth = betterAuth({
     emailOTP({
       async sendVerificationOTP({ email, otp, type }) {
         if (type === "sign-in") {
-          // Send the OTP for sign in
+          // 10/10 score on mail-tester.com
 
           const emailHtml = await getHtml(otp);
 
           const params: SendEmailCommandInput = {
             Source: "contact@langturbo.com",
+            ReplyToAddresses: ["contact@langturbo.com"],
             Destination: {
               ToAddresses: [email],
             },
@@ -57,7 +58,7 @@ export const auth = betterAuth({
               },
               Subject: {
                 Charset: "UTF-8",
-                Data: "Langturbo Verification Code",
+                Data: "LangTurbo Verification Code",
               },
             },
           };

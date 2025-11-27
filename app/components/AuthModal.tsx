@@ -98,6 +98,11 @@ export default function AuthModal({ isVisible, onClose }: { isVisible: boolean; 
       return;
     }
 
+    Burnt.toast({
+      title: "You are signed in",
+      preset: "done",
+    });
+
     onClose();
   };
 

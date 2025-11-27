@@ -24,6 +24,16 @@ const OTPEmail = ({ otp }: OTPEmailProps) => (
             marginBottom: "16px",
           }}
         >
+          The code expires in 5 minutes.
+        </Text>
+        <Text
+          style={{
+            ...text,
+            color: "#ababab",
+            marginTop: "14px",
+            marginBottom: "16px",
+          }}
+        >
           If you didn&apos;t try to sign in, you can safely ignore this email.
         </Text>
       </Container>
@@ -83,7 +93,6 @@ const code = {
 const img = {
   margin: "40px auto",
 };
-
 
 // Need to export it here due to ts issues
 export const getHtml = async (otp: string) => await render(<OTPEmail otp={otp} />);
