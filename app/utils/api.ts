@@ -60,5 +60,20 @@ export const getUser = async (languageCode: string) => {
           saved: Podcast[];
           words: string[];
         }
-    )
+    );
+};
+
+export const postSaved = async (showId: string) => {
+  return fetch(`${getApiEndpoint()}saved`, {
+    method: "POST",
+    body: JSON.stringify({ showId }),
+    ...fetchOptionsForPlatform(),
+  }).then((response) => response.text());
+};
+
+export const deleteSaved = async (showId: string) => {
+  return fetch(`${getApiEndpoint()}saved?showId=${showId}`, {
+    method: "DELETE",
+    ...fetchOptionsForPlatform(),
+  }).then((response) => response.text());
 };

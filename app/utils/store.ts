@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { deleteSaved, postSaved } from "./api";
 
 type AppStoreState = {
   autoPause: boolean;
@@ -26,13 +27,26 @@ const initialAppState: AppStoreState = {
   playback: [],
 };
 
-export const useAppStore = create<AppStoreState>()(
+type AppStoreActions = {
+  savePodcast: (podcast: Podcast) => void;
+  removePodcast: (podcastId: string) => void;
+};
+
+export const useAppStore = create<AppStoreState & AppStoreActions>()(
   persist(
     (set) => ({
       ...initialAppState,
+      savePodcast: async (podcast: Podcast) => {
+        set((state) => ({ saved: [...state.saved, podcast] }));
+        await postSaved(podcast.id);
+      },
+      removePodcast: async (podcastId: string) => {
+        set((state) => ({ saved: state.saved.filter((p) => p.id !== podcastId) }));
+        await deleteSaved(podcastId);
+      },
     }),
     {
-      name: "settings", // name of item in the storage (must be unique)
+      name: "settings", 
       partialize: (state) => ({
         autoPause: state.autoPause,
         fontSize: state.fontSize,

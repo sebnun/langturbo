@@ -1,7 +1,7 @@
 import { getUser } from "@/utils/api";
 import { authClient } from "@/utils/auth";
 import { useAppStore } from "@/utils/store";
-import { Slot, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 
 export default function LangLayout() {
@@ -16,5 +16,10 @@ export default function LangLayout() {
     }
   }, [session, lang]);
 
-  return <Slot />;
+  return (
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="player" />
+    </Stack>
+  );
 }

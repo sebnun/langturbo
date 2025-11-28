@@ -26,7 +26,7 @@ export default function PodcastItem({ podcast, full }: { podcast: Podcast; full?
     <BlockButton
       onPress={() =>
         router.navigate({
-          pathname: third === "search" ? "../[lang]/episodes" : "/[lang]/episodes",
+          pathname: third === "search" || third === "saved" ? "../[lang]/episodes" : "/[lang]/episodes",
           params: {
             lang: lang as string,
             id: podcast.id,

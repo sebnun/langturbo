@@ -18,7 +18,8 @@ import { FlashList } from "@shopify/flash-list";
 import { Image } from "expo-image";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import SavePodcastHeart from "@/components/SavePodcastHeart";
 
 // Can't use non strings as params in expo router
 const convertRouteParamsToPodcast = (params: any) => {
@@ -60,11 +61,16 @@ export default function EpisodesScreen() {
       <Stack.Screen
         options={{
           title: podcast.title,
-          // headerRight: () => (
-          //   <View style={{ paddingRight: Platform.OS === "web" ? sizeScreenPadding : 0 }}>
-          //     <SavePodcastHeart podcast={podcast} />
-          //   </View>
-          // ),
+          headerRight: () => (
+            <View
+              style={{
+                paddingRight: Platform.OS === "web" ? sizeScreenPadding : undefined,
+                paddingLeft: Platform.OS === "ios" ? 6 : undefined, // With the new glass buttons
+              }}
+            >
+              <SavePodcastHeart podcast={podcast} />
+            </View>
+          ),
         }}
       />
       <View style={themeStyles.screen}>
