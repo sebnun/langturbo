@@ -77,3 +77,10 @@ export const deleteSaved = async (showId: string) => {
     ...fetchOptionsForPlatform(),
   }).then((response) => response.text());
 };
+
+export const postFeedback = async (feedback: string, context: string) => {
+  return fetch(`${getApiEndpoint()}feedback`, {
+    method: "POST",
+    body: JSON.stringify({ feedback, context }),
+  }).then((response) => response.text());
+};

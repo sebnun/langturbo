@@ -32,7 +32,15 @@ import { authClient } from "@/utils/auth";
 import Loading from "./Loading";
 import * as Burnt from "burnt";
 
-export default function AuthModal({ isVisible, onClose }: { isVisible: boolean; onClose: () => void }) {
+export default function AuthModal({
+  isVisible,
+  onClose,
+  isProfile,
+}: {
+  isVisible: boolean;
+  onClose: () => void;
+  isProfile?: boolean;
+}) {
   const [screen, setScreen] = useState<"signIn" | "verification">("signIn");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
@@ -137,7 +145,7 @@ export default function AuthModal({ isVisible, onClose }: { isVisible: boolean; 
                         <Loading />
                       ) : screen === "signIn" ? (
                         <>
-                          <Text style={styles.textSub}>You need to sign in to use this feature.</Text>
+                          {!isProfile && <Text style={styles.textSub}>You need to sign in to use this feature.</Text>}
                           <TextInput
                             autoComplete="email"
                             autoCorrect={false}

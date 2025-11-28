@@ -1,15 +1,14 @@
-import {
-  sizeScreenPadding,
-  sizeWidthProfile,
-  themeStyles,
-} from "@/utils/theme";
+import { colorTextSubdued, sizeScreenPadding, sizeWidthProfile, themeStyles } from "@/utils/theme";
 import { Link, Stack, useGlobalSearchParams, useRouter } from "expo-router";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Linking } from "react-native";
 import { getLanguageNameById, languageIds } from "@/utils/languages";
 import { capitalizeFirstLetter } from "@/utils";
 import React, { useState } from "react";
 import RoundButton from "@/components/button/RoundButton";
 import { useTitle } from "@/utils/hooks";
+import TextButton from "@/components/button/TextButton";
+import { authClient } from "@/utils/auth";
+import AuthModal from "@/components/AuthModal";
 
 export default function ProfileScreen() {
   // When navigating to / global params change to empty, causing an error
@@ -17,6 +16,9 @@ export default function ProfileScreen() {
   const [globalParams, _] = useState(useGlobalSearchParams());
   const { lang } = globalParams;
   useTitle(`Learning ${capitalizeFirstLetter(getLanguageNameById(languageIds[lang as string]))}`);
+  const { data: session } = authClient.useSession();
+
+  const [showAuth, setShowAuth] = useState(false);
 
   const router = useRouter();
 
@@ -28,6 +30,7 @@ export default function ProfileScreen() {
         }}
       />
       <View style={themeStyles.screen}>
+        <AuthModal onClose={() => setShowAuth(false)} isVisible={showAuth} isProfile />
         <ScrollView contentContainerStyle={styles.scrollView}>
           <View style={styles.container}>
             <View style={styles.cardLikeWidth}>
@@ -35,7 +38,36 @@ export default function ProfileScreen() {
               <Link href="https://www.patreon.com/cw/sebnun" asChild>
                 <RoundButton text="Support me on Patreon" />
               </Link>
+
+              <RoundButton onPress={() => router.navigate("../profile/feedback")} text="Send Feedback" />
+              {!session ? (
+                <RoundButton onPress={() => setShowAuth(true)} text="Sign In" />
+              ) : (
+                <>
+                  <RoundButton onPress={async () => await authClient.signOut()} text="Sign Out" type="ghost" />
+                  <RoundButton type="ghost" onPress={() => router.navigate("../profile/delete")} text="Delete Account" />
+                </>
+              )}
             </View>
+          </View>
+
+          <View style={styles.linkContainer}>
+            <TextButton
+              onPress={() => Linking.openURL("https://www.langturbo.com/contact")}
+              style={styles.link}
+              text="Contact"
+            />
+            <TextButton
+              onPress={() => Linking.openURL("https://www.langturbo.com/privacy")}
+              style={styles.link}
+              text="Privacy"
+            />
+
+            <TextButton
+              onPress={() => Linking.openURL("https://www.langturbo.com/terms")}
+              style={styles.link}
+              text="Terms"
+            />
           </View>
         </ScrollView>
       </View>
@@ -60,5 +92,13 @@ export const styles = StyleSheet.create({
     paddingLeft: sizeScreenPadding,
     paddingRight: sizeScreenPadding,
     gap: sizeScreenPadding,
+  },
+  linkContainer: {
+    marginVertical: sizeScreenPadding * 2,
+    gap: sizeScreenPadding,
+  },
+  link: {
+    color: colorTextSubdued,
+    textAlign: "center",
   },
 });

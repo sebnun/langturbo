@@ -10,6 +10,7 @@ import {
   msImageTransition,
   radiusBorder,
   sizeElementSpacing,
+  sizeIconNavigation,
   sizeScreenPadding,
   themeStyles,
 } from "@/utils/theme";
@@ -20,6 +21,9 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import SavePodcastHeart from "@/components/SavePodcastHeart";
+import { authClient } from "@/utils/auth";
+import Button from "@/components/button/Button";
+import AuthModal from "@/components/AuthModal";
 
 // Can't use non strings as params in expo router
 const convertRouteParamsToPodcast = (params: any) => {
@@ -44,6 +48,9 @@ export default function EpisodesScreen() {
   const [loading, setLoading] = useState(true);
   const [episodes, setEpisodes] = useState<PodcastEpisode[]>([]);
   const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
+  const { data: session } = authClient.useSession();
+
+  const [showAuth, setShowAuth] = useState(false);
 
   useEffect(() => {
     getEpisodes(podcast.feedUrl, podcast.id)
@@ -68,12 +75,19 @@ export default function EpisodesScreen() {
                 paddingLeft: Platform.OS === "ios" ? 6 : undefined, // With the new glass buttons
               }}
             >
-              <SavePodcastHeart podcast={podcast} />
+              {session ? (
+                <SavePodcastHeart podcast={podcast} />
+              ) : (
+                <Button onPress={() => setShowAuth(true)}>
+                  <Ionicons name="heart-outline" size={sizeIconNavigation} color="white" />
+                </Button>
+              )}
             </View>
           ),
         }}
       />
       <View style={themeStyles.screen}>
+        <AuthModal onClose={() => setShowAuth(false)} isVisible={showAuth} />
         <View style={styles.flashContainer}>
           {loading ? (
             <Loading />

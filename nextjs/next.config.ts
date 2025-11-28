@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: "Access-Control-Allow-Methods",
-            value: "*",
+            value: "PUT, DELETE, PATCH",
           },
           {
             key: "Access-Control-Allow-Headers",

@@ -17,6 +17,11 @@ const ses = new SES({
 });
 
 export const auth = betterAuth({
+  user: {
+    deleteUser: {
+      enabled: true,
+    },
+  },
   trustedOrigins: [
     "langturbo://",
     "https://app.langturbo.com",
