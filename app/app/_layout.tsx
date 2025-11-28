@@ -34,8 +34,7 @@ export default Sentry.wrap(function RootLayout() {
       <SafeAreaProvider>
         {loaded ? (
           <Stack>
-            <Stack.Screen name="[lang]/(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="[lang]/player" />
+            <Stack.Screen name="[lang]" options={{ headerShown: false }} />
             <Stack.Screen name="index" />
           </Stack>
         ) : (

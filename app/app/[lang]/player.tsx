@@ -22,13 +22,13 @@ import { authClient } from "@/utils/auth";
 import AuthModal from "@/components/AuthModal";
 
 export default function PlayerScreen() {
-  const { id, podcastId, title, podcastTitle, podcastImageUrl } = useLocalSearchParams() as {
+  const { id, podcastId, title, podcastTitle, podcastImageUrl } = useLocalSearchParams<{
     id: string;
     podcastId: string;
     title: string;
     podcastTitle: string;
     podcastImageUrl: string;
-  };
+  }>();
   useTitle(title);
   const router = useRouter();
   const { data: session } = authClient.useSession();
@@ -76,9 +76,9 @@ export default function PlayerScreen() {
     return () => resetPlayer();
   }, [id]);
 
-   useEffect(() => {
+  useEffect(() => {
     if (selectedWord) {
-      usePlayerStore.setState({ playbackRequest: 'pause' });
+      usePlayerStore.setState({ playbackRequest: "pause" });
     }
   }, [selectedWord]);
 
@@ -182,7 +182,7 @@ export default function PlayerScreen() {
           <Loading />
         ) : (
           <ScrollView contentContainerStyle={styles.sentencesContainer}>
-            <Caption onWordPress={setSelectedWord}/>
+            <Caption onWordPress={setSelectedWord} />
             <Translation />
           </ScrollView>
         )}

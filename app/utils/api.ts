@@ -1,5 +1,18 @@
+import { Platform } from "react-native";
 import { getApiEndpoint } from ".";
+import { authClient } from "./auth";
 import { languageIds } from "./languages";
+
+export const fetchOptionsForPlatform = () => {
+  return Platform.OS === "web"
+    ? { credentials: "include" as RequestCredentials }
+    : {
+        headers: {
+          Cookie: authClient.getCookie(),
+        },
+        credentials: "omit" as RequestCredentials,
+      };
+};
 
 export const getCategories = async (categoryId: number, languageCode: string, popular = false) => {
   const languageId = languageIds[languageCode];
@@ -35,4 +48,17 @@ export const getSearch = async (query: string, languageCode: string) => {
   return fetch(`${getApiEndpoint()}search?query=${query}&languageCode=${languageCode}`)
     .then((response) => response.json())
     .then((json) => json.results as Podcast[]);
+};
+
+export const getUser = async (languageCode: string) => {
+  return fetch(`${getApiEndpoint()}user?languageCode=${languageCode}`, fetchOptionsForPlatform())
+    .then((response) => response.json())
+    .then(
+      (json) =>
+        json as {
+          playback: Playback[];
+          saved: Podcast[];
+          words: string[];
+        }
+    )
 };

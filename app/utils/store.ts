@@ -7,7 +7,11 @@ type AppStoreState = {
   fontSize: number;
   slower: boolean;
   showTranslation: boolean;
-  tapTranslation: boolean
+  tapTranslation: boolean;
+
+  words: string[];
+  saved: Podcast[];
+  playback: Playback[];
 };
 
 const initialAppState: AppStoreState = {
@@ -15,7 +19,11 @@ const initialAppState: AppStoreState = {
   fontSize: 25,
   slower: false,
   showTranslation: true,
-  tapTranslation: false
+  tapTranslation: false,
+
+  words: [],
+  saved: [],
+  playback: [],
 };
 
 export const useAppStore = create<AppStoreState>()(
@@ -30,7 +38,7 @@ export const useAppStore = create<AppStoreState>()(
         fontSize: state.fontSize,
         slower: state.slower,
         showTranslation: state.showTranslation,
-        tapTranslation: state.tapTranslation
+        tapTranslation: state.tapTranslation,
       }),
       storage: createJSONStorage(() => AsyncStorage),
     }
@@ -45,7 +53,7 @@ type PlayerStoreState = {
   progressPercentage: number;
   caption: Caption | null;
   seekToRequest: number;
-  playbackRequest: 'play' | 'pause' 
+  playbackRequest: "play" | "pause";
   nextStart: number;
   prevStart: number;
   error: string | null;
@@ -63,7 +71,7 @@ const initialPlayerState: PlayerStoreState = {
   progressPercentage: 0,
   caption: null,
   seekToRequest: 0,
-  playbackRequest: 'pause',
+  playbackRequest: "pause",
   nextStart: -1,
   prevStart: -1,
   error: null,

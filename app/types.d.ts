@@ -44,3 +44,8 @@ type Token = {
   idx: number;
   pos: string;
 };
+
+type Playback = {
+  episodeId: string;
+  percentage: number;
+};
