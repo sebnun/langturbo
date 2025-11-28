@@ -84,3 +84,24 @@ export const postFeedback = async (feedback: string, context: string) => {
     body: JSON.stringify({ feedback, context }),
   }).then((response) => response.text());
 };
+
+export const getList = async (languageCode: string) => {
+  return fetch(`${getApiEndpoint()}list?languageCode=${languageCode}`)
+    .then((response) => response.json())
+    .then((json) => json.words as string[]);
+};
+
+export const postWord = async (word: string, languageCode: string) => {
+  return fetch(`${getApiEndpoint()}word`, {
+    method: "POST",
+    body: JSON.stringify({ word, languageCode }),
+    ...fetchOptionsForPlatform(),
+  }).then((response) => response.text());
+};
+
+export const deleteWord = async (word: string, languageCode: string) => {
+  return fetch(`${getApiEndpoint()}word?word=${word}&languageId=${languageCode}`, {
+    method: "DELETE",
+    ...fetchOptionsForPlatform(),
+  }).then((response) => response.text());
+};

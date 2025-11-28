@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { deleteSaved, postSaved } from "./api";
+import { deleteSaved, deleteWord, postSaved, postWord } from "./api";
 
 type AppStoreState = {
   autoPause: boolean;
@@ -30,6 +30,8 @@ const initialAppState: AppStoreState = {
 type AppStoreActions = {
   savePodcast: (podcast: Podcast) => void;
   removePodcast: (podcastId: string) => void;
+  saveWord: (word: string, languageCode: string) => void;
+  removeWord: (word: string, languageCode: string) => void;
 };
 
 export const useAppStore = create<AppStoreState & AppStoreActions>()(
@@ -44,9 +46,19 @@ export const useAppStore = create<AppStoreState & AppStoreActions>()(
         set((state) => ({ saved: state.saved.filter((p) => p.id !== podcastId) }));
         await deleteSaved(podcastId);
       },
+      saveWord: async (word: string, languageCode: string) => {
+        const sanitizedWord = word.toLowerCase().trim();
+        set((state) => ({ words: [...state.words, sanitizedWord] }));
+        await postWord(sanitizedWord, languageCode);
+      },
+      removeWord: async (word: string, languageCode: string) => {
+        const sanitizedWord = word.toLowerCase().trim();
+        set((state) => ({ words: state.words.filter((w) => w !== sanitizedWord) }));
+        await deleteWord(sanitizedWord, languageCode);
+      },
     }),
     {
-      name: "settings", 
+      name: "settings",
       partialize: (state) => ({
         autoPause: state.autoPause,
         fontSize: state.fontSize,

@@ -38,14 +38,21 @@ export default function ProfileScreen() {
               <Link href="https://www.patreon.com/cw/sebnun" asChild>
                 <RoundButton text="Support me on Patreon" />
               </Link>
-
+              <RoundButton
+                onPress={() => (session ? router.navigate("../profile/import") : setShowAuth(true))}
+                text="Add Known Words"
+              />
               <RoundButton onPress={() => router.navigate("../profile/feedback")} text="Send Feedback" />
               {!session ? (
                 <RoundButton onPress={() => setShowAuth(true)} text="Sign In" />
               ) : (
                 <>
                   <RoundButton onPress={async () => await authClient.signOut()} text="Sign Out" type="ghost" />
-                  <RoundButton type="ghost" onPress={() => router.navigate("../profile/delete")} text="Delete Account" />
+                  <RoundButton
+                    type="ghost"
+                    onPress={() => router.navigate("../profile/delete")}
+                    text="Delete Account"
+                  />
                 </>
               )}
             </View>
