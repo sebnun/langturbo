@@ -53,7 +53,11 @@ export default function Caption({ onWordPress }: { onWordPress: (word: string) =
         const knownWord = words.find((word) => word === (token as Token).text.toLowerCase().trim());
 
         if (tokenIdx > 0) {
-          nodes.push(<Text key={`text-${(token as Token).idx}`}>{usableText.substring(0, tokenIdx)}</Text>);
+          nodes.push(
+            <Text style={styles.captionNormalOld} key={`text-${(token as Token).idx}`}>
+              {usableText.substring(0, tokenIdx)}
+            </Text>
+          );
         }
         nodes.push(
           <Text
@@ -69,7 +73,7 @@ export default function Caption({ onWordPress }: { onWordPress: (word: string) =
               Platform.OS !== "web" && (await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
             }}
             key={`token-${(token as Token).idx}`}
-            style={knownWord ? styles.captionNormal : styles.captionHighlighted}
+            style={knownWord ? styles.captionNormalOld : styles.captionHighlightedOld}
           >
             {(token as Token).text}
           </Text>
@@ -78,7 +82,11 @@ export default function Caption({ onWordPress }: { onWordPress: (word: string) =
       }
 
       if (processedCharacters < caption.text.length) {
-        nodes.push(<Text key={`last`}>{caption.text.substring(processedCharacters)}</Text>);
+        nodes.push(
+          <Text style={styles.captionNormalOld} key={`last`}>
+            {caption.text.substring(processedCharacters)}
+          </Text>
+        );
       }
 
       usePlayerStore.setState({
@@ -172,5 +180,13 @@ const styles = StyleSheet.create({
   },
   captionNormal: {
     color: colorTextSubdued,
+  },
+  captionHighlightedOld: {
+    color: "white",
+    textDecorationLine: "underline",
+    textDecorationColor: colorPrimary, // This is not supported on Android
+  },
+  captionNormalOld: {
+    color: "white",
   },
 });
