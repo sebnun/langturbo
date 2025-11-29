@@ -41,19 +41,10 @@ export default function AudioPlayer({
 
     if (status.didJustFinish) {
       player.seekTo(0);
+      // Need this to keep in sync
+      usePlayerStore.setState({ playbackRequest: 'pause' });
     }
   }, [status]);
-
-  // useEffect(() => {
-  //   console.log("AudioPlayer playing changed:", playing, player.playing, player.isBuffering);
-  //   if (playing && !player.playing) {
-  //     console.log("playing audio");
-  //     player.play();
-  //   } else if (!playing && player.playing) {
-  //     console.log("pausing audio");
-  //     player.pause();
-  //   }
-  // }, [playing]);
 
   useEffect(() => {
     if (playbackRequest === "play") {
