@@ -1,20 +1,4 @@
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Modal,
-} from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Ionicons } from "@expo/vector-icons";
-import { Directions, GestureHandlerRootView } from "react-native-gesture-handler";
-import { GestureDetector, Gesture } from "react-native-gesture-handler";
-import React, { useEffect, useState } from "react";
-import Button from "./button/Button";
+import { authClient } from "@/utils/auth";
 import {
   colorPrimary,
   colorScreenBackground,
@@ -26,11 +10,39 @@ import {
   sizeWidthProfile,
   themeStyles,
 } from "@/utils/theme";
-import { EpisodeItemSeparator } from "./EpisodeItem";
-import RoundButton from "./button/RoundButton";
-import { authClient } from "@/utils/auth";
-import Loading from "./Loading";
+import { Ionicons } from "@expo/vector-icons";
 import * as Burnt from "burnt";
+import React, { useEffect, useState } from "react";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import { Directions, Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { EpisodeItemSeparator } from "./EpisodeItem";
+import Loading from "./Loading";
+import Button from "./button/Button";
+import RoundButton from "./button/RoundButton";
+
+const messageForAuthErrorCode = (code: string) => {
+  switch (code) {
+    case "INVALID_EMAIL":
+      return "Invalid email address.";
+    case "TOO_MANY_ATTEMPTS":
+      return "Too many requests. Try again later.";
+    case "INVALID_OTP":
+      return "The code is invalid or it has expired.";
+    default:
+      return "An error occurred, please contact us.";
+  }
+};
 
 export default function AuthModal({
   isVisible,
@@ -71,21 +83,18 @@ export default function AuthModal({
       type: "sign-in",
     });
 
-
-    console.log(data, error)
-
     if (error) {
       Burnt.toast({
-        title: "Error sending code",
+        title: messageForAuthErrorCode(error.code!),
         preset: "error",
       });
       console.error(error);
+      // Need to dismiss to show the toast
+      onClose();
+    } else {
+      setScreen("verification");
       setLoading(false);
-      return;
     }
-
-    setScreen("verification");
-    setLoading(false);
   };
 
   const handleVerification = async () => {
@@ -101,19 +110,16 @@ export default function AuthModal({
 
     if (error) {
       Burnt.toast({
-        title: "Error verifiyng code",
+        title: messageForAuthErrorCode(error.code!),
         preset: "error",
       });
-      console.error(error);
-      setLoading(false);
-      return;
+    } else {
+      Burnt.toast({
+        title: "You are signed in",
+        preset: "done",
+      });
     }
-
-    Burnt.toast({
-      title: "You are signed in",
-      preset: "done",
-    });
-
+    // Need to dismiss to show the toast
     onClose();
   };
 
