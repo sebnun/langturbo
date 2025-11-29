@@ -10,6 +10,7 @@
     "lint": "expo lint"
   },
   "dependencies": {
+    "@ai-sdk/react": "^3.0.0-beta.124",
     "@better-auth/expo": "^1.4.2",
     "@expo-google-fonts/source-code-pro": "^0.4.1",
     "@expo/vector-icons": "^15.0.3",
@@ -19,6 +20,7 @@
     "@react-navigation/native": "^7.1.8",
     "@sentry/react-native": "^7.6.0",
     "@shopify/flash-list": "2.0.2",
+    "ai": "^6.0.0-beta.124",
     "better-auth": "^1.4.2",
     "burnt": "^0.13.0",
     "expo": "~54.0.25",
@@ -44,6 +46,7 @@
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
     "react-native-gesture-handler": "~2.28.0",
+    "react-native-markdown-display": "^7.0.2",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",

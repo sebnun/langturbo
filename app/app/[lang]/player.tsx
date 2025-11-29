@@ -20,6 +20,7 @@ import { useTitle } from "@/utils/hooks";
 import SettingsModal from "@/components/SettingsModal";
 import { authClient } from "@/utils/auth";
 import AuthModal from "@/components/AuthModal";
+import WordModal from "@/components/WordModal";
 
 export default function PlayerScreen() {
   const { id, podcastId, title, podcastTitle, podcastImageUrl } = useLocalSearchParams<{
@@ -176,6 +177,7 @@ export default function PlayerScreen() {
       <SafeAreaView style={themeStyles.screen}>
         <LinearGradient colors={["black", "#050505"]} style={styles.gradient} />
         <SettingsModal isVisible={showSettings} onClose={() => setShowSettings(false)} />
+        <WordModal onClose={() => setSelectedWord("")} word={selectedWord} />
         <AuthModal onClose={() => setSelectedWord("")} isVisible={!!selectedWord && !session} />
         <Transcriber id={decodedId} sourceId={podcastId} episodeTitle={title} podcastImageUrl={podcastImageUrl} />
         {!duration ? (
