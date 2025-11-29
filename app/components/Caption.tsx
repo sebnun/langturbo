@@ -18,7 +18,10 @@ new word data format:
 export default function Caption({ onWordPress }: { onWordPress: (word: string) => void }) {
   const fontSize = useAppStore((state) => state.fontSize);
   const caption = usePlayerStore((state) => state.caption);
-  const { lang } = useLocalSearchParams();
+  const removeWord = useAppStore((state) => state.removeWord);
+  const saveWord = useAppStore((state) => state.saveWord);
+  const words = useAppStore((state) => state.words);
+  const { lang } = useLocalSearchParams<{ lang: string }>();
 
   const [textNodes, setTextNodes] = useState<React.ReactNode[]>([]);
 
@@ -47,17 +50,26 @@ export default function Caption({ onWordPress }: { onWordPress: (word: string) =
         const usableText = caption.text.substring(processedCharacters);
         const tokenIdx = usableText.indexOf((token as Token).text); // In relation to substring
 
+        const knownWord = words.find((word) => word === (token as Token).text.toLowerCase().trim());
+
         if (tokenIdx > 0) {
           nodes.push(<Text key={`text-${(token as Token).idx}`}>{usableText.substring(0, tokenIdx)}</Text>);
         }
         nodes.push(
           <Text
+            onLongPress={async () => {
+              // This is not supported on web
+              Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+              knownWord
+                ? await removeWord(knownWord, lang)
+                : await saveWord((token as Token).text.toLowerCase().trim(), lang);
+            }}
             onPress={async () => {
               onWordPress((token as Token).text);
               Platform.OS !== "web" && (await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
             }}
             key={`token-${(token as Token).idx}`}
-            style={styles.captionHighlighted}
+            style={knownWord ? styles.captionNormal : styles.captionHighlighted}
           >
             {(token as Token).text}
           </Text>
@@ -68,6 +80,12 @@ export default function Caption({ onWordPress }: { onWordPress: (word: string) =
       if (processedCharacters < caption.text.length) {
         nodes.push(<Text key={`last`}>{caption.text.substring(processedCharacters)}</Text>);
       }
+
+      usePlayerStore.setState({
+        currentCaptionAllKnown: usableTokens.every((token) =>
+          words.find((kw) => kw === (token as Token).text.toLowerCase().trim())
+        ),
+      });
 
       setTextNodes(nodes);
     } else {
@@ -84,6 +102,8 @@ export default function Caption({ onWordPress }: { onWordPress: (word: string) =
       for (const w of usableWords) {
         const usableText = caption.text.substring(processedCharacters);
 
+        const knownWord = words.find((word) => word === (w as Word).word.toLowerCase().trim());
+
         let searchWord = (w as Word).word;
         let wordIdx = usableText.indexOf(searchWord);
 
@@ -96,12 +116,19 @@ export default function Caption({ onWordPress }: { onWordPress: (word: string) =
 
         nodes.push(
           <Text
+            onLongPress={async () => {
+              // This is not supported on web
+              Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+              knownWord
+                ? await removeWord(knownWord, lang)
+                : await saveWord((w as Word).word.toLowerCase().trim(), lang);
+            }}
             onPress={async () => {
               onWordPress(w.word);
               Platform.OS !== "web" && (await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
             }}
             key={`token-${(w as Word).start}-${nodes.length}`}
-            style={styles.captionHighlighted}
+            style={knownWord ? styles.captionNormal : styles.captionHighlighted}
           >
             <UtterableText start={(w as Word).start} word={w.word} />
           </Text>
@@ -114,9 +141,15 @@ export default function Caption({ onWordPress }: { onWordPress: (word: string) =
         nodes.push(<Text key={`last`}>{caption.text.substring(processedCharacters)}</Text>);
       }
 
+      usePlayerStore.setState({
+        currentCaptionAllKnown: usableWords.every((w) =>
+          words.find((kw) => kw === (w as Word).word.toLowerCase().trim())
+        ),
+      });
+
       setTextNodes(nodes);
     }
-  }, [caption]);
+  }, [caption, words]);
 
   return (
     <Text

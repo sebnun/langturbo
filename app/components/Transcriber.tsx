@@ -100,8 +100,7 @@ export default function Transcriber({
   }, [currentTime]);
 
   useEffect(() => {
-    console.log(realCaptionIndex);
-    if (useAppStore.getState().autoPause) {
+    if (useAppStore.getState().autoPause && !usePlayerStore.getState().currentCaptionAllKnown) {
       usePlayerStore.setState({ playbackRequest: "pause" });
     } else {
       usePlayerStore.setState({

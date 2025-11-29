@@ -83,6 +83,7 @@ type PlayerStoreState = {
   nextStart: number;
   prevStart: number;
   error: string | null;
+  currentCaptionAllKnown: boolean;
 };
 
 type PlayerStoreActions = {
@@ -101,6 +102,7 @@ const initialPlayerState: PlayerStoreState = {
   nextStart: -1,
   prevStart: -1,
   error: null,
+  currentCaptionAllKnown: false,
 };
 
 export const usePlayerStore = create<PlayerStoreState & PlayerStoreActions>()((set) => ({

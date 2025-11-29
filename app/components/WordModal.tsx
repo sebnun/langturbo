@@ -10,7 +10,6 @@ import {
   radiusBorder,
   sizeIconNavigation,
   sizeScreenPadding,
-  sizeTextDefault,
   sizeTextLarger,
   sizeWidthProfile,
 } from "@/utils/theme";
@@ -59,8 +58,6 @@ export default function WordModal({ onClose, word }: { onClose: () => void; word
     experimental_throttle: 500,
     onError: console.error,
   });
-
-  console.log(status, messages, word);
 
   const handleAction = async () => {
     // This is not awaited on purpose, to have fast feedback
