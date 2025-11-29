@@ -23,6 +23,8 @@ export default function Caption({ onWordPress }: { onWordPress: (word: string) =
   const words = useAppStore((state) => state.words);
   const { lang } = useLocalSearchParams<{ lang: string }>();
 
+  console.log(caption?.text)
+
   const [textNodes, setTextNodes] = useState<React.ReactNode[]>([]);
 
   useEffect(() => {
@@ -99,7 +101,8 @@ export default function Caption({ onWordPress }: { onWordPress: (word: string) =
     } else {
       const usableWords = caption.words
         // Have spaces and punctuation from whisper
-        .map((w) => ({ ...w, word: (w as Word).word.trim().replace(/[^\p{L}\p{N}\s]/gu, "") }))
+        // using Unicode matchers causes issues, KISS for now
+        .map((w) => ({ ...w, word: (w as Word).word.trim().replace(/[,.!?;:]/g, "") }))
         .filter((w) => {
           // skip words containing digits
           return (w as Word).word.length > 0 && !/\d/.test((w as Word).word);
