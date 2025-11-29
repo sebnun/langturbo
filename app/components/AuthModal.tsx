@@ -71,6 +71,9 @@ export default function AuthModal({
       type: "sign-in",
     });
 
+
+    console.log(data, error)
+
     if (error) {
       Burnt.toast({
         title: "Error sending code",
