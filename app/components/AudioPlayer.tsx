@@ -12,7 +12,7 @@ export default function AudioPlayer({
   imageUrl: string;
   episodeTitle: string;
 }) {
-  const player = useAudioPlayer(uri, { updateInterval: 100 });
+  const player = useAudioPlayer(uri, { updateInterval: 50 });
   const status = useAudioPlayerStatus(player);
 
   const seekToRequest = usePlayerStore((state) => state.seekToRequest);
@@ -42,7 +42,7 @@ export default function AudioPlayer({
     if (status.didJustFinish) {
       player.seekTo(0);
       // Need this to keep in sync
-      usePlayerStore.setState({ playbackRequest: 'pause' });
+      usePlayerStore.setState({ playbackRequest: "pause" });
     }
   }, [status]);
 
@@ -64,9 +64,19 @@ export default function AudioPlayer({
 
   useEffect(() => {
     // Avoid seeking on first load when duration is 0
-    if (usePlayerStore.getState().duration) {
+    if (seekToRequest !== -1) {
+      // Need to disable auto pause, or it gets blocked
+      const prevAutoPause = useAppStore.getState().autoPause;
+      if (prevAutoPause) {
+        useAppStore.setState({ autoPause: false });
+      }
+
       player.seekTo(seekToRequest);
-      usePlayerStore.setState({ playbackRequest: "play" });
+      usePlayerStore.setState({ playbackRequest: "play", seekToRequest: -1 });
+
+      if (prevAutoPause) {
+        setTimeout(() => useAppStore.setState({ autoPause: true }), 300);
+      }
     }
   }, [seekToRequest]);
 

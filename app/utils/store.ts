@@ -97,7 +97,7 @@ const initialPlayerState: PlayerStoreState = {
   positionLabel: "Transcribing 0%",
   progressPercentage: 0,
   caption: null,
-  seekToRequest: 0,
+  seekToRequest: -1,
   playbackRequest: "pause",
   nextStart: -1,
   prevStart: -1,

@@ -23,8 +23,6 @@ export default function Caption({ onWordPress }: { onWordPress: (word: string) =
   const words = useAppStore((state) => state.words);
   const { lang } = useLocalSearchParams<{ lang: string }>();
 
-  console.log(caption?.text)
-
   const [textNodes, setTextNodes] = useState<React.ReactNode[]>([]);
 
   useEffect(() => {

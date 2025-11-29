@@ -106,44 +106,23 @@ export default function PlayerScreen() {
   }, [error]);
 
   const handlePrevious = async () => {
-    const prevAutoPause = useAppStore.getState().autoPause;
-    if (prevAutoPause) {
-      useAppStore.setState({ autoPause: false });
-    }
-
     usePlayerStore.setState({ seekToRequest: prevStart });
-
-    if (prevAutoPause) {
-      await new Promise((resolve, reject) =>
-        setTimeout(() => {
-          useAppStore.setState({ autoPause: true });
-          resolve(0);
-        }, 300)
-      );
-    }
   };
 
   const handleNext = async () => {
-    const prevAutoPause = useAppStore.getState().autoPause;
-    if (prevAutoPause) {
-      useAppStore.setState({ autoPause: false });
-    }
-
     usePlayerStore.setState({ seekToRequest: nextStart });
-
-    if (prevAutoPause) {
-      await new Promise((resolve, reject) =>
-        setTimeout(() => {
-          useAppStore.setState({ autoPause: true });
-          resolve(0);
-        }, 300)
-      );
-    }
   };
 
-  const handlePlayToogle = async () => {
+  const handlePlayToogle = () => {
     usePlayerStore.setState({ playbackRequest: playing ? "pause" : "play" });
   };
+
+  const handleReplay = async () => {
+    // it needs to be captionStart, not start
+    usePlayerStore.setState({ seekToRequest: caption?.captionStart });
+  };
+
+  const handleRecord = async () => {};
 
   return (
     <>
@@ -194,12 +173,20 @@ export default function PlayerScreen() {
               <Ionicons name="arrow-back-sharp" size={40} color="white" />
             </Button>
 
+            <Button disabled={!duration} onPress={handleReplay}>
+              <Ionicons name="repeat-sharp" size={40} color="white" />
+            </Button>
+
             <Button onPress={handlePlayToogle} disabled={!duration}>
               {playing ? (
                 <Ionicons name="pause-circle-sharp" size={60} color="white" />
               ) : (
                 <Ionicons name="play-circle-sharp" size={60} color="white" />
               )}
+            </Button>
+
+            <Button disabled={!duration} onPress={handleRecord}>
+              <Ionicons name="mic-sharp" size={40} color="white" />
             </Button>
 
             {duration && nextStart === -1 && caption && caption.start + SEEK_FORWARD_SECONDS < duration ? (
