@@ -4,18 +4,23 @@ import { capitalizeFirstLetter } from "@/lib/utils";
 import { streamText } from "ai";
 import { headers } from "next/headers";
 import { NextRequest } from "next/server";
-import { createVertex } from "@ai-sdk/google-vertex";
+import { createVertex, GoogleVertexProvider } from "@ai-sdk/google-vertex";
 
-const serviceAccount = JSON.parse(Buffer.from(process.env.GOOGLE_KEY_FILE!, "base64").toString("utf-8"));
+let vertex: GoogleVertexProvider;
 
-const vertex = createVertex({
-  project: process.env.GOOGLE_CLOUD_PROJECT,
-  location: "global",
-  googleAuthOptions: {
-    credentials: serviceAccount,
-  },
-});
-
+// Need this to avoid docker build error
+const initializeVertexClient = () => {
+  if (!vertex) {
+    const serviceAccount = JSON.parse(Buffer.from(process.env.GOOGLE_KEY_FILE!, "base64").toString("utf-8"));
+    vertex = createVertex({
+      project: process.env.GOOGLE_CLOUD_PROJECT,
+      location: "global",
+      googleAuthOptions: {
+        credentials: serviceAccount,
+      },
+    });
+  }
+};
 export async function POST(request: NextRequest) {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -23,6 +28,8 @@ export async function POST(request: NextRequest) {
   if (!session) {
     return new Response("Unauthorized", { status: 401 });
   }
+
+  initializeVertexClient()
 
   const { word, sentence, languageCode } = await request.json();
 
