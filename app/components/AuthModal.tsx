@@ -38,7 +38,9 @@ const messageForAuthErrorCode = (code: string) => {
     case "TOO_MANY_ATTEMPTS":
       return "Too many requests. Try again later.";
     case "INVALID_OTP":
-      return "The code is invalid or it has expired.";
+      return "The code is invalid.";
+    case "OTP_EXPIRED":
+      return "The code has expired.";
     default:
       return "An error occurred, please contact us.";
   }
