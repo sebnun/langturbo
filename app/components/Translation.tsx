@@ -55,6 +55,7 @@ export default function Translation() {
     <Text
       style={{
         color: colorTextSubdued,
+        fontWeight: 'bold',
         fontSize,
         textAlign: rtlLanguages.includes(getLanguageNameById(languageIds[lang as string])) ? "right" : "left",
       }}

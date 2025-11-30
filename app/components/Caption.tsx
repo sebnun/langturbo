@@ -176,18 +176,22 @@ export default function Caption({ onWordPress }: { onWordPress: (word: string) =
 // Can't make multline text to have a gap between lines
 const styles = StyleSheet.create({
   captionHighlighted: {
+    fontWeight: 'bold',
     textDecorationLine: "underline",
     textDecorationColor: colorPrimary, // This is not supported on Android
   },
   captionNormal: {
+    fontWeight: 'bold',
     color: colorTextSubdued,
   },
   captionHighlightedOld: {
+    fontWeight: 'bold',
     color: "white",
     textDecorationLine: "underline",
     textDecorationColor: colorPrimary, // This is not supported on Android
   },
   captionNormalOld: {
+    fontWeight: 'bold',
     color: "white",
   },
 });

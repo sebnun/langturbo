@@ -90,24 +90,32 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
           </div>
         </div> */}
       </div>
-      <div className="flex items-center justify-center space-x-3 m-6">
-        <p className="text-muted-foreground text-xl font-handjet hidden sm:inline-block">LangTurbo MMXXV</p>
+      <div className="flex items-center m-6">
+        <p className="text-right pr-3 flex-1 text-muted-foreground text-xl font-handjet hidden sm:inline-block">LangTurbo MMXXV</p>
 
-        <Button variant="outline" size="icon" className="rounded-full p-2">
-          <Link target="_blank" href="https://www.patreon.com/cw/sebnun">
-            <Image src={PatreonImage} alt="Patreon" />
-          </Link>
-        </Button>
-        <Button variant="outline" size="icon" className="rounded-full p-2">
-          <Link target="_blank" href="https://x.com/sebbenun">
-            <Image src={XImage} alt="X" />
-          </Link>
-        </Button>
-        <Button variant="outline" size="icon" className="rounded-full p-2">
-          <Link target="_blank" href="https://github.com/sebnun/langturbo">
-            <Image src={GithubImage} alt="Github" />
-          </Link>
-        </Button>
+        <div className="space-x-3 mr-auto ml-auto">
+          <Button variant="outline" size="icon" className="rounded-full p-2">
+            <Link target="_blank" href="https://www.patreon.com/cw/sebnun">
+              <Image src={PatreonImage} alt="Patreon" />
+            </Link>
+          </Button>
+          <Button variant="outline" size="icon" className="rounded-full p-2">
+            <Link target="_blank" href="https://x.com/sebbenun">
+              <Image src={XImage} alt="X" />
+            </Link>
+          </Button>
+          <Button variant="outline" size="icon" className="rounded-full p-2">
+            <Link target="_blank" href="https://github.com/sebnun/langturbo">
+              <Image src={GithubImage} alt="Github" />
+            </Link>
+          </Button>
+        </div>
+        <p className="flex-1 pl-3 text-muted-foreground text-xl font-handjet hidden sm:inline-block">
+          Made with &nbsp;&#10084;&nbsp; by{" "}
+          <a className="underline" href="https://www.patreon.com/cw/sebnun" target="_blank">
+            sebnun
+          </a>
+        </p>
       </div>
     </footer>
   );
