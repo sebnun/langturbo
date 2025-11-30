@@ -9,7 +9,7 @@ Required AI services:
 - Gemini_Vertex_Live (Realtime Speech-to-Speech)
 
 Run the bot using::
-    uv run bot.py
+    uv run bot.py --transport daily
 """
 
 
@@ -29,6 +29,7 @@ from pipecat.pipeline.runner import PipelineRunner
 from pipecat.processors.aggregators.llm_response_universal import LLMContextAggregatorPair
 from dotenv import load_dotenv
 from pipecat.runner.types import DailyRunnerArguments
+import base64
 
 
 
@@ -43,7 +44,7 @@ async def run_bot(transport: BaseTransport):
 
     # Realtime LLM service (handles STT, LLM, and TTS internally)
     llm = GeminiLiveVertexLLMService(
-            credentials=os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
+            credentials=base64.b64decode(os.getenv("GOOGLE_APPLICATION_CREDENTIALS")),
             project_id=os.getenv("GOOGLE_PROJECT_ID"),
             location=os.getenv("GOOGLE_LOCATION"),
             voice_id=os.getenv("GOOGLE_VOICE_ID"),
