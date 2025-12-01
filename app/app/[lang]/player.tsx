@@ -21,6 +21,7 @@ import SettingsModal from "@/components/SettingsModal";
 import { authClient } from "@/utils/auth";
 import AuthModal from "@/components/AuthModal";
 import WordModal from "@/components/WordModal";
+import TutorModal from "@/components/TutorModal";
 
 export default function PlayerScreen() {
   const { id, podcastId, title, podcastTitle, podcastImageUrl } = useLocalSearchParams<{
@@ -48,6 +49,7 @@ export default function PlayerScreen() {
   const reset = usePlayerStore((state) => state.reset);
 
   const [showSettings, setShowSettings] = useState(false);
+  const [showTutor, setShowTutor] = useState(false);
   const [selectedWord, setSelectedWord] = useState("");
 
   const resetPlayer = () => {
@@ -122,7 +124,9 @@ export default function PlayerScreen() {
     usePlayerStore.setState({ seekToRequest: caption?.captionStart });
   };
 
-  const handleRecord = async () => {};
+  const handleTutor = async () => {
+    setShowTutor(true);
+  };
 
   return (
     <>
@@ -156,6 +160,7 @@ export default function PlayerScreen() {
       <SafeAreaView style={themeStyles.screen}>
         <LinearGradient colors={["black", "#050505"]} style={styles.gradient} />
         <SettingsModal isVisible={showSettings} onClose={() => setShowSettings(false)} />
+        <TutorModal onClose={() => setShowTutor(false)} isVisible={showTutor} />
         <WordModal onClose={() => setSelectedWord("")} word={selectedWord} />
         <AuthModal onClose={() => setSelectedWord("")} isVisible={!!selectedWord && !session} />
         <Transcriber id={decodedId} sourceId={podcastId} episodeTitle={title} podcastImageUrl={podcastImageUrl} />
@@ -185,7 +190,7 @@ export default function PlayerScreen() {
               )}
             </Button>
 
-            <Button disabled={!duration || playing} onPress={handleRecord}>
+            <Button disabled={!duration || playing} onPress={handleTutor}>
               <Ionicons name="mic-sharp" size={40} color="white" />
             </Button>
 
