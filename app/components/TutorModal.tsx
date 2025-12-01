@@ -15,88 +15,43 @@ import {
 } from "@/utils/theme";
 import Button from "./button/Button";
 import { EpisodeItemSeparator } from "./EpisodeItem";
-import RoundButton from "./button/RoundButton";
 import Markdown from "react-native-markdown-display";
-import { useChat } from "@ai-sdk/react";
-import { getApiEndpoint } from "@/utils";
 import { useLocalSearchParams } from "expo-router";
-import { DefaultChatTransport } from "ai";
-import { fetchOptionsForPlatform } from "@/utils/api";
-import { fetch as expoFetch } from "expo/fetch";
-import { RNDailyTransport } from '@pipecat-ai/react-native-daily-transport';
-import { PipecatClient, TransportState } from '@pipecat-ai/client-js';
-
-const HTML_STYLE_OBJECT = {
-  body: {
-    color: "white",
-    fontSize: sizeTextLarger,
-  },
-};
 
 export default function TutorModal({ onClose, isVisible }: { onClose: () => void; isVisible: boolean }) {
   const insets = useSafeAreaInsets();
   const { lang } = useLocalSearchParams<{ lang: string }>();
+  const pipecat = useAppStore((state) => state.pipecat);
 
-    const flingGesture = Gesture.Fling().direction(Directions.DOWN).onStart(onClose).runOnJS(true);
+  const flingGesture = Gesture.Fling().direction(Directions.DOWN).onStart(onClose).runOnJS(true);
   const singleTap = Gesture.Tap().onStart(onClose).runOnJS(true);
-
-
-  const [pipecatClient, setPipecatClient] = useState<
-    PipecatClient | undefined
-  >();
-
-  
-
-  const createPipecatClient = () => {
-    return new PipecatClient({
-      transport: new RNDailyTransport() as any,
-      enableMic: true,
-      enableCam: false,
-      callbacks: {
-        onConnected: () => {
-          console.log('connected')
-        },
-        onDisconnected: () => {
-          console.log('disconnected')
-        },
-        onTransportStateChanged: (state) => {
-          console.log(`Transport state changed: ${state}`);
-        },
-        onError: (error) => {
-          console.log('Error:', JSON.stringify(error));
-        },
-      },
-    });
-  };
 
   const start = async () => {
     try {
-      let client = createPipecatClient();
-      await client?.startBotAndConnect({
-        endpoint: 'http://192.168.1.156:7860/start',
+      await pipecat?.startBotAndConnect({
+        endpoint: "http://localhost:7860/start",
+        requestData: {
+          createDailyRoom: true,
+        },
       });
-      setPipecatClient(client);
     } catch (e) {
-      console.log('Failed to start the bot', e);
+      console.log("Failed to start the bot", e);
     }
   };
 
   const leave = async () => {
     try {
-      if (pipecatClient) {
-        await pipecatClient.disconnect();
-        setPipecatClient(undefined);
-      }
+      await pipecat?.disconnect();
     } catch (e) {
-      console.log('Failed to disconnect', e);
+      console.log("Failed to disconnect", e);
     }
   };
 
   useEffect(() => {
     if (isVisible) {
-      start()
+      start();
     } else {
-      leave()
+      leave();
     }
   }, [isVisible]);
 

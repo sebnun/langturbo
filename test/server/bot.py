@@ -1,4 +1,10 @@
-"""bot - Pipecat Voice Agent.
+#
+# Copyright (c) 2024–2025, Daily
+#
+# SPDX-License-Identifier: BSD 2-Clause License
+#
+
+"""test - Pipecat Voice Agent.
 
 This bot uses a realtime pipeline: Speech-to-Speech with integrated LLM
 
@@ -8,28 +14,33 @@ Required AI services:
 - Gemini_Vertex_Live (Realtime Speech-to-Speech)
 
 Run the bot using::
-    uv run bot.py --transport daily
+    uv run bot.py
 """
 
-from pipecat.services.google.gemini_live.llm_vertex import GeminiLiveVertexLLMService
-from pipecat.frames.frames import LLMRunFrame
-from pipecat.pipeline.task import PipelineParams, PipelineTask
+
 from pipecat.transports.daily.transport import DailyTransport, DailyParams
-from pipecat.runner.types import RunnerArguments
-from loguru import logger
-from pipecat.transports.base_transport import BaseTransport
+from pipecat.services.google.gemini_live.llm_vertex import GeminiLiveVertexLLMService
 from pipecat.pipeline.pipeline import Pipeline
-import os
-from pipecat.audio.vad.silero import SileroVADAnalyzer
-from pipecat.processors.aggregators.llm_context import LLMContext
-from pipecat.processors.frameworks.rtvi import RTVIObserver, RTVIProcessor
-from pipecat.pipeline.runner import PipelineRunner
 from pipecat.processors.aggregators.llm_response_universal import LLMContextAggregatorPair
-from dotenv import load_dotenv
+from pipecat.processors.aggregators.llm_context import LLMContext
 from pipecat.runner.types import DailyRunnerArguments
-import base64
+from pipecat.pipeline.task import PipelineParams, PipelineTask
+from pipecat.frames.frames import LLMRunFrame
+from pipecat.runner.types import RunnerArguments
+import os
+from pipecat.pipeline.runner import PipelineRunner
+from pipecat.processors.frameworks.rtvi import RTVIObserver, RTVIProcessor
+from dotenv import load_dotenv
+from loguru import logger
+from pipecat.audio.vad.silero import SileroVADAnalyzer
+from pipecat.transports.base_transport import BaseTransport
+
+
 
 load_dotenv(override=True)
+
+
+
 
 async def run_bot(transport: BaseTransport):
     """Main bot logic."""
@@ -37,12 +48,14 @@ async def run_bot(transport: BaseTransport):
 
     # Realtime LLM service (handles STT, LLM, and TTS internally)
     llm = GeminiLiveVertexLLMService(
-            credentials=base64.b64decode(os.getenv("GOOGLE_APPLICATION_CREDENTIALS")),
+            credentials=os.getenv("GOOGLE_APPLICATION_CREDENTIALS"),
             project_id=os.getenv("GOOGLE_PROJECT_ID"),
             location=os.getenv("GOOGLE_LOCATION"),
             voice_id=os.getenv("GOOGLE_VOICE_ID"),
             system_instruction=os.getenv("GOOGLE_SYSTEM_INSTRUCTION"),
     )
+
+
 
     messages = [
         {
@@ -54,17 +67,32 @@ async def run_bot(transport: BaseTransport):
     context = LLMContext(messages)
     context_aggregator = LLMContextAggregatorPair(context)
 
+
+    
+
     rtvi = RTVIProcessor()
+
 
     # Pipeline - assembled from reusable components
     pipeline = Pipeline([
         transport.input(),
+
         rtvi,
+
         context_aggregator.user(),
+
+        
         llm,
+
+        
         transport.output(),
+
+        
+        
         context_aggregator.assistant(),
+
     ])
+
 
     task = PipelineTask(
         pipeline,
@@ -92,16 +120,18 @@ async def run_bot(transport: BaseTransport):
         logger.info("Client disconnected")
         await task.cancel()
 
+
+
+
     runner = PipelineRunner(handle_sigint=False)
+
     await runner.run(task)
 
 
 async def bot(runner_args: RunnerArguments):
     """Main bot entry point."""
-
     transport = None
 
-    logger.log(runner_args.body)
     match runner_args:
         case DailyRunnerArguments():
             transport = DailyTransport(
@@ -123,4 +153,5 @@ async def bot(runner_args: RunnerArguments):
 
 if __name__ == "__main__":
     from pipecat.runner.run import main
+
     main()
