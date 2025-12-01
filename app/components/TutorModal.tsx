@@ -29,7 +29,7 @@ export default function TutorModal({ onClose, isVisible }: { onClose: () => void
   const start = async () => {
     try {
       await pipecat?.startBotAndConnect({
-        endpoint: "http://localhost:7860/start",
+        endpoint: "http://127.0.0.1:7860/start_bot",
         requestData: {
           createDailyRoom: true,
         },

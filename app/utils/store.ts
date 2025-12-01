@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { deleteSaved, deleteWord, postSaved, postWord } from "./api";
-import { type PipecatClient } from '@pipecat-ai/client-js';
 
 type AppStoreState = {
   autoPause: boolean;
@@ -14,8 +13,6 @@ type AppStoreState = {
   words: string[];
   saved: Podcast[];
   playback: Playback[];
-
-  pipecat: PipecatClient | null
 };
 
 const initialAppState: AppStoreState = {
@@ -28,8 +25,6 @@ const initialAppState: AppStoreState = {
   words: [],
   saved: [],
   playback: [],
-
-  pipecat: null
 };
 
 type AppStoreActions = {

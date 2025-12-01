@@ -12,7 +12,7 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "UIBackgroundModes": ["audio", "voip"],
+        "UIBackgroundModes": ["audio"],
         "ITSAppUsesNonExemptEncryption": false
       },
       "bundleIdentifier": "com.sebnun.langturbo"
@@ -56,25 +56,6 @@
           "url": "https://sentry.io/",
           "project": "expo",
           "organization": "langturbo"
-        }
-      ],
-      [
-        "@daily-co/config-plugin-rn-daily-js",
-        {
-          "enableCamera": false,
-          "enableMicrophone": true,
-          "enableScreenShare": false
-        }
-      ],
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "minSdkVersion": 24
-          },
-          "ios": {
-            "deploymentTarget": "15.1"
-          }
         }
       ]
     ],
