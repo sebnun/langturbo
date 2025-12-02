@@ -9,21 +9,13 @@ from livekit.agents import (
     cli,
 )
 from livekit.plugins import google
+from google.genai import types
 import os
 import json
 
 logger = logging.getLogger("agent")
 
 load_dotenv(".env.local")
-
-
-class Assistant(Agent):
-    def __init__(self) -> None:
-        super().__init__(
-            instructions="""You are a helpful language teacher. The user is interacting with you via voice, even if you perceive the conversation as text.
-            You eagerly assist users with their questions by providing information from your extensive knowledge.
-            Your responses are concise, to the point.""",
-        )
 
 
 server = AgentServer()
@@ -37,26 +29,25 @@ async def my_agent(ctx: JobContext):
         "room": ctx.room.name,
     }
 
-    # TODO
     metadata = json.loads(ctx.job.metadata)
     sentence = metadata["sentence"]
     language = metadata["languageName"]
 
-    logger.log(sentence)
-
     session = AgentSession(
         llm=google.realtime.RealtimeModel(
-            api_key=os.environ['GOOGLE_API_KEY'],
-
+            api_key=os.environ["GOOGLE_API_KEY"],
             model="gemini-2.5-flash-native-audio-preview-09-2025",
-            voice="Puck",
+            thinking_config=types.ThinkingConfig(
+                include_thoughts=False,
+            ),
         ),
     )
 
-
     await session.start(
-        agent=Assistant(),
-        room=ctx.room
+        agent=Agent(
+            instructions=f'You are a {language} language teacher. You will hear the sentence "${sentence}", provide pronunciation feedback.'
+        ),
+        room=ctx.room,
     )
 
     # Join the room and connect to the user

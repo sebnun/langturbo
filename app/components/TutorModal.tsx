@@ -1,9 +1,7 @@
-import { StyleSheet, Text, View, Modal, ScrollView, Platform } from "react-native";
+import { StyleSheet, Text, View, Modal, ScrollView } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useAppStore, usePlayerStore } from "../utils/store";
-import * as Haptics from "expo-haptics";
 import { Ionicons } from "@expo/vector-icons";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Gesture, GestureDetector, Directions, GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   colorScreenBackground,
@@ -15,22 +13,40 @@ import {
 } from "@/utils/theme";
 import Button from "./button/Button";
 import { EpisodeItemSeparator } from "./EpisodeItem";
-import Markdown from "react-native-markdown-display";
 import { useLocalSearchParams } from "expo-router";
+import { postToken } from "@/utils/api";
+import { usePlayerStore } from "@/utils/store";
+import Room from "./Room";
+import Loading from "./Loading";
+import Markdown from "react-native-markdown-display";
+
+export type UIAgentState = "Loading ..." | "Thinking ..." | "Speaking ..." | "Listening ...";
+
+const HTML_STYLE_OBJECT = {
+  body: {
+    color: "white",
+    fontSize: sizeTextLarger,
+  },
+};
 
 export default function TutorModal({ onClose, isVisible }: { onClose: () => void; isVisible: boolean }) {
   const insets = useSafeAreaInsets();
   const { lang } = useLocalSearchParams<{ lang: string }>();
+  const [agentState, setAgentState] = useState<UIAgentState>("Loading ...");
+  const [agentTranscription, setAgentTranscription] = useState("");
 
   const flingGesture = Gesture.Fling().direction(Directions.DOWN).onStart(onClose).runOnJS(true);
   const singleTap = Gesture.Tap().onStart(onClose).runOnJS(true);
 
-  
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     if (isVisible) {
-      
+      postToken(usePlayerStore.getState().caption!.text, lang).then(setToken);
+      setAgentTranscription(`Start by saying **${usePlayerStore.getState().caption?.text}**`);
+      setAgentState("Loading ...");
     } else {
+      setToken("");
     }
   }, [isVisible]);
 
@@ -49,32 +65,36 @@ export default function TutorModal({ onClose, isVisible }: { onClose: () => void
               }}
             >
               <View style={styles.topBar}>
-                <Text style={styles.topBarTitle}>Recording ...</Text>
+                <Text style={styles.topBarTitle}>{agentState}</Text>
                 <Button onPress={onClose}>
                   <Ionicons name="close" size={sizeIconNavigation} color="white" />
                 </Button>
               </View>
               <EpisodeItemSeparator />
               <View style={styles.mainView}>
-                <ScrollView contentContainerStyle={{ padding: sizeScreenPadding }}>
-                  {/* <Markdown
-                    style={HTML_STYLE_OBJECT}
-                    // Selectable text
-                    rules={{
-                      textgroup: (node, children) => (
-                        <Text key={node.key} selectable={true}>
-                          {children}
-                        </Text>
-                      ),
-                    }}
-                  >
-                    {status === "submitted" || messages.length < 2
-                      ? "Loading ..."
-                      : `${messages[1].parts.filter((p) => p.type === "text")[0].text} ${
-                          status === "streaming" ? "..." : ""
-                        }`}
-                  </Markdown> */}
-                </ScrollView>
+                {token ? (
+                  <>
+                    <ScrollView contentContainerStyle={{ padding: sizeScreenPadding }}>
+                      <Markdown
+                        style={HTML_STYLE_OBJECT}
+                        // Selectable text
+                        rules={{
+                          textgroup: (node, children) => (
+                            <Text key={node.key} selectable={true}>
+                              {children}
+                            </Text>
+                          ),
+                        }}
+                      >
+                        {agentTranscription}
+                      </Markdown>
+                    </ScrollView>
+                    <EpisodeItemSeparator />
+                    <Room token={token} onStateChange={setAgentState} onTranscriptionChange={setAgentTranscription} />
+                  </>
+                ) : (
+                  <Loading />
+                )}
               </View>
             </View>
           </GestureDetector>

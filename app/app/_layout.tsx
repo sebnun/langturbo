@@ -7,6 +7,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Toaster } from "burnt/web";
 import * as Sentry from "@sentry/react-native";
 import { Platform } from "react-native";
+import * as SystemUI from 'expo-system-ui';
 
 Sentry.init({
   dsn: "https://1656437e7840e162a26b5a97b19ac7fc@o4510416598269952.ingest.us.sentry.io/4510416604299264",
@@ -19,6 +20,8 @@ Sentry.init({
   integrations: [Sentry.mobileReplayIntegration()],
   enabled: !__DEV__,
 });
+
+SystemUI.setBackgroundColorAsync("black");
 
 export const unstable_settings = {
   // Ensure any route can link back to `/`on full refresh

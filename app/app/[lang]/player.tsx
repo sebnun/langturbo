@@ -125,6 +125,7 @@ export default function PlayerScreen() {
   };
 
   const handleTutor = async () => {
+    usePlayerStore.setState({ playbackRequest: 'pause' });
     setShowTutor(true);
   };
 
@@ -160,9 +161,9 @@ export default function PlayerScreen() {
       <SafeAreaView style={themeStyles.screen}>
         <LinearGradient colors={["black", "#050505"]} style={styles.gradient} />
         <SettingsModal isVisible={showSettings} onClose={() => setShowSettings(false)} />
-        <TutorModal onClose={() => setShowTutor(false)} isVisible={showTutor} />
+        <TutorModal onClose={() => setShowTutor(false)} isVisible={showTutor && !!session} />
         <WordModal onClose={() => setSelectedWord("")} word={selectedWord} />
-        <AuthModal onClose={() => setSelectedWord("")} isVisible={!!selectedWord && !session} />
+        <AuthModal onClose={() => setSelectedWord("")} isVisible={(!!selectedWord || showTutor) && !session} />
         <Transcriber id={decodedId} sourceId={podcastId} episodeTitle={title} podcastImageUrl={podcastImageUrl} />
         {!duration ? (
           <Loading />
