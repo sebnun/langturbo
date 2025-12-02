@@ -1,18 +1,15 @@
 import logging
 
 from dotenv import load_dotenv
-from livekit import rtc
 from livekit.agents import (
     Agent,
     AgentServer,
     AgentSession,
     JobContext,
-    JobProcess,
     cli,
-    inference,
-    room_io,
 )
-from livekit.plugins import noise_cancellation, silero
+from livekit.plugins import google
+import os
 
 logger = logging.getLogger("agent")
 
@@ -32,13 +29,6 @@ class Assistant(Agent):
 server = AgentServer()
 
 
-def prewarm(proc: JobProcess):
-    proc.userdata["vad"] = silero.VAD.load()
-
-
-server.setup_fnc = prewarm
-
-
 @server.rtc_session()
 async def my_agent(ctx: JobContext):
     # Logging setup
@@ -47,28 +37,21 @@ async def my_agent(ctx: JobContext):
         "room": ctx.room.name,
     }
 
-    # To use a realtime model instead of a voice pipeline, use the following session setup instead.
-    # (Note: This is for the OpenAI Realtime API. For other providers, see https://docs.livekit.io/agents/models/realtime/))
-    # 1. Install livekit-agents[openai]
-    # 2. Set OPENAI_API_KEY in .env.local
-    # 3. Add `from livekit.plugins import openai` to the top of this file
-    # 4. Use the following session setup instead of the version above
+    # TODO Can't pass a string as service account, use genai API key
     session = AgentSession(
-        llm=openai.realtime.RealtimeModel(voice="marin")
+        llm=google.realtime.RealtimeModel(
+            api_key=os.environ['GEMINI_API_KEY'],
+
+            model="gemini-live-2.5-flash-preview-native-audio-09-2025",
+            voice="Puck",
+            instructions="You are a helpful assistant",
+        ),
     )
 
 
-    # Start the session, which initializes the voice pipeline and warms up the models
     await session.start(
         agent=Assistant(),
-        room=ctx.room,
-        room_options=room_io.RoomOptions(
-            audio_input=room_io.AudioInputOptions(
-                noise_cancellation=lambda params: noise_cancellation.BVCTelephony()
-                if params.participant.kind == rtc.ParticipantKind.PARTICIPANT_KIND_SIP
-                else noise_cancellation.BVC(),
-            ),
-        ),
+        room=ctx.room
     )
 
     # Join the room and connect to the user
