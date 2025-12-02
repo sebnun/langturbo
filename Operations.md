@@ -36,6 +36,10 @@ Kamal sets limit `"max-size": "10m"` to `json-file` driver by default
 2) ```eas deploy --prod```
 
 
+# Livekit agent test
+
+```uv run src/agent.py console```
+
 # TODO
 
 https://docs.expo.dev/guides/using-sentry/#usage-with-eas-update

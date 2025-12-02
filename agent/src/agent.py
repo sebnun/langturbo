@@ -19,10 +19,9 @@ load_dotenv(".env.local")
 class Assistant(Agent):
     def __init__(self) -> None:
         super().__init__(
-            instructions="""You are a helpful voice AI assistant. The user is interacting with you via voice, even if you perceive the conversation as text.
+            instructions="""You are a helpful language teacher. The user is interacting with you via voice, even if you perceive the conversation as text.
             You eagerly assist users with their questions by providing information from your extensive knowledge.
-            Your responses are concise, to the point, and without any complex formatting or punctuation including emojis, asterisks, or other symbols.
-            You are curious, friendly, and have a sense of humor.""",
+            Your responses are concise, to the point.""",
         )
 
 
@@ -42,9 +41,8 @@ async def my_agent(ctx: JobContext):
         llm=google.realtime.RealtimeModel(
             api_key=os.environ['GEMINI_API_KEY'],
 
-            model="gemini-live-2.5-flash-preview-native-audio-09-2025",
+            model="gemini-2.5-flash-native-audio-preview-09-2025",
             voice="Puck",
-            instructions="You are a helpful assistant",
         ),
     )
 
