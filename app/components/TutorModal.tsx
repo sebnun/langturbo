@@ -21,37 +21,16 @@ import { useLocalSearchParams } from "expo-router";
 export default function TutorModal({ onClose, isVisible }: { onClose: () => void; isVisible: boolean }) {
   const insets = useSafeAreaInsets();
   const { lang } = useLocalSearchParams<{ lang: string }>();
-  const pipecat = useAppStore((state) => state.pipecat);
 
   const flingGesture = Gesture.Fling().direction(Directions.DOWN).onStart(onClose).runOnJS(true);
   const singleTap = Gesture.Tap().onStart(onClose).runOnJS(true);
 
-  const start = async () => {
-    try {
-      await pipecat?.startBotAndConnect({
-        endpoint: "http://127.0.0.1:7860/start_bot",
-        requestData: {
-          createDailyRoom: true,
-        },
-      });
-    } catch (e) {
-      console.log("Failed to start the bot", e);
-    }
-  };
-
-  const leave = async () => {
-    try {
-      await pipecat?.disconnect();
-    } catch (e) {
-      console.log("Failed to disconnect", e);
-    }
-  };
+  
 
   useEffect(() => {
     if (isVisible) {
-      start();
+      
     } else {
-      leave();
     }
   }, [isVisible]);
 

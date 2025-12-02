@@ -26,6 +26,7 @@
     "dayjs": "^1.11.19",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.7",
+    "livekit-server-sdk": "^2.14.2",
     "lucide-react": "^0.553.0",
     "next": "^16.0.1",
     "next-mdx-remote": "^5.0.0",

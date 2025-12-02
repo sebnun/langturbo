@@ -60,6 +60,8 @@ env:
     - SENTRY_AUTH_TOKEN
     - AWS_SECRET_ACCESS_KEY
     - AWS_ACCESS_KEY_ID
+    - LIVEKIT_API_SECRET
+    - LIVEKIT_API_KEY
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal app logs -r job" will tail logs from the first server in the job section.

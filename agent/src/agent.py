@@ -10,6 +10,7 @@ from livekit.agents import (
 )
 from livekit.plugins import google
 import os
+import json
 
 logger = logging.getLogger("agent")
 
@@ -36,10 +37,16 @@ async def my_agent(ctx: JobContext):
         "room": ctx.room.name,
     }
 
-    # TODO Can't pass a string as service account, use genai API key
+    # TODO
+    metadata = json.loads(ctx.job.metadata)
+    sentence = metadata["sentence"]
+    language = metadata["languageName"]
+
+    logger.log(sentence)
+
     session = AgentSession(
         llm=google.realtime.RealtimeModel(
-            api_key=os.environ['GEMINI_API_KEY'],
+            api_key=os.environ['GOOGLE_API_KEY'],
 
             model="gemini-2.5-flash-native-audio-preview-09-2025",
             voice="Puck",

@@ -1,7 +1,7 @@
 import { Platform } from "react-native";
-import { getApiEndpoint } from ".";
+import { capitalizeFirstLetter, getApiEndpoint } from ".";
 import { authClient } from "./auth";
-import { languageIds } from "./languages";
+import { getLanguageNameById, languageIds } from "./languages";
 
 export const fetchOptionsForPlatform = () => {
   return Platform.OS === "web"
@@ -102,6 +102,15 @@ export const postWord = async (word: string, languageCode: string) => {
 export const deleteWord = async (word: string, languageCode: string) => {
   return fetch(`${getApiEndpoint()}word?word=${word}&languageId=${languageCode}`, {
     method: "DELETE",
+    ...fetchOptionsForPlatform(),
+  }).then((response) => response.text());
+};
+
+export const postToken = async (sentence: string, languageCode: string) => {
+  const languageName = capitalizeFirstLetter(getLanguageNameById(languageIds[languageCode]));
+  return fetch(`${getApiEndpoint()}token`, {
+    method: "POST",
+    body: JSON.stringify({ sentence, languageName }),
     ...fetchOptionsForPlatform(),
   }).then((response) => response.text());
 };
