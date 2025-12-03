@@ -1,4 +1,4 @@
-import { postTranscription } from "@/utils/api";
+import { postEvent, postTranscription } from "@/utils/api";
 import { useAppStore, usePlayerStore } from "@/utils/store";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
@@ -29,7 +29,7 @@ export default function Transcriber({
   const isTranscribing = useRef(false);
   const playedMinutes = useRef(0);
 
-  const { lang } = useLocalSearchParams();
+  const { lang } = useLocalSearchParams<{ lang: string }>();
 
   useEffect(() => {
     if (!isTranscribing.current) {
@@ -67,12 +67,14 @@ export default function Transcriber({
     const currentMinute = Math.floor(currentTime / 60);
     if (currentMinute > playedMinutes.current) {
       playedMinutes.current = currentMinute;
+      // Async but KISS
+      postEvent(EventType.MinutePlayed, lang);
       updatePlayback(
         {
           episodeId: id,
           percentage: usePlayerStore.getState().progressPercentage,
         },
-        lang as string
+        lang
       );
     }
 

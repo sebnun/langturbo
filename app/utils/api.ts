@@ -130,3 +130,17 @@ export const postPlayback = async (episodeId: string, percentage: number, langua
     ...fetchOptionsForPlatform(),
   }).then((response) => response.text());
 };
+
+export const postEvent = async (type: EventType, languageCode: string) => {
+  return fetch(`${getApiEndpoint()}event`, {
+    method: "POST",
+    body: JSON.stringify({ type, languageCode }),
+    ...fetchOptionsForPlatform(),
+  }).then((response) => response.text());
+};
+
+export const getCharts = async (languageCode: string, tz: string) => {
+  return fetch(`${getApiEndpoint()}charts?languageCode=${languageCode}&tz=${tz}`, {
+    ...fetchOptionsForPlatform(),
+  }).then((response) => response.json());
+};

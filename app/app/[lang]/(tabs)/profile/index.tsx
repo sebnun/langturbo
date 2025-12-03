@@ -1,6 +1,6 @@
-import { colorTextSubdued, sizeScreenPadding, sizeWidthProfile, themeStyles } from "@/utils/theme";
+import { colorTextSubdued, sizeIconNavigation, sizeScreenPadding, sizeWidthProfile, themeStyles } from "@/utils/theme";
 import { Link, Stack, useGlobalSearchParams, useRouter } from "expo-router";
-import { View, StyleSheet, ScrollView, Linking } from "react-native";
+import { View, StyleSheet, ScrollView, Linking, Platform } from "react-native";
 import { getLanguageNameById, languageIds } from "@/utils/languages";
 import { capitalizeFirstLetter } from "@/utils";
 import React, { useState } from "react";
@@ -9,6 +9,8 @@ import { useTitle } from "@/utils/hooks";
 import TextButton from "@/components/button/TextButton";
 import { authClient } from "@/utils/auth";
 import AuthModal from "@/components/AuthModal";
+import Button from "@/components/button/Button";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function ProfileScreen() {
   // When navigating to / global params change to empty, causing an error
@@ -27,6 +29,18 @@ export default function ProfileScreen() {
       <Stack.Screen
         options={{
           title: `Learning ${capitalizeFirstLetter(getLanguageNameById(languageIds[lang as string]))}`,
+          headerRight: () => (
+            <View
+              style={{
+                paddingRight: Platform.OS === "web" ? sizeScreenPadding : undefined,
+                paddingLeft: Platform.OS === "ios" ? 6 : undefined, // With the new glass buttons
+              }}
+            >
+              <Button onPress={() => (session ? router.navigate("../profile/charts") : setShowAuth(true))}>
+                <Ionicons name="stats-chart-sharp" size={sizeIconNavigation} color="white" />
+              </Button>
+            </View>
+          ),
         }}
       />
       <View style={themeStyles.screen}>

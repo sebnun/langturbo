@@ -49,3 +49,14 @@ type Playback = {
   episodeId: string;
   percentage: number;
 };
+
+enum EventType {
+  MinutePlayed,
+  // WordAdded,
+  // WordRemoved
+}
+
+type ChartDataPoint = {
+  x: string;
+  y: number;
+};
