@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
   // If this room doesn't exist, it'll be automatically created when the first
   // participant joins
-  const roomName = session.user.id;
+  const roomName = session.user.id + new Date();
   // Identifier to be used for participant.
   // It's available as LocalParticipant.identity with livekit-client SDK
   const participantName = session.user.id;

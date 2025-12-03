@@ -1,5 +1,4 @@
 import { Stack } from "expo-router";
-import "../assets/css/body.css";
 import { SourceCodePro_400Regular, useFonts } from "@expo-google-fonts/source-code-pro";
 import { StatusBar } from "expo-status-bar";
 import Loading from "@/components/Loading";
@@ -8,6 +7,8 @@ import { Toaster } from "burnt/web";
 import * as Sentry from "@sentry/react-native";
 import { Platform } from "react-native";
 import * as SystemUI from 'expo-system-ui';
+import "@livekit/components-styles";
+import "../assets/css/body.css";
 
 Sentry.init({
   dsn: "https://1656437e7840e162a26b5a97b19ac7fc@o4510416598269952.ingest.us.sentry.io/4510416604299264",

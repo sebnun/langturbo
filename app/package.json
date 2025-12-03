@@ -16,6 +16,7 @@
     "@expo-google-fonts/source-code-pro": "^0.4.1",
     "@expo/vector-icons": "^15.0.3",
     "@livekit/components-react": "^2.9.16",
+    "@livekit/components-styles": "^1.2.0",
     "@livekit/react-native": "^2.9.5",
     "@livekit/react-native-expo-plugin": "^1.0.1",
     "@livekit/react-native-webrtc": "^137.0.2",

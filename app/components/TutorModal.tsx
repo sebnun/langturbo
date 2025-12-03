@@ -89,8 +89,9 @@ export default function TutorModal({ onClose, isVisible }: { onClose: () => void
                         {agentTranscription}
                       </Markdown>
                     </ScrollView>
-                    <EpisodeItemSeparator />
-                    <Room token={token} onStateChange={setAgentState} onTranscriptionChange={setAgentTranscription} />
+                    <View style={{ height: 100 }}>
+                      <Room token={token} onStateChange={setAgentState} onTranscriptionChange={setAgentTranscription} />
+                    </View>
                   </>
                 ) : (
                   <Loading />
