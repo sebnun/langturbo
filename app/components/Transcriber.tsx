@@ -24,7 +24,10 @@ export default function Transcriber({
   const [realCaptionIndex, setRealCaptionIndex] = useState(0);
   const currentTime = usePlayerStore((state) => state.currentTime);
   const playing = usePlayerStore((state) => state.playing);
+  const updatePlayback = useAppStore((state) => state.updatePlayback);
+
   const isTranscribing = useRef(false);
+  const playedMinutes = useRef(0);
 
   const { lang } = useLocalSearchParams();
 
@@ -59,6 +62,18 @@ export default function Transcriber({
 
     if (localRealCaptionIndex !== -1) {
       setRealCaptionIndex(localRealCaptionIndex);
+    }
+
+    const currentMinute = Math.floor(currentTime / 60);
+    if (currentMinute > playedMinutes.current) {
+      playedMinutes.current = currentMinute;
+      updatePlayback(
+        {
+          episodeId: id,
+          percentage: usePlayerStore.getState().progressPercentage,
+        },
+        lang as string
+      );
     }
 
     usePlayerStore.setState({
@@ -127,6 +142,7 @@ export default function Transcriber({
 
   return (
     <AudioPlayer
+      episodeId={id}
       episodeTitle={episodeTitle}
       imageUrl={podcastImageUrl}
       uri={`https://storage.googleapis.com/turbo-9892e.firebasestorage.app/${fileName}`}

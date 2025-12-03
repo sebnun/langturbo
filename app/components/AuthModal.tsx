@@ -156,7 +156,7 @@ export default function AuthModal({
                         <Loading />
                       ) : screen === "signIn" ? (
                         <>
-                          {!isProfile && <Text style={styles.textSub}>You need to sign in to use this feature.</Text>}
+                          {!isProfile && <Text style={styles.mainText}>You need to sign in to use this feature.</Text>}
                           <TextInput
                             autoComplete="email"
                             autoCorrect={false}
@@ -181,7 +181,7 @@ export default function AuthModal({
                         </>
                       ) : (
                         <>
-                          <Text style={styles.textSub}>{`Enter the code sent to ${email}.`}</Text>
+                          <Text style={styles.mainText}>{`Enter the code sent to ${email}.`}</Text>
                           <TextInput
                             autoComplete="one-time-code"
                             autoCorrect={false}

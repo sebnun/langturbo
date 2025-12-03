@@ -1,9 +1,12 @@
 import { View, Text, StyleSheet } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { colorSeparator, colorTextSubdued, sizeElementSpacing, sizeTextLarger } from "@/utils/theme";
 import BlockButton from "./button/BlockButton";
 import { Ionicons } from "@expo/vector-icons";
 import { encodeUrl } from "@/utils";
+import EpisodeItemProgress from "./EpisodeItemProgress";
+import { useCallback, useState } from "react";
+import { useAppStore } from "@/utils/store";
 
 export const EPISODE_ITEM_HEIGHT = 80;
 
@@ -21,6 +24,15 @@ export default function EpisodeItem({
   const router = useRouter();
   const { lang } = useLocalSearchParams();
 
+  const [progressPercentage, setProgressPercentage] = useState(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      const percentage = useAppStore.getState().playback.find((item) => item.episodeId === episode.id)?.percentage || 0;
+      setProgressPercentage(percentage);
+    }, [episode.id])
+  );
+
   return (
     <BlockButton
       onPress={() =>
@@ -33,6 +45,7 @@ export default function EpisodeItem({
             title: episode.title,
             podcastTitle,
             podcastImageUrl,
+            playbackPercentage: String(progressPercentage)
           },
         })
       }
@@ -52,6 +65,7 @@ export default function EpisodeItem({
             <Text style={styles.textDate} numberOfLines={1}>
               {episode.date}
             </Text>
+            <EpisodeItemProgress progressPercentage={progressPercentage} />
             <Text style={styles.textTime} numberOfLines={1}>
               {episode.duration}
             </Text>

@@ -114,3 +114,19 @@ export const postToken = async (sentence: string, languageCode: string) => {
     ...fetchOptionsForPlatform(),
   }).then((response) => response.text());
 };
+
+export const patchPlayback = async (episodeId: string, percentage: number) => {
+  return fetch(`${getApiEndpoint()}playback`, {
+    method: "PATCH",
+    body: JSON.stringify({ episodeId, percentage }),
+    ...fetchOptionsForPlatform(),
+  }).then((response) => response.text());
+};
+
+export const postPlayback = async (episodeId: string, percentage: number, languageCode: string) => {
+  return fetch(`${getApiEndpoint()}playback`, {
+    method: "POST",
+    body: JSON.stringify({ episodeId, percentage, languageCode }),
+    ...fetchOptionsForPlatform(),
+  }).then((response) => response.text());
+};

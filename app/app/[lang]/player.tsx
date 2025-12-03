@@ -8,7 +8,7 @@ import Progress from "@/components/Progress";
 import { StyleSheet, View, ScrollView, Platform, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "@/components/button/Button";
-import { useAppStore, usePlayerStore } from "@/utils/store";
+import { usePlayerStore } from "@/utils/store";
 import TimeCode from "@/components/TimeCode";
 import Transcriber, { SEEK_FORWARD_SECONDS } from "@/components/Transcriber";
 import Caption from "@/components/Caption";
@@ -24,12 +24,13 @@ import WordModal from "@/components/WordModal";
 import TutorModal from "@/components/TutorModal";
 
 export default function PlayerScreen() {
-  const { id, podcastId, title, podcastTitle, podcastImageUrl } = useLocalSearchParams<{
+  const { id, podcastId, title, podcastTitle, podcastImageUrl, playbackPercentage } = useLocalSearchParams<{
     id: string;
     podcastId: string;
     title: string;
     podcastTitle: string;
     podcastImageUrl: string;
+    playbackPercentage?: string;
   }>();
   useTitle(title);
   const router = useRouter();
@@ -86,6 +87,16 @@ export default function PlayerScreen() {
       if (loadingIntervalRef.current) {
         clearInterval(loadingIntervalRef.current);
         usePlayerStore.setState({ positionLabel: `00:00` });
+
+        if (playbackPercentage) {
+          const floatPlaybackPercentage = parseFloat(playbackPercentage);
+          if (floatPlaybackPercentage < 100) {
+            const position = duration * (floatPlaybackPercentage / 100);
+            // Seek auto plays
+            usePlayerStore.setState({ seekToRequest: position });
+            setTimeout(() => usePlayerStore.setState({ playbackRequest: "pause" }), 100);
+          }
+        }
       }
     }
   }, [duration]);
@@ -133,7 +144,7 @@ export default function PlayerScreen() {
     if (!session) {
       setShowAuth(true);
     } else {
-      setSelectedWord(word)
+      setSelectedWord(word);
     }
   };
 

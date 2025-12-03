@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { deleteSaved, deleteWord, postSaved, postWord } from "./api";
+import { deleteSaved, deleteWord, patchPlayback, postPlayback, postSaved, postWord } from "./api";
 
 type AppStoreState = {
   autoPause: boolean;
@@ -32,6 +32,7 @@ type AppStoreActions = {
   removePodcast: (podcastId: string) => void;
   saveWord: (word: string, languageCode: string) => void;
   removeWord: (word: string, languageCode: string) => void;
+  updatePlayback: (playback: Playback, languageCode: string) => void;
 };
 
 export const useAppStore = create<AppStoreState & AppStoreActions>()(
@@ -55,6 +56,25 @@ export const useAppStore = create<AppStoreState & AppStoreActions>()(
         const sanitizedWord = word.toLowerCase().trim();
         set((state) => ({ words: state.words.filter((w) => w !== sanitizedWord) }));
         await deleteWord(sanitizedWord, languageCode);
+      },
+      updatePlayback: async (playback: Playback, languageCode: string) => {
+        if (playback.percentage > 0 && playback.percentage <= 100) {
+          const statePlayback = useAppStore.getState().playback.find((p) => p.episodeId === playback.episodeId);
+
+          if (statePlayback && playback.percentage > statePlayback.percentage) {
+            set((state) => ({
+              playback: state.playback.map((p) =>
+                p.episodeId === playback.episodeId ? { ...p, percentage: playback.percentage } : p
+              ),
+            }));
+            await patchPlayback(playback.episodeId, playback.percentage);
+          } else if (!statePlayback) {
+            set((state) => ({
+              playback: [...state.playback, { ...playback, percentage: playback.percentage }],
+            }));
+            await postPlayback(playback.episodeId, playback.percentage, languageCode);
+          }
+        }
       },
     }),
     {

@@ -1,13 +1,16 @@
 import { useAppStore, usePlayerStore } from "@/utils/store";
 import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
+import { useLocalSearchParams } from "expo-router";
 import { use, useEffect, useRef } from "react";
 import { Platform } from "react-native";
 
 export default function AudioPlayer({
+  episodeId,
   uri,
   imageUrl,
   episodeTitle,
 }: {
+  episodeId: string,
   uri: string;
   imageUrl: string;
   episodeTitle: string;
@@ -18,6 +21,9 @@ export default function AudioPlayer({
   const seekToRequest = usePlayerStore((state) => state.seekToRequest);
   const playbackRequest = usePlayerStore((state) => state.playbackRequest);
   const slower = useAppStore((state) => state.slower);
+  const updatePlayback = useAppStore((state) => state.updatePlayback);
+
+  const { lang } = useLocalSearchParams();
 
   useEffect(() => {
     // TODO
@@ -43,6 +49,7 @@ export default function AudioPlayer({
       player.seekTo(0);
       // Need this to keep in sync
       usePlayerStore.setState({ playbackRequest: "pause" });
+      updatePlayback({ episodeId, percentage: 100 }, lang as string)
     }
   }, [status]);
 
