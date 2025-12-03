@@ -1,0 +1,28 @@
+service: agent
+image: sebnun/langturbo-agent
+
+servers:
+  jobs:
+    hosts:
+      - 163.192.109.201
+    proxy: false
+
+registry:
+  username: sebnun
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+builder:
+  arch: arm64
+
+primary_role: jobs
+
+env:
+  secret:
+    - LIVEKIT_API_KEY
+    - LIVEKIT_API_SECRET
+    - LIVEKIT_URL
+    - GOOGLE_API_KEY
+
+ssh:
+  user: ubuntu

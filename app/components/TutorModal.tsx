@@ -19,6 +19,7 @@ import { usePlayerStore } from "@/utils/store";
 import Room from "./Room";
 import Loading from "./Loading";
 import Markdown from "react-native-markdown-display";
+import { getRecordingPermissionsAsync, requestRecordingPermissionsAsync } from "expo-audio";
 
 export type UIAgentState = "Loading ..." | "Thinking ..." | "Speaking ..." | "Listening ...";
 
@@ -45,6 +46,11 @@ export default function TutorModal({ onClose, isVisible }: { onClose: () => void
       postToken(usePlayerStore.getState().caption!.text, lang).then(setToken);
       setAgentTranscription(`Start by saying **${usePlayerStore.getState().caption?.text}**`);
       setAgentState("Loading ...");
+      getRecordingPermissionsAsync().then((permissions) => {
+        if (!permissions.granted) {
+          requestRecordingPermissionsAsync();
+        }
+      });
     } else {
       setToken("");
     }
