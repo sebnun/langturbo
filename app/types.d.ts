@@ -50,11 +50,7 @@ type Playback = {
   percentage: number;
 };
 
-enum EventType {
-  MinutePlayed,
-  // WordAdded,
-  // WordRemoved
-}
+type AppEventType = 'minutePlayed'
 
 type ChartDataPoint = {
   x: string;

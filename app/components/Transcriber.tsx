@@ -68,7 +68,7 @@ export default function Transcriber({
     if (currentMinute > playedMinutes.current) {
       playedMinutes.current = currentMinute;
       // Async but KISS
-      postEvent(EventType.MinutePlayed, lang);
+      postEvent('minutePlayed', lang);
       updatePlayback(
         {
           episodeId: id,

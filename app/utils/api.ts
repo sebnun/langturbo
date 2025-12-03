@@ -131,7 +131,7 @@ export const postPlayback = async (episodeId: string, percentage: number, langua
   }).then((response) => response.text());
 };
 
-export const postEvent = async (type: EventType, languageCode: string) => {
+export const postEvent = async (type: AppEventType, languageCode: string) => {
   return fetch(`${getApiEndpoint()}event`, {
     method: "POST",
     body: JSON.stringify({ type, languageCode }),
