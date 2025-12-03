@@ -199,7 +199,7 @@ export default function PlayerScreen() {
               )}
             </Button>
 
-            <Button disabled={!duration || playing} onPress={handleTutor}>
+            <Button disabled={!duration} onPress={handleTutor}>
               <Ionicons name="mic-sharp" size={40} color="white" />
             </Button>
 
