@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { deleteSaved, deleteWord, patchPlayback, postPlayback, postSaved, postWord } from "./api";
+import { Platform } from "react-native";
 
 type AppStoreState = {
   autoPause: boolean;
@@ -13,6 +14,8 @@ type AppStoreState = {
   words: string[];
   saved: Podcast[];
   playback: Playback[];
+
+  showPlayerOnboarding: boolean;
 };
 
 const initialAppState: AppStoreState = {
@@ -25,6 +28,8 @@ const initialAppState: AppStoreState = {
   words: [],
   saved: [],
   playback: [],
+
+  showPlayerOnboarding: true,
 };
 
 type AppStoreActions = {
@@ -85,6 +90,7 @@ export const useAppStore = create<AppStoreState & AppStoreActions>()(
         slower: state.slower,
         showTranslation: state.showTranslation,
         tapTranslation: state.tapTranslation,
+        showPlayerOnboarding: state.showPlayerOnboarding,
       }),
       storage: createJSONStorage(() => AsyncStorage),
     }

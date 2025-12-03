@@ -8,7 +8,7 @@ import Progress from "@/components/Progress";
 import { StyleSheet, View, ScrollView, Platform, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Button from "@/components/button/Button";
-import { usePlayerStore } from "@/utils/store";
+import { useAppStore, usePlayerStore } from "@/utils/store";
 import TimeCode from "@/components/TimeCode";
 import Transcriber, { SEEK_FORWARD_SECONDS } from "@/components/Transcriber";
 import Caption from "@/components/Caption";
@@ -22,6 +22,7 @@ import { authClient } from "@/utils/auth";
 import AuthModal from "@/components/AuthModal";
 import WordModal from "@/components/WordModal";
 import TutorModal from "@/components/TutorModal";
+import PressInstructions from "@/components/PressInstructions";
 
 export default function PlayerScreen() {
   const { id, podcastId, title, podcastTitle, podcastImageUrl, playbackPercentage } = useLocalSearchParams<{
@@ -48,6 +49,7 @@ export default function PlayerScreen() {
   const duration = usePlayerStore((state) => state.duration);
   const error = usePlayerStore((state) => state.error);
   const reset = usePlayerStore((state) => state.reset);
+  const showPlayerOnboarding = useAppStore((state) => state.showPlayerOnboarding);
 
   const [showSettings, setShowSettings] = useState(false);
   const [showTutor, setShowTutor] = useState(false);
@@ -152,6 +154,7 @@ export default function PlayerScreen() {
     <>
       <Stack.Screen
         options={{
+          headerShown: !showPlayerOnboarding,
           contentStyle: {
             backgroundColor: "black",
           },
@@ -178,6 +181,7 @@ export default function PlayerScreen() {
         }}
       />
       <SafeAreaView style={themeStyles.screen}>
+        {showPlayerOnboarding ? <PressInstructions /> : null}
         <LinearGradient colors={["black", "#050505"]} style={styles.gradient} />
         <SettingsModal isVisible={showSettings} onClose={() => setShowSettings(false)} />
         <TutorModal onClose={() => setShowTutor(false)} isVisible={showTutor} />
