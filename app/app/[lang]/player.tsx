@@ -50,6 +50,7 @@ export default function PlayerScreen() {
 
   const [showSettings, setShowSettings] = useState(false);
   const [showTutor, setShowTutor] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
   const [selectedWord, setSelectedWord] = useState("");
 
   const resetPlayer = () => {
@@ -78,12 +79,6 @@ export default function PlayerScreen() {
 
     return () => resetPlayer();
   }, [id]);
-
-  useEffect(() => {
-    if (selectedWord) {
-      usePlayerStore.setState({ playbackRequest: "pause" });
-    }
-  }, [selectedWord]);
 
   useEffect(() => {
     if (duration) {
@@ -125,8 +120,21 @@ export default function PlayerScreen() {
   };
 
   const handleTutor = async () => {
-    usePlayerStore.setState({ playbackRequest: 'pause' });
-    setShowTutor(true);
+    usePlayerStore.setState({ playbackRequest: "pause" });
+    if (!session) {
+      setShowAuth(true);
+    } else {
+      setShowTutor(true);
+    }
+  };
+
+  const handleSelectWord = (word: string) => {
+    usePlayerStore.setState({ playbackRequest: "pause" });
+    if (!session) {
+      setShowAuth(true);
+    } else {
+      setSelectedWord(word)
+    }
   };
 
   return (
@@ -161,15 +169,15 @@ export default function PlayerScreen() {
       <SafeAreaView style={themeStyles.screen}>
         <LinearGradient colors={["black", "#050505"]} style={styles.gradient} />
         <SettingsModal isVisible={showSettings} onClose={() => setShowSettings(false)} />
-        <TutorModal onClose={() => setShowTutor(false)} isVisible={showTutor && !!session} />
+        <TutorModal onClose={() => setShowTutor(false)} isVisible={showTutor} />
         <WordModal onClose={() => setSelectedWord("")} word={selectedWord} />
-        <AuthModal onClose={() => setSelectedWord("")} isVisible={(!!selectedWord || showTutor) && !session} />
+        <AuthModal onClose={() => setShowAuth(false)} isVisible={showAuth} />
         <Transcriber id={decodedId} sourceId={podcastId} episodeTitle={title} podcastImageUrl={podcastImageUrl} />
         {!duration ? (
           <Loading />
         ) : (
           <ScrollView contentContainerStyle={styles.sentencesContainer}>
-            <Caption onWordPress={setSelectedWord} />
+            <Caption onWordPress={handleSelectWord} />
             <Translation />
           </ScrollView>
         )}

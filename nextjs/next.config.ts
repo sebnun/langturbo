@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Access-Control-Allow-Origin",
-            value: process.env.NODE_ENV === "development" ? "http://localhost:8081" : "https://app.langturbo.com",
+            value: process.env.NODE_ENV === "development" ? "http://localhost:8082" : "https://app.langturbo.com",
           },
           {
             key: "Access-Control-Allow-Methods",

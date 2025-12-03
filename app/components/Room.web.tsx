@@ -1,8 +1,9 @@
 import * as React from "react";
 import { useEffect } from "react";
-import { AudioSession, LiveKitRoom, useVoiceAssistant, BarVisualizer } from "@livekit/react-native";
 import { UIAgentState } from "./TutorModal";
 import { colorPrimary } from "@/utils/theme";
+import { BarVisualizer, SessionProvider, useSession, useVoiceAssistant } from "@livekit/components-react";
+import { TokenSource } from "livekit-client";
 
 export default function Room({
   token,
@@ -13,21 +14,21 @@ export default function Room({
   onStateChange: (state: UIAgentState) => void;
   onTranscriptionChange: (transcription: string) => void;
 }) {
-  useEffect(() => {
-    let start = async () => {
-      await AudioSession.startAudioSession();
-    };
+  const session = useSession(
+    TokenSource.literal({ participantToken: token, serverUrl: process.env.EXPO_PUBLIC_WS_URL! })
+  );
 
-    start();
+  useEffect(() => {
+    session.start();
     return () => {
-      AudioSession.stopAudioSession();
+      session.end();
     };
   }, []);
 
   return (
-    <LiveKitRoom serverUrl={process.env.EXPO_PUBLIC_WS_URL} token={token} audio={true}>
+    <SessionProvider session={session}>
       <VoiceAssistant onStateChange={onStateChange} onTranscriptionChange={onTranscriptionChange} />
-    </LiveKitRoom>
+    </SessionProvider>
   );
 }
 
@@ -58,10 +59,7 @@ function VoiceAssistant({
   return (
     <BarVisualizer
       state={state}
-      trackRef={audioTrack}
-      options={{
-        barColor: colorPrimary,
-      }}
+      track={audioTrack}
       style={{ flex: 1 }}
     />
   );

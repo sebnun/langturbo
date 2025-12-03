@@ -125,7 +125,6 @@ export default function WordModal({ onClose, word }: { onClose: () => void; word
                   </Markdown>
                 </ScrollView>
               </View>
-              <EpisodeItemSeparator />
               <View style={styles.buttonContainer}>
                 <RoundButton
                   type={knownWord ? "secondary" : "primary"}
