@@ -10,6 +10,7 @@ type AppStoreState = {
   slower: boolean;
   showTranslation: boolean;
   tapTranslation: boolean;
+  shadowing: boolean;
 
   words: string[];
   saved: Podcast[];
@@ -24,6 +25,7 @@ const initialAppState: AppStoreState = {
   slower: false,
   showTranslation: true,
   tapTranslation: false,
+  shadowing: false,
 
   words: [],
   saved: [],
@@ -91,6 +93,7 @@ export const useAppStore = create<AppStoreState & AppStoreActions>()(
         showTranslation: state.showTranslation,
         tapTranslation: state.tapTranslation,
         showPlayerOnboarding: state.showPlayerOnboarding,
+        shadowing: state.shadowing
       }),
       storage: createJSONStorage(() => AsyncStorage),
     }

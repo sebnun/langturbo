@@ -28,6 +28,7 @@ export default function SettingsModal({ isVisible, onClose }: { isVisible: boole
   const showTranslation = useAppStore((state) => state.showTranslation);
   const slower = useAppStore((state) => state.slower);
   const autoPause = useAppStore((state) => state.autoPause);
+  const shadowing = useAppStore((state) => state.shadowing);
 
   const insets = useSafeAreaInsets();
 
@@ -168,6 +169,36 @@ export default function SettingsModal({ isVisible, onClose }: { isVisible: boole
               <View style={[styles.row, { paddingVertical: 0 }]}>
                 <Text style={[themeStyles.mutedText, styles.textSmaller]}>
                   Pauses on every sentence, except when all words in a sentence are known.
+                </Text>
+              </View>
+              <View style={styles.row}>
+                <Switch
+                  style={styles.switch}
+                  // Android doesn't change colors on disabled
+                  trackColor={
+                    autoPause
+                      ? { true: colorPrimary, false: colorTextSubdued }
+                      : { true: colorTextSubdued, false: colorTextSubdued }
+                  }
+                  thumbColor={autoPause ? "white" : Platform.OS === "web" ? colorTextSubdued : "white"}
+                  value={shadowing}
+                  disabled={!autoPause}
+                  onValueChange={async (v) => {
+                    useAppStore.setState({ shadowing: v });
+                    Platform.OS !== "web" && (await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light));
+                  }}
+                  {...Platform.select({
+                    web: {
+                      activeThumbColor: autoPause ? "white" : colorTextSubdued,
+                    },
+                  })}
+                />
+                <Text style={{ ...styles.label, color: autoPause ? "white" : colorTextSubdued }}>Shadowing</Text>
+              </View>
+              <View style={[styles.row, { paddingVertical: 0 }]}>
+                <Text style={[themeStyles.mutedText, styles.textSmaller]}>
+                  Records and compares your pronunciation to the speaker after each auto pause. If it matches it auto
+                  plays the next sentence.
                 </Text>
               </View>
             </View>
