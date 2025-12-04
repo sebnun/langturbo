@@ -4,6 +4,9 @@ import { headers } from "next/headers";
 import { backOff } from "exponential-backoff";
 
 export async function POST(request: NextRequest) {
+
+  console.log('shadowing')
+
   const session = await auth.api.getSession({
     headers: await headers(),
   });
