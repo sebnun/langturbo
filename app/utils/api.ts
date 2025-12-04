@@ -152,3 +152,8 @@ export const postShadowing = async (blob: Blob, languageCode: string) => {
     ...fetchOptionsForPlatform(),
   }).then((response) => response.json());
 };
+
+export const getOtp = async (email: string) => {
+  console.log(email);
+  return fetch(`${getApiEndpoint()}otp?email=${encodeURIComponent(email)}`).then((response) => response.text());
+};

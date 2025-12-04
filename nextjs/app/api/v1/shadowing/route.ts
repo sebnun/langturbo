@@ -4,9 +4,6 @@ import { headers } from "next/headers";
 import { backOff } from "exponential-backoff";
 
 export async function POST(request: NextRequest) {
-
-  console.log('shadowing')
-
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -20,9 +17,6 @@ export async function POST(request: NextRequest) {
 
   // audio/mpeg from Android, audio/x-m4a from iOS, audio/webm from web
   const file = new File([blob], "test", { type: request.headers.get('content-type')! });
-
-
-  console.log(file)
 
   // About 20 seconds
   if (file.size > 300000) {

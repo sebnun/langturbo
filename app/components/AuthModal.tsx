@@ -30,6 +30,7 @@ import { EpisodeItemSeparator } from "./EpisodeItem";
 import Loading from "./Loading";
 import Button from "./button/Button";
 import RoundButton from "./button/RoundButton";
+import { getOtp } from "@/utils/api";
 
 const messageForAuthErrorCode = (code: string) => {
   switch (code) {
@@ -94,8 +95,22 @@ export default function AuthModal({
       // Need to dismiss to show the toast
       onClose();
     } else {
-      setScreen("verification");
-      setLoading(false);
+      const reviewOTP = await getOtp(email);
+      // TODO remove
+      if (reviewOTP) {
+        const { data, error } = await authClient.signIn.emailOtp({
+          email,
+          otp: reviewOTP,
+        });
+        Burnt.toast({
+          title: "You are signed in",
+          preset: "done",
+        });
+        onClose();
+      } else {
+        setScreen("verification");
+        setLoading(false);
+      }
     }
   };
 

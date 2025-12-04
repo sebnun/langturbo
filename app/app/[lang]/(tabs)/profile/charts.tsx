@@ -16,7 +16,6 @@ export default function ChartsScreen() {
   useTitle("Progress");
   const words = useAppStore((state) => state.words);
 
-  // TODO make sure this doesnt trigger rerenders
   const { lang } = useGlobalSearchParams()
 
   const [wordDataPoints, setWordsDataPoints] = useState<ChartDataPoint[]>([
