@@ -42,6 +42,8 @@ export default function TutorModal({ onClose, isVisible }: { onClose: () => void
   const [token, setToken] = useState("");
 
   useEffect(() => {
+    let timer;
+
     if (isVisible) {
       postToken(usePlayerStore.getState().caption!.text, lang).then(setToken);
       setAgentTranscription(`Start by saying **${usePlayerStore.getState().caption?.text}**`);
@@ -51,8 +53,11 @@ export default function TutorModal({ onClose, isVisible }: { onClose: () => void
           requestRecordingPermissionsAsync();
         }
       });
+
+      timer = setTimeout(onClose, 5 * 60 * 1000);
     } else {
       setToken("");
+      clearInterval(timer);
     }
   }, [isVisible]);
 
