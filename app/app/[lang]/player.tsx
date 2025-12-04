@@ -23,6 +23,7 @@ import AuthModal from "@/components/AuthModal";
 import WordModal from "@/components/WordModal";
 import TutorModal from "@/components/TutorModal";
 import PressInstructions from "@/components/PressInstructions";
+import ShadowinModal from "@/components/ShadowingModal";
 
 export default function PlayerScreen() {
   const { id, podcastId, title, podcastTitle, podcastImageUrl, playbackPercentage } = useLocalSearchParams<{
@@ -48,6 +49,7 @@ export default function PlayerScreen() {
   const prevStart = usePlayerStore((state) => state.prevStart);
   const duration = usePlayerStore((state) => state.duration);
   const error = usePlayerStore((state) => state.error);
+  const showShadowingModal = usePlayerStore((state) => state.showShadowingModal);
   const reset = usePlayerStore((state) => state.reset);
   const showPlayerOnboarding = useAppStore((state) => state.showPlayerOnboarding);
 
@@ -114,6 +116,13 @@ export default function PlayerScreen() {
       router.back();
     }
   }, [error]);
+
+  useEffect(() => {
+    if (showShadowingModal && !session) {
+      usePlayerStore.setState({ showShadowingModal: false });
+      setShowAuth(true);
+    }
+  }, [showShadowingModal]);
 
   const handlePrevious = async () => {
     usePlayerStore.setState({ seekToRequest: prevStart });
@@ -186,6 +195,11 @@ export default function PlayerScreen() {
         <SettingsModal isVisible={showSettings} onClose={() => setShowSettings(false)} />
         <TutorModal onClose={() => setShowTutor(false)} isVisible={showTutor} />
         <WordModal onClose={() => setSelectedWord("")} word={selectedWord} />
+        <ShadowinModal
+          onClose={() => usePlayerStore.setState({ showShadowingModal: false })}
+          isVisible={showShadowingModal && !!session}
+          onTutorRequest={() => setShowTutor(true)}
+        />
         <AuthModal onClose={() => setShowAuth(false)} isVisible={showAuth} />
         <Transcriber id={decodedId} sourceId={podcastId} episodeTitle={title} podcastImageUrl={podcastImageUrl} />
         {!duration ? (

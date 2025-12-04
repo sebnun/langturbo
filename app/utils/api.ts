@@ -144,3 +144,11 @@ export const getCharts = async (languageCode: string, tz: string) => {
     ...fetchOptionsForPlatform(),
   }).then((response) => response.json());
 };
+
+export const postShadowing = async (blob: Blob, languageCode: string) => {
+  return fetch(`${getApiEndpoint()}shadowing?languageCode=${languageCode}`, {
+    method: "POST",
+    body: blob,
+    ...fetchOptionsForPlatform(),
+  }).then((response) => response.json());
+};

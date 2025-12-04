@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { deleteSaved, deleteWord, patchPlayback, postPlayback, postSaved, postWord } from "./api";
-import { Platform } from "react-native";
 
 type AppStoreState = {
   autoPause: boolean;
@@ -113,6 +112,7 @@ type PlayerStoreState = {
   prevStart: number;
   error: string | null;
   currentCaptionAllKnown: boolean;
+  showShadowingModal: boolean
 };
 
 type PlayerStoreActions = {
@@ -132,6 +132,7 @@ const initialPlayerState: PlayerStoreState = {
   prevStart: -1,
   error: null,
   currentCaptionAllKnown: false,
+  showShadowingModal: false
 };
 
 export const usePlayerStore = create<PlayerStoreState & PlayerStoreActions>()((set) => ({

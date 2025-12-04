@@ -166,7 +166,7 @@ export default function SettingsModal({ isVisible, onClose }: { isVisible: boole
                 />
                 <Text style={styles.label}>Auto Pause</Text>
               </View>
-              <View style={[styles.row, { paddingVertical: 0 }]}>
+              <View style={[styles.row, { paddingTop: 0 }]}>
                 <Text style={[themeStyles.mutedText, styles.textSmaller]}>
                   Pauses on every sentence, except when all words in a sentence are known.
                 </Text>
@@ -195,7 +195,7 @@ export default function SettingsModal({ isVisible, onClose }: { isVisible: boole
                 />
                 <Text style={{ ...styles.label, color: autoPause ? "white" : colorTextSubdued }}>Shadowing</Text>
               </View>
-              <View style={[styles.row, { paddingVertical: 0 }]}>
+              <View style={[styles.row, { paddingTop: 0 }]}>
                 <Text style={[themeStyles.mutedText, styles.textSmaller]}>
                   Records and compares your pronunciation to the speaker after each auto pause. If it matches it auto
                   plays the next sentence.

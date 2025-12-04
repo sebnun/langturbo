@@ -119,6 +119,10 @@ export default function Transcriber({
   useEffect(() => {
     if (useAppStore.getState().autoPause && !usePlayerStore.getState().currentCaptionAllKnown) {
       usePlayerStore.setState({ playbackRequest: "pause" });
+
+      if (useAppStore.getState().shadowing && usePlayerStore.getState().currentTime > 0) {
+        usePlayerStore.setState({ showShadowingModal: true })
+      }
     } else {
       usePlayerStore.setState({
         caption: captions[realCaptionIndex],

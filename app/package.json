@@ -31,6 +31,7 @@
     "better-auth": "^1.4.2",
     "burnt": "^0.13.0",
     "dayjs": "^1.11.19",
+    "dice-similarity-coeff": "^1.1.1",
     "expo": "~54.0.25",
     "expo-audio": "~1.0.15",
     "expo-constants": "~18.0.10",

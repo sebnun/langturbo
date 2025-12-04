@@ -41,7 +41,7 @@ export default function ImportScreen() {
     <>
       <Stack.Screen
         options={{
-          title: `${Device.deviceType === Device.DeviceType.DESKTOP ? "Click" : "Press"} to Add Word as Known`,
+          title: `${Device.deviceType === Device.DeviceType.DESKTOP ? "Click" : "Press"} to add words as known`,
         }}
       />
       <View style={themeStyles.screen}>
