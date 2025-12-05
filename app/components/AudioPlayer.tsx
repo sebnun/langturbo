@@ -1,5 +1,5 @@
 import { useAppStore, usePlayerStore } from "@/utils/store";
-import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
+import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
 import { useLocalSearchParams } from "expo-router";
 import { use, useEffect, useRef } from "react";
 import { Platform } from "react-native";
@@ -10,7 +10,7 @@ export default function AudioPlayer({
   imageUrl,
   episodeTitle,
 }: {
-  episodeId: string,
+  episodeId: string;
   uri: string;
   imageUrl: string;
   episodeTitle: string;
@@ -26,6 +26,11 @@ export default function AudioPlayer({
   const { lang } = useLocalSearchParams();
 
   useEffect(() => {
+    setAudioModeAsync({
+      playsInSilentMode: true,
+      allowsRecording: false,
+    });
+
     // TODO
     //player.setActiveForLockScreen
     //console.log('audioplayer', player.id)
@@ -43,20 +48,19 @@ export default function AudioPlayer({
       duration: status.duration,
       playing: status.playing,
       currentTime: status.currentTime,
+      playbackRequest: null,
     });
 
     if (status.didJustFinish) {
       player.seekTo(0);
-      // Need this to keep in sync
-      usePlayerStore.setState({ playbackRequest: "pause" });
-      updatePlayback({ episodeId, percentage: 100 }, lang as string)
+      updatePlayback({ episodeId, percentage: 100 }, lang as string);
     }
   }, [status]);
 
   useEffect(() => {
     if (playbackRequest === "play") {
       player.play();
-    } else {
+    } else if (playbackRequest === "pause") {
       player.pause();
     }
   }, [playbackRequest]);

@@ -72,16 +72,16 @@ export default function ShadowinModal({
             } else {
               setUiMessage("Recording ...");
               setAudioModeAsync({
-                playsInSilentMode: true,
-                allowsRecording: true,
+                playsInSilentMode: true, // iOS
+                allowsRecording: true, // iOS
               }).then(() => audioRecorder.prepareToRecordAsync().then(() => audioRecorder.record()));
             }
           });
         } else {
           setUiMessage("Recording ...");
           setAudioModeAsync({
-            playsInSilentMode: true,
-            allowsRecording: true,
+            playsInSilentMode: true, // iOS
+            allowsRecording: true, // iOS
           }).then(() => audioRecorder.prepareToRecordAsync().then(() => audioRecorder.record()));
         }
       });
@@ -90,6 +90,7 @@ export default function ShadowinModal({
         audioRecorder.stop();
       }
       setAudioModeAsync({
+        playsInSilentMode: true,
         allowsRecording: false,
       });
       setUiMessage("Waiting for microphone access ...");

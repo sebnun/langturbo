@@ -107,7 +107,7 @@ type PlayerStoreState = {
   progressPercentage: number;
   caption: Caption | null;
   seekToRequest: number;
-  playbackRequest: "play" | "pause";
+  playbackRequest: "play" | "pause" | null;
   nextStart: number;
   prevStart: number;
   error: string | null;

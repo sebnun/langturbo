@@ -19,7 +19,7 @@ import { usePlayerStore } from "@/utils/store";
 import Room from "./Room";
 import Loading from "./Loading";
 import Markdown from "react-native-markdown-display";
-import { getRecordingPermissionsAsync, requestRecordingPermissionsAsync } from "expo-audio";
+import { getRecordingPermissionsAsync, requestRecordingPermissionsAsync, setAudioModeAsync } from "expo-audio";
 
 export type UIAgentState = "Loading ..." | "Thinking ..." | "Speaking ..." | "Listening ...";
 
@@ -58,6 +58,11 @@ export default function TutorModal({ onClose, isVisible }: { onClose: () => void
     } else {
       setToken("");
       clearInterval(timer);
+      // Looks livekit sets internally allowsRecording to true
+      setAudioModeAsync({
+        playsInSilentMode: true,
+        allowsRecording: false,
+      });
     }
   }, [isVisible]);
 

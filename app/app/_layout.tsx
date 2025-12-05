@@ -6,7 +6,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Toaster } from "burnt/web";
 import * as Sentry from "@sentry/react-native";
 import { Platform } from "react-native";
-import * as SystemUI from 'expo-system-ui';
+import * as SystemUI from "expo-system-ui";
 import "@livekit/components-styles";
 import "../assets/css/body.css";
 
