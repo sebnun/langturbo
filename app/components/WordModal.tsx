@@ -21,8 +21,8 @@ import { useChat } from "@ai-sdk/react";
 import { getApiEndpoint } from "@/utils";
 import { useLocalSearchParams } from "expo-router";
 import { DefaultChatTransport } from "ai";
-import { fetchOptionsForPlatform } from "@/utils/api";
 import { fetch as expoFetch } from "expo/fetch";
+import { authClient } from "@/utils/auth";
 
 const HTML_STYLE_OBJECT = {
   body: {
@@ -50,7 +50,10 @@ export default function WordModal({ onClose, word }: { onClose: () => void; word
       sentence: usePlayerStore.getState().caption?.text,
       languageCode: lang,
     }),
-    ...fetchOptionsForPlatform(),
+    credentials: () => (Platform.OS === "web" ? "include" : "omit"),
+    headers: () => ({
+      Cookie: Platform.OS === "web" ? "" : authClient.getCookie(),
+    }),
   });
 
   const { messages, setMessages, stop, sendMessage, status } = useChat({
