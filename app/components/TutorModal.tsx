@@ -58,11 +58,6 @@ export default function TutorModal({ onClose, isVisible }: { onClose: () => void
     } else {
       setToken("");
       clearInterval(timer);
-      // Looks livekit sets internally allowsRecording to true
-      setAudioModeAsync({
-        playsInSilentMode: true,
-        allowsRecording: false,
-      });
     }
   }, [isVisible]);
 

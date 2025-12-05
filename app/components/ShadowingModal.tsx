@@ -53,10 +53,7 @@ export default function ShadowinModal({
   const flingGesture = Gesture.Fling().direction(Directions.DOWN).onStart(onClose).runOnJS(true);
   const singleTap = Gesture.Tap().onStart(onClose).runOnJS(true);
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
-    console.log(recorderState.durationMillis);
     if (recorderState.durationMillis > 20 * 1000) {
       onClose();
     }
@@ -89,6 +86,7 @@ export default function ShadowinModal({
       if (recorderState.isRecording) {
         audioRecorder.stop();
       }
+
       setAudioModeAsync({
         playsInSilentMode: true,
         allowsRecording: false,

@@ -9,6 +9,7 @@ import { Platform } from "react-native";
 import * as SystemUI from "expo-system-ui";
 import "@livekit/components-styles";
 import "../assets/css/body.css";
+import { setAudioModeAsync } from "expo-audio";
 
 Sentry.init({
   dsn: "https://1656437e7840e162a26b5a97b19ac7fc@o4510416598269952.ingest.us.sentry.io/4510416604299264",
@@ -42,6 +43,11 @@ export default Sentry.wrap(function RootLayout() {
   });
 
   initNativeLivekit();
+
+  setAudioModeAsync({
+    playsInSilentMode: true,
+    allowsRecording: false,
+  });
 
   return (
     <>

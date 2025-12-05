@@ -40,6 +40,16 @@ Kamal sets limit `"max-size": "10m"` to `json-file` driver by default
 
 ```uv run src/agent.py console```
 
+# Expo build 
+
+For app stores ```eas build --platform all```
+Development build ```eas build --platform all --profile development```
+
+# Expo submit
+
+```eas submit --platform ios```
+
+
 # TODO
 
 https://docs.expo.dev/guides/using-sentry/#usage-with-eas-update

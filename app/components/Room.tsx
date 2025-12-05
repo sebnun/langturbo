@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { AudioSession, LiveKitRoom, useVoiceAssistant, BarVisualizer } from "@livekit/react-native";
 import { UIAgentState } from "./TutorModal";
 import { colorPrimary } from "@/utils/theme";
+import { setAudioModeAsync } from "expo-audio";
 
 export default function Room({
   token,
@@ -20,7 +21,13 @@ export default function Room({
 
     start();
     return () => {
-      AudioSession.stopAudioSession();
+      AudioSession.stopAudioSession().then(() =>
+        // Looks livekit sets internally allowsRecording to true
+        setAudioModeAsync({
+          playsInSilentMode: true,
+          allowsRecording: false,
+        })
+      );
     };
   }, []);
 
