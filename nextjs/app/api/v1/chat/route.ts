@@ -58,5 +58,7 @@ export async function POST(request: NextRequest) {
     ],
   });
 
+  console.log('chat', session.user.id)
+
   return result.toUIMessageStreamResponse();
 }

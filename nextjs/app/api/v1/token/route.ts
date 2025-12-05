@@ -37,5 +37,7 @@ export async function POST(request: NextRequest) {
 
   const token = await at.toJwt();
 
+  console.log('token', session.user.id)
+
   return new Response(token);
 }

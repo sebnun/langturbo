@@ -46,5 +46,7 @@ export async function POST(request: NextRequest) {
     return { text: "" };
   });
 
+  console.log('shadowing', session.user.id)
+
   return NextResponse.json({ text: response.text });
 }

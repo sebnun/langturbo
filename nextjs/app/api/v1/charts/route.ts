@@ -85,6 +85,8 @@ export async function GET(request: NextRequest) {
     previous4DayPlaybackQuery,
   ]);
 
+  console.log('chart', session.user.id)
+
   return Response.json({
     words: [
       { x: startPrevious4Month.format("MMMM"), y: Number(counts[4].rows[0].count) },

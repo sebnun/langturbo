@@ -110,7 +110,7 @@ export const POST = async (req: NextRequest) => {
   const end = from + SEEK_FORWARD_SECONDS;
   const outputPath = `/tmp/${from}-${end}.${fileData.extension}`;
 
-  console.time("trimAudioToFile");
+  //console.time("trimAudioToFile");
   spawnSync("ffmpeg", [
     "-i",
     from > 0
@@ -126,16 +126,16 @@ export const POST = async (req: NextRequest) => {
     "copy",
     outputPath,
   ]);
-  console.timeEnd("trimAudioToFile");
+  //console.timeEnd("trimAudioToFile");
 
   const persistPromise = from === 0 ? persistPodcastPromise(fileName!, fileData.mime) : Promise.resolve();
 
-  console.time("transcribePersist");
+  //console.time("transcribePersist");
   const [transcriptionPromiseResponse] = await Promise.all([
     transcribePromise(outputPath, languageCode),
     persistPromise,
   ]);
-  console.timeEnd("transcribePersist");
+  //console.timeEnd("transcribePersist");
 
   const transcriptionResponse = transcriptionPromiseResponse;
 
@@ -200,12 +200,12 @@ export const POST = async (req: NextRequest) => {
   }
   actualSegments = uniqueSegments;
 
-  console.time("translation");
+  //console.time("translation");
   const translatedSentences = await translateSentencePromises(
     actualSegments!.map((sd) => sd.text),
     languageCode
   );
-  console.timeEnd("translation");
+  //console.timeEnd("translation");
 
   const captions: Caption[] = [];
 
@@ -261,6 +261,8 @@ export const POST = async (req: NextRequest) => {
     .update(episodesTable)
     .set({ processed_seconds: newProcessedSeconds, file_name: fileName })
     .where(eq(episodesTable.id, id));
+
+  console.log('transcription', id)
 
   return Response.json({
     captions,

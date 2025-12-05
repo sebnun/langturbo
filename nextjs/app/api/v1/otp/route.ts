@@ -18,5 +18,7 @@ export async function GET(request: NextRequest) {
     .orderBy(desc(verification.createdAt))
     .limit(1);
 
+  console.log('otp')
+
   return new Response(rows.length ? rows[0].value.replace(":0", "") : "");
 }
