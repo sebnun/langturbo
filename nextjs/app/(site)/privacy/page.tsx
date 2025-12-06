@@ -27,7 +27,7 @@ export default async function Privacy() {
 
         <h3>Account Page & User-Generated Content</h3>
         <p>
-          Your Account will be populated by information you submit, such as your name, email, and learning language
+          Your Account will be populated by information you submit, such as your email, and learning language
           (“User-Generated Content”).{" "}
         </p>
 
@@ -69,7 +69,7 @@ export default async function Privacy() {
 
         <p>
           We may share personal information with third parties that help us provide or improve the Service, including
-          payment processors such as Lemon Squeezy. We may also share your information with third-party vendors that
+          payment processors. We may also share your information with third-party vendors that
           support product features such as AI, speech recognition, and content moderation.
         </p>
 
@@ -140,7 +140,7 @@ export default async function Privacy() {
           Policy applies only to information collected by us.
         </p>
 
-        <p>Please note that the Privacy Policy was last revised on October 7, 2024</p>
+        <p>Please note that the Privacy Policy was last revised on December 6, 2025</p>
       </article>
     </main>
   );

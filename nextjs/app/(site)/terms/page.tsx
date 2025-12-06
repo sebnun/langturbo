@@ -11,8 +11,7 @@ export default async function Terms() {
       <article className="prose prose-invert max-w-none py-12">
         <h2>General</h2>
         <p>
-          LangTurbo websites (“Websites”), and related services (together with the Websites, the “Service”) are
-          operated by Landab Software AB. (LangTurbo,” “us,” or “we”). Access and use of the Service is subject to the
+          Access and use of LangTurbo (website and apps) is subject to the
           following Terms and Conditions of Service (“Terms and Conditions”). By accessing or using any part of the
           Service, you represent that you have read, understood, and agree to be bound by these Terms and Conditions
           including any future modifications. We may amend, update, or change these Terms and Conditions. Any revisions
@@ -38,8 +37,8 @@ export default async function Terms() {
         <h2>Registration</h2>
         <p>
           In connection with registering for and using the Service, you agree (i) to provide accurate, current and
-          complete information about you and/or your organization as requested by us; (ii) to maintain the
-          confidentiality of your password and other information related to the security of your account; (iii) to
+          complete information about you; (ii) to maintain the
+          confidentiality of information related to the security of your account; (iii) to
           maintain and promptly update any registration information you provide to us, to keep such information
           accurate, current and complete; and (iv) to be fully responsible for all use of your account and for any
           actions that take place through your account.
@@ -86,7 +85,7 @@ export default async function Terms() {
           conflicts with the English version, the English version prevails.
         </p>
 
-        <p>Please note that the Terms of service were last revised on October 5, 2024</p>
+        <p>Please note that the Terms of service were last revised on December 6, 2025.</p>
       </article>    
     </main>
   );
