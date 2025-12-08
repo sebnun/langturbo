@@ -49,9 +49,11 @@ export default function ProfileScreen() {
           <View style={styles.container}>
             <View style={styles.cardLikeWidth}>
               <RoundButton type="primary" text="Change Language" onPress={() => router.dismissTo("/")} />
-              <Link href="https://www.patreon.com/cw/sebnun" asChild>
-                <RoundButton text="Support me on Patreon" />
-              </Link>
+              {Platform.OS !== "ios" && ( // iOS app review rejected
+                <Link href="https://www.patreon.com/cw/sebnun" asChild>
+                  <RoundButton text="Support me on Patreon" />
+                </Link>
+              )}
               <RoundButton
                 onPress={() => (session ? router.navigate("../profile/import") : setShowAuth(true))}
                 text="Add Known Words"

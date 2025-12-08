@@ -17,7 +17,8 @@
         ],
         "ITSAppUsesNonExemptEncryption": false
       },
-      "bundleIdentifier": "com.sebnun.langturbo"
+      "bundleIdentifier": "com.sebnun.langturbo",
+      "bitcode": false
     },
     "android": {
       "adaptiveIcon": {
@@ -76,6 +77,12 @@
       "eas": {
         "projectId": "cc4eda50-4d89-4268-ac6d-3d4bf4cf21d9"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/cc4eda50-4d89-4268-ac6d-3d4bf4cf21d9"
     }
   }
 }
