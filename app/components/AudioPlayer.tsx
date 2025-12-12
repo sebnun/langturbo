@@ -1,7 +1,7 @@
 import { useAppStore, usePlayerStore } from "@/utils/store";
 import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
 import { useLocalSearchParams } from "expo-router";
-import { use, useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { Platform } from "react-native";
 
 export default function AudioPlayer({
@@ -26,9 +26,18 @@ export default function AudioPlayer({
   const { lang } = useLocalSearchParams();
 
   useEffect(() => {
-    // TODO
-    //player.setActiveForLockScreen
-    //console.log('audioplayer', player.id)
+    player.setActiveForLockScreen(
+      true,
+      {
+        title: episodeTitle,
+        artworkUrl: imageUrl,
+      },
+      {
+        showSeekBackward: false,
+        showSeekForward: false,
+      }
+    );
+
     return () => {
       // TODO check memory usage
       if (Platform.OS === "web") {

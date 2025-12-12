@@ -19,7 +19,7 @@ import { usePlayerStore } from "@/utils/store";
 import Room from "./Room";
 import Loading from "./Loading";
 import Markdown from "react-native-markdown-display";
-import { getRecordingPermissionsAsync, requestRecordingPermissionsAsync, setAudioModeAsync } from "expo-audio";
+import { getRecordingPermissionsAsync, requestRecordingPermissionsAsync } from "expo-audio";
 
 export type UIAgentState = "Loading ..." | "Thinking ..." | "Speaking ..." | "Listening ...";
 

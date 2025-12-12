@@ -25,6 +25,9 @@ export default function Room({
         // Looks livekit sets internally allowsRecording to true
         setAudioModeAsync({
           playsInSilentMode: true,
+          shouldPlayInBackground: true,
+          interruptionModeAndroid: "doNotMix",
+          interruptionMode: "doNotMix",
           allowsRecording: false,
         })
       );

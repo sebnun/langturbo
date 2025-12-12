@@ -69,16 +69,14 @@ export default function ShadowinModal({
             } else {
               setUiMessage("Recording ...");
               setAudioModeAsync({
-                playsInSilentMode: true, // iOS
-                allowsRecording: true, // iOS
+                allowsRecording: true,
               }).then(() => audioRecorder.prepareToRecordAsync().then(() => audioRecorder.record()));
             }
           });
         } else {
           setUiMessage("Recording ...");
           setAudioModeAsync({
-            playsInSilentMode: true, // iOS
-            allowsRecording: true, // iOS
+            allowsRecording: true,
           }).then(() => audioRecorder.prepareToRecordAsync().then(() => audioRecorder.record()));
         }
       });
@@ -87,8 +85,12 @@ export default function ShadowinModal({
         audioRecorder.stop();
       }
 
+      // It gets called when playing even if not showing, serves as the global init of audio
       setAudioModeAsync({
         playsInSilentMode: true,
+        shouldPlayInBackground: true,
+        interruptionModeAndroid: "doNotMix",
+        interruptionMode: "doNotMix",
         allowsRecording: false,
       });
       setUiMessage("Waiting for microphone access ...");
