@@ -69,6 +69,7 @@ export default function ShadowinModal({
             } else {
               setUiMessage("Recording ...");
               setAudioModeAsync({
+                playsInSilentMode: true,
                 allowsRecording: true,
               }).then(() => audioRecorder.prepareToRecordAsync().then(() => audioRecorder.record()));
             }
@@ -76,6 +77,7 @@ export default function ShadowinModal({
         } else {
           setUiMessage("Recording ...");
           setAudioModeAsync({
+            playsInSilentMode: true,
             allowsRecording: true,
           }).then(() => audioRecorder.prepareToRecordAsync().then(() => audioRecorder.record()));
         }
