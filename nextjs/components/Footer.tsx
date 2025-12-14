@@ -70,6 +70,14 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
               className="relative block w-fit mx-auto md:mx-0 py-1
              before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
              after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
+              href="/sayit"
+            >
+              Pronunciation Lookup
+            </Link>
+            <Link
+              className="relative block w-fit mx-auto md:mx-0 py-1
+             before:absolute before:bottom-0 before:left-0 before:block before:h-[1px] before:w-full before:bg-white
+             after:absolute after:bottom-0 after:left-0 after:block after:h-[1px] after:w-full after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition after:duration-300"
               href="/pronunciation"
             >
               Frequency Lists
@@ -91,7 +99,9 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
         </div> */}
       </div>
       <div className="flex items-center m-6">
-        <p className="text-right pr-3 flex-1 text-muted-foreground text-xl font-handjet hidden sm:inline-block">LangTurbo MMXXV</p>
+        <p className="text-right pr-3 flex-1 text-muted-foreground text-xl font-handjet hidden sm:inline-block">
+          LangTurbo MMXXV
+        </p>
 
         <div className="space-x-3 mr-auto ml-auto">
           <Button variant="outline" size="icon" className="rounded-full p-2">

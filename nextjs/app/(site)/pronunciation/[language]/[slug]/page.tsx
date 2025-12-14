@@ -1,59 +1,9 @@
 import { notFound } from "next/navigation";
-import { capitalizeFirstLetter, getOrdinal } from "@/lib/utils";
+import { affiliateLinks, capitalizeFirstLetter, getOrdinal } from "@/lib/utils";
 import Link from "next/link";
 import { db } from "@/db";
 import { listsTable, sentencesTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
-
-const affiliateLinks: Record<string, string> = {
-  //english: "",
-  chinese: "https://amzn.to/4ipgAF6",
-  german: "https://amzn.to/4irRJAB",
-  spanish: "https://amzn.to/3F6LZhg",
-  russian: "https://amzn.to/41OARNV",
-  korean: "https://amzn.to/41OAUcz",
-  french: "https://amzn.to/3F9W5Om",
-  japanese: "https://amzn.to/3XxNT0R",
-  portuguese: "https://amzn.to/43k62Tw",
-  turkish: "https://amzn.to/4h9rgXn",
-  polish: "https://amzn.to/43k66CK",
-  catalan: "https://amzn.to/4h5YIhu",
-  dutch: "https://amzn.to/3DadDtf",
-  arabic: "https://amzn.to/4kvOeuA",
-  swedish: "https://amzn.to/4i4PRhu",
-  italian: "https://amzn.to/4isUTE7",
-  indonesian: "https://amzn.to/4kuQMZX",
-  hindi: "https://amzn.to/4kqBQw5",
-  finnish: "https://amzn.to/4kvZAia",
-  vietnamese: "https://amzn.to/4kuRRRB",
-  hebrew: "https://amzn.to/41OB9nZ",
-  ukrainian: "https://amzn.to/41s2zQk",
-  greek: "https://amzn.to/4bwxLlY",
-  malay: "https://amzn.to/3QNLU4x",
-  czech: "https://amzn.to/4bwVjHj",
-  romanian: "https://amzn.to/3FkEZNJ",
-  danish: "https://amzn.to/4itncCl",
-  hungarian: "https://amzn.to/41wNDAe",
-  tamil: "https://amzn.to/3XxOfVf",
-  norwegian: "https://amzn.to/41LaR7g",
-  thai: "https://amzn.to/4i5wk09",
-  urdu: "https://amzn.to/43pg2uw",
-  croatian: "https://amzn.to/3QMRPXH",
-  bulgarian: "https://amzn.to/3Dme5o7",
-  lithuanian: "https://amzn.to/3XzvL6D",
-  slovak: "https://amzn.to/3Do5EZB",
-  persian: "https://amzn.to/3XrVy0w",
-  latvian: "https://amzn.to/4i8y60y",
-  serbian: "https://amzn.to/41vPky0",
-  azerbaijani: "https://amzn.to/43r26Au",
-  slovenian: "https://amzn.to/43rAyea",
-  estonian: "https://amzn.to/43pFeB5",
-  macedonian: "https://amzn.to/3QLGzuv",
-  icelandic: "https://amzn.to/4iv10bd",
-  armenian: "https://amzn.to/4kpnSuh",
-  marathi: "https://amzn.to/4heo5xw",
-  afrikaans: "https://amzn.to/3F7rKjz",
-};
 
 // Generate static pages for each word in the list at runtime
 export const dynamic = "force-static";
@@ -119,11 +69,6 @@ export default async function Word({ params }: { params: Promise<{ slug: string;
           This is the {wordRows[0].frequency + 1}
           {getOrdinal(wordRows[0].frequency + 1)} most frequent {capitalizeFirstLetter(language)} word.
         </p>
-        {/* <p>
-          <a href={affiliateLinks[`${language}`]} rel="sponsored">
-            More {capitalizeFirstLetter(language)} resources.
-          </a>
-        </p> */}
         <hr />
         <div style={{ textAlign: "center" }}>
           <h3 style={{ margin: "2rem" }}>{wordRows[0].word}</h3>

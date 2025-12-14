@@ -26,14 +26,16 @@ import PressInstructions from "@/components/PressInstructions";
 import ShadowinModal from "@/components/ShadowingModal";
 
 export default function PlayerScreen() {
-  const { id, podcastId, title, podcastTitle, podcastImageUrl, playbackPercentage } = useLocalSearchParams<{
-    id: string;
-    podcastId: string;
-    title: string;
-    podcastTitle: string;
-    podcastImageUrl: string;
-    playbackPercentage?: string;
-  }>();
+  const { id, podcastId, title, podcastTitle, podcastImageUrl, playbackPercentage, playbackStart } =
+    useLocalSearchParams<{
+      id: string;
+      podcastId: string;
+      title: string;
+      podcastTitle: string;
+      podcastImageUrl: string;
+      playbackPercentage?: string;
+      playbackStart?: string; // From nextjs
+    }>();
   useTitle(title);
   const router = useRouter();
   const { data: session } = authClient.useSession();
@@ -100,6 +102,10 @@ export default function PlayerScreen() {
             usePlayerStore.setState({ seekToRequest: position });
             setTimeout(() => usePlayerStore.setState({ playbackRequest: "pause" }), 100);
           }
+        } else if (playbackStart) {
+          // Seek auto plays
+          usePlayerStore.setState({ seekToRequest: parseFloat(playbackStart) });
+          setTimeout(() => usePlayerStore.setState({ playbackRequest: "pause" }), 100);
         }
       }
     }
