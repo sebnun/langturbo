@@ -3,24 +3,24 @@ import "overlayscrollbars/overlayscrollbars.css";
 import "./globals.css";
 import { baseUrl } from "./sitemap";
 import ScrollableBody from "@/components/ScrollableBody";
-import { Cormorant_Garamond, Handjet } from 'next/font/google'
- 
+import { Cormorant_Garamond, Handjet } from "next/font/google";
+
 const cormorantGaramond = Cormorant_Garamond({
-  subsets: ['latin'],
-  variable: '--font-cormorant-garamond',
-})
+  subsets: ["latin"],
+  variable: "--font-cormorant-garamond",
+});
 
 const handjet = Handjet({
-  weight: 'variable',
+  weight: "variable",
   subsets: ["latin"],
   variable: "--font-handjet",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
-    title: {
-    template: '%s | LangTurbo',
-    default: 'LangTurbo | Learn Languages Faster'
+  title: {
+    template: "%s | LangTurbo",
+    default: "LangTurbo | Learn Languages Faster",
   },
   description: "LangTurbo takes you from intermediate to fluent in record time using podcasts",
 
@@ -31,6 +31,10 @@ export const metadata: Metadata = {
     siteName: "LangTurbo",
     locale: "en_US",
     type: "website",
+  },
+
+  itunes: {
+    appId: "6756127477",
   },
 };
 
@@ -44,7 +48,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`dark scroll-smooth ${cormorantGaramond.variable} ${handjet.variable}`} data-overlayscrollbars-initialize>
+    <html
+      lang="en"
+      className={`dark scroll-smooth ${cormorantGaramond.variable} ${handjet.variable}`}
+      data-overlayscrollbars-initialize
+    >
       <ScrollableBody>{children}</ScrollableBody>
     </html>
   );

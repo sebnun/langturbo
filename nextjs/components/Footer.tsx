@@ -9,7 +9,6 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import Surprise from "./Surprise";
 import { Button } from "./ui/button";
-// import { ANDROID_LINK, IOS_LINK } from "@/utils/constants";
 
 export default function Footer({ isHome }: { isHome?: boolean }) {
   return (
@@ -86,17 +85,17 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
           </div>
         </div>
 
-        {/* <div>
+        <div>
           <p className="font-bold mb-3">GET THE APP</p>
           <div className="flex flex-col space-y-3">
-            <Link href="">
+            <Link href="https://itunes.apple.com/app/id6756127477?mt=8">
               <Image src={IosImage} alt="Download iOS app" className="inline" />
             </Link>
-            <Link href="">
+            {/* <Link href="">
               <Image src={AndroidImage} alt="Download Android app" className="inline" />
-            </Link>
+            </Link> */}
           </div>
-        </div> */}
+        </div>
       </div>
       <div className="flex items-center m-6">
         <p className="text-right pr-3 flex-1 text-muted-foreground text-xl font-handjet hidden sm:inline-block">

@@ -1,4 +1,11 @@
-import { colorTextSubdued, sizeIconNavigation, sizeScreenPadding, sizeWidthProfile, themeStyles } from "@/utils/theme";
+import {
+  colorTextSubdued,
+  msImageTransition,
+  sizeIconNavigation,
+  sizeScreenPadding,
+  sizeWidthProfile,
+  themeStyles,
+} from "@/utils/theme";
 import { Link, Stack, useGlobalSearchParams, useRouter } from "expo-router";
 import { View, StyleSheet, ScrollView, Linking, Platform } from "react-native";
 import { getLanguageNameById, languageIds } from "@/utils/languages";
@@ -11,6 +18,8 @@ import { authClient } from "@/utils/auth";
 import AuthModal from "@/components/AuthModal";
 import Button from "@/components/button/Button";
 import { Ionicons } from "@expo/vector-icons";
+import * as Device from "expo-device";
+import { Image } from "expo-image";
 
 export default function ProfileScreen() {
   // When navigating to / global params change to empty, causing an error
@@ -73,6 +82,22 @@ export default function ProfileScreen() {
               )}
             </View>
           </View>
+
+          {Platform.OS === "web" && Device.osName === "iOS" && (
+            <View style={styles.linkContainer}>
+              <Button onPress={() => Linking.openURL("https://itunes.apple.com/app/id6756127477?mt=8")}>
+                <Image
+                  style={{
+                    width: 169,
+                    height: 50,
+                  }}
+                  contentFit="scale-down"
+                  transition={msImageTransition}
+                  source={require("../../../assets/images/ios.svg")}
+                />
+              </Button>
+            </View>
+          )}
 
           <View style={styles.linkContainer}>
             <TextButton
