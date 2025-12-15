@@ -93,7 +93,7 @@ export default function ProfileScreen() {
                   }}
                   contentFit="scale-down"
                   transition={msImageTransition}
-                  source={require("../../../assets/images/ios.svg")}
+                  source={require("../../../../assets/images/ios.svg")}
                 />
               </Button>
             </View>
