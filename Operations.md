@@ -49,7 +49,6 @@ Development build ```eas build --platform all --profile development```
 
 ```eas submit --platform ios```
 
+# Expo update
 
-# TODO
-
-https://docs.expo.dev/guides/using-sentry/#usage-with-eas-update
+```eas update --channel production --message "persist language"``
