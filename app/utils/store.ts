@@ -16,6 +16,7 @@ type AppStoreState = {
   playback: Playback[];
 
   showPlayerOnboarding: boolean;
+  language: string | null;
 };
 
 const initialAppState: AppStoreState = {
@@ -31,6 +32,7 @@ const initialAppState: AppStoreState = {
   playback: [],
 
   showPlayerOnboarding: true,
+  language: null,
 };
 
 type AppStoreActions = {
@@ -92,7 +94,8 @@ export const useAppStore = create<AppStoreState & AppStoreActions>()(
         showTranslation: state.showTranslation,
         tapTranslation: state.tapTranslation,
         showPlayerOnboarding: state.showPlayerOnboarding,
-        shadowing: state.shadowing
+        shadowing: state.shadowing,
+        language: state.language,
       }),
       storage: createJSONStorage(() => AsyncStorage),
     }
@@ -112,7 +115,7 @@ type PlayerStoreState = {
   prevStart: number;
   error: string | null;
   currentCaptionAllKnown: boolean;
-  showShadowingModal: boolean
+  showShadowingModal: boolean;
 };
 
 type PlayerStoreActions = {
@@ -132,7 +135,7 @@ const initialPlayerState: PlayerStoreState = {
   prevStart: -1,
   error: null,
   currentCaptionAllKnown: false,
-  showShadowingModal: false
+  showShadowingModal: false,
 };
 
 export const usePlayerStore = create<PlayerStoreState & PlayerStoreActions>()((set) => ({

@@ -20,6 +20,7 @@ import Button from "@/components/button/Button";
 import { Ionicons } from "@expo/vector-icons";
 import * as Device from "expo-device";
 import { Image } from "expo-image";
+import { useAppStore } from "@/utils/store";
 
 export default function ProfileScreen() {
   // When navigating to / global params change to empty, causing an error
@@ -32,6 +33,11 @@ export default function ProfileScreen() {
   const [showAuth, setShowAuth] = useState(false);
 
   const router = useRouter();
+
+  const handleChangeLanguage = () => {
+    useAppStore.setState({ language: null });
+    router.dismissTo("/");
+  };
 
   return (
     <>
@@ -57,7 +63,7 @@ export default function ProfileScreen() {
         <ScrollView contentContainerStyle={styles.scrollView}>
           <View style={styles.container}>
             <View style={styles.cardLikeWidth}>
-              <RoundButton type="primary" text="Change Language" onPress={() => router.dismissTo("/")} />
+              <RoundButton type="primary" text="Change Language" onPress={handleChangeLanguage} />
               {Platform.OS !== "ios" && ( // iOS app review rejected
                 <Link href="https://www.patreon.com/cw/sebnun" asChild>
                   <RoundButton text="Support me on Patreon" />
