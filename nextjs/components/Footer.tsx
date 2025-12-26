@@ -91,9 +91,9 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
             <Link href="https://itunes.apple.com/app/id6756127477?mt=8">
               <Image src={IosImage} alt="Download iOS app" className="inline" />
             </Link>
-            {/* <Link href="">
+            <Link href="https://play.google.com/store/apps/details?id=com.sebnun.langturbo">
               <Image src={AndroidImage} alt="Download Android app" className="inline" />
-            </Link> */}
+            </Link>
           </div>
         </div>
       </div>
