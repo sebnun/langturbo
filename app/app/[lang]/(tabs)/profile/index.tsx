@@ -105,6 +105,25 @@ export default function ProfileScreen() {
             </View>
           )}
 
+          {Platform.OS === "web" && Device.osName === "Android" && (
+            <View style={styles.linkContainer}>
+              <Button
+                onPress={() => Linking.openURL("https://play.google.com/store/apps/details?id=com.sebnun.langturbo")}
+              >
+                <Image
+                  style={{
+                    width: 171,
+                    height: 52,
+                  }}
+                  contentFit="scale-down"
+                  transition={msImageTransition}
+                  source={require("../../../../assets/images/android.svg")}
+                />
+              </Button>
+              a
+            </View>
+          )}
+
           <View style={styles.linkContainer}>
             <TextButton
               onPress={() => Linking.openURL("https://www.langturbo.com/contact")}
