@@ -1,6 +1,6 @@
 import { colorPrimary, sizeScreenPadding, sizeTextLarger, themeStyles } from "@/utils/theme";
 import { Stack, useRouter } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { getLanguageCodeByName, languagesDict } from "@/utils/languages";
 import { capitalizeFirstLetter } from "@/utils";
@@ -25,6 +25,19 @@ export default function Index() {
   useEffect(() => {
     if (language) {
       router.replace(`/${language}`);
+    }
+
+    // From langturbo.com
+    if (Platform.OS === "web") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const language = urlParams.get("language");
+      const redirect = urlParams.get("redirect")
+
+      if (language) {
+        handleLanguageSelect(language);
+      } else if (redirect) {
+        router.replace(`/${decodeURIComponent(redirect)}`);
+      }
     }
   }, []);
 

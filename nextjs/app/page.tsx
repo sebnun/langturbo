@@ -65,7 +65,7 @@ export default function Home() {
                     <Link
                       prefetch={false}
                       key={language}
-                      href={`https://app.langturbo.com/${getLanguageCodeByName(language)}`}
+                      href={`https://app.langturbo.com/?language=${getLanguageCodeByName(language)}`}
                     >
                       {`${language.charAt(0).toUpperCase() + language.slice(1)}`}
                     </Link>

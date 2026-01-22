@@ -52,7 +52,7 @@ export default async function Lookup({ params }: { params: Promise<{ query: stri
         {segmentRows.map((r, i) => (
           <Link
             key={`${r.id + i}`}
-            href={`https://app.langturbo.com/${languageCode}/player?id=${encodeURIComponent(Buffer.from(r.id).toString("base64"))}&podcastId=${encodeURIComponent(r.show_id)}&title=${encodeURIComponent(r.title)}&podcastTitle=${encodeURIComponent(r.show_title)}&podcastImageUrl=${encodeURIComponent(r.show_image_url)}&playbackStart=${r.start}`}
+            href={`https://app.langturbo.com/redirect?=${encodeURIComponent(`${languageCode}/player?id=${encodeURIComponent(Buffer.from(r.id).toString("base64"))}&podcastId=${encodeURIComponent(r.show_id)}&title=${encodeURIComponent(r.title)}&podcastTitle=${encodeURIComponent(r.show_title)}&podcastImageUrl=${encodeURIComponent(r.show_image_url)}&playbackStart=${r.start}`)}`}
           >
             <div className="flex items-center relative">
               <Image src={r.show_image_url} height={100} width={100} alt={r.show_title} objectFit="cover" />
