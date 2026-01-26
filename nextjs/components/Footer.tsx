@@ -99,7 +99,7 @@ export default function Footer({ isHome }: { isHome?: boolean }) {
       </div>
       <div className="flex items-center m-6">
         <p className="text-right pr-3 flex-1 text-muted-foreground text-xl font-handjet hidden sm:inline-block">
-          LangTurbo MMXXV
+          LangTurbo MMVI
         </p>
 
         <div className="space-x-3 mr-auto ml-auto">
