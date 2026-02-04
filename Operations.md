@@ -51,4 +51,4 @@ Development build ```eas build --platform all --profile development```
 
 # Expo update
 
-```eas update --channel production --message "persist language"``
+```eas update --channel production --message "persist language"```
