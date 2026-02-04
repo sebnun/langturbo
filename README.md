@@ -4,7 +4,7 @@ LangTurbo is a language learning application available for iOS, Android and the 
 This repo includes all the code that makes the app function, including the marketing site.
 
 * `/agent`
-	* A Python microservice that powers the real-time voice-to-voice AI agent for pronunciation feedback.
+	* A Python microservice that powers the real time voice to voice AI agent for pronunciation feedback.
 * `/app`
 	* A React Native application with iOS, Android and web clients.
 * `/cron`
@@ -12,9 +12,9 @@ This repo includes all the code that makes the app function, including the marke
 * `/nextjs`
 	* Nextjs application that powers the API for the clients and the static marketing site.
 * `/terraform`
-	* Infrastructure as Code (IaC) for Oracle Cloud–related services.
+	* Infrastructure as Code for Oracle Cloud related services.
 * `/whisper`
-	* A Whisper (Automatic Speech Recognition) deployment in Google Cloud Platform.
+	* A Whisper deployment in Google Cloud Platform.
 
 Everything is deployed using  [Kamal](https://kamal-deploy.org/).
 
